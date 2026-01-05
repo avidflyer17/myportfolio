@@ -22,6 +22,10 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     siteName: "Damien Schonbakler Portfolio",
   },
+  icons: {
+    icon: ["/favicon.ico", "/logo.png"],
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 import { MouseSpotlight } from "@/components/ui/mouse-spotlight";

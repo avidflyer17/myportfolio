@@ -4,6 +4,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Stars, Sparkles, TorusKnot, PerspectiveCamera } from "@react-three/drei";
 import { motion } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
+import { CyberLogo } from "@/components/ui/cyber-logo";
 import { useRef } from "react";
 import * as THREE from "three";
 import { Cpu, Zap, Terminal, Code2 } from "lucide-react";
@@ -34,8 +35,8 @@ function ArchitecturalCore() {
 
             {/* Outer Wireframe Shell */}
             <mesh scale={2.5}>
-                <icosahedronGeometry args={[1, 2]} />
-                <meshBasicMaterial color="#ff00ff" wireframe transparent opacity={0.05} />
+                <icosahedronGeometry args={[1, 1]} />
+                <meshBasicMaterial color="#ff00ff" wireframe transparent opacity={0.2} />
             </mesh>
         </group>
     );
@@ -56,21 +57,16 @@ function MovingGrid() {
 
 export function HeroSection() {
     return (
-        <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+        <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
             {/* 3D Background */}
             <div className="absolute inset-0 z-0">
                 <Canvas>
                     <PerspectiveCamera makeDefault position={[0, 0, 5]} />
-                    <color attach="background" args={['#050505']} />
 
                     {/* Atmospheric Lighting */}
                     <ambientLight intensity={0.2} />
                     <pointLight position={[10, 10, 5]} intensity={1} color="#ff00ff" />
                     <pointLight position={[-10, -5, -5]} color="#00f3ff" intensity={2} />
-
-                    {/* Space Debris / Data Particles */}
-                    <Stars radius={50} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
-                    <Sparkles count={200} scale={10} size={2} speed={0.4} opacity={0.5} color="#00f3ff" />
 
                     {/* Architectural Core */}
                     <Float speed={2} rotationIntensity={1} floatIntensity={1}>
@@ -90,6 +86,9 @@ export function HeroSection() {
 
                 {/* 1. FLOATING TITLE (No Box) */}
                 <div className="flex flex-col items-center text-center pointer-events-auto">
+
+                    <CyberLogo />
+
                     <motion.div
                         className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/50 border border-neon-cyan/30 backdrop-blur-md mb-6"
                         initial={{ opacity: 0, y: -20 }}
@@ -231,6 +230,8 @@ export function HeroSection() {
 
                 </div>
             </div>
+            {/* Bottom Fade Transition */}
+            <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black via-black/80 to-transparent z-20 pointer-events-none" />
         </section>
     );
 }

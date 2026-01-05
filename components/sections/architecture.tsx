@@ -42,7 +42,7 @@ export function ArchitectureSection() {
                 {/* Section Header */}
                 <div className="flex flex-col items-center mb-12 text-center">
                     <motion.h2
-                        className="text-4xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-white tracking-widest"
+                        className="text-2xl sm:text-4xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-white tracking-widest break-all md:break-normal"
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
