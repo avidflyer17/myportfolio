@@ -120,6 +120,8 @@ export function ContactSection() {
     const [formState, setFormState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
     const [byteCount, setByteCount] = useState(0);
 
+    const formRef = useRef<HTMLFormElement>(null);
+
     // Calculate simulated byte size of form data
     const handleInput = (e: React.ChangeEvent<HTMLFormElement>) => {
         const formData = new FormData(e.currentTarget);
@@ -144,6 +146,7 @@ export function ContactSection() {
         // even if the API is faster.
         setTimeout(() => {
             if (result.success) {
+                formRef.current?.reset();
                 setFormState('sent');
                 setTimeout(() => setFormState('idle'), 5000);
             } else {
@@ -252,6 +255,7 @@ export function ContactSection() {
                             ) : (
                                 <motion.form
                                     key="form"
+                                    ref={formRef}
                                     onSubmit={handleSubmit}
                                     onChange={handleInput}
                                     initial={{ opacity: 0 }}
@@ -298,17 +302,25 @@ export function ContactSection() {
 
                                     <button
                                         disabled={formState === 'sending'}
-                                        className="w-full group relative overflow-hidden bg-white text-black font-bold py-4 rounded hover:bg-neon-cyan transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className={`w-full group relative overflow-hidden font-bold py-4 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${formState === 'error'
+                                                ? 'bg-red-500 text-white hover:bg-red-600'
+                                                : 'bg-white text-black hover:bg-neon-cyan'
+                                            }`}
                                     >
                                         <div className="flex items-center justify-center gap-2 relative z-10">
-                                            <span>TRANSMIT_DATA</span>
-                                            <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                            <span>
+                                                {formState === 'sending' ? 'TRANSMITTING...' :
+                                                    formState === 'error' ? 'TRANSMISSION_FAILED' : 'TRANSMIT_DATA'}
+                                            </span>
+                                            {formState !== 'sending' && <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
                                         </div>
                                         {/* Scanline Effect on Button */}
                                         <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.3)_50%,transparent_75%)] -translate-x-full group-hover:animate-[shimmer_1s_infinite]" />
-                                        <div className="absolute inset-x-0 bottom-0 h-[2px] bg-neon-cyan opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        <div className={`absolute inset-x-0 bottom-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity ${formState === 'error' ? 'bg-red-300' : 'bg-neon-cyan'
+                                            }`} />
                                     </button>
                                 </motion.form>
+
                             )}
                         </AnimatePresence>
                     </div>
