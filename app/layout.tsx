@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://portfolio.damswallace.fr"),
   title: "Damien Schonbakler | Architecte Solutions",
   description: "Portfolio d'Architecte Solutions & Fullstack Developer. Expert Cloud, Kubernetes, Cybersécurité et Domotique Avancée.",
   openGraph: {

@@ -15,7 +15,7 @@ services:
       traefik.http.routers.portfolio.rule: Host(`portfolio.damswallace.fr`)
       traefik.http.routers.portfolio.entryPoints: websecure
       traefik.http.services.portfolio.loadbalancer.server.port: 3000
-      traefik.http.routers.portfolio.middlewares: geoblock@file, middleware-secured-chain@file
+      traefik.http.routers.portfolio.middlewares: middleware-secured-chain@file
     networks:
       br-dams:
         ipv4_address: 172.18.0.120
