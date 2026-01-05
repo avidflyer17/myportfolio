@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
 };
 
-import { MouseSpotlight } from "@/components/ui/mouse-spotlight";
+
 
 export default function RootLayout({
   children,
@@ -40,7 +40,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <MouseSpotlight />
+
         {children}
       </body>
     </html>

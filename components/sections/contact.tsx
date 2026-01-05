@@ -1,17 +1,33 @@
 "use client";
 
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { Send, Shield, Wifi, CheckCircle2 } from "lucide-react";
 import { sendContactEmail } from "@/app/actions";
 
+
 export function ContactSection() {
     const [formState, setFormState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+    const [byteCount, setByteCount] = useState(0);
+
+    // Calculate simulated byte size of form data
+    const handleInput = (e: React.ChangeEvent<HTMLFormElement>) => {
+        const formData = new FormData(e.currentTarget);
+        let size = 0;
+        formData.forEach((value) => {
+            size += value.toString().length;
+        });
+        setByteCount(size);
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setFormState('sending');
+
+        // Play Sound Effect (Simulated for this demo)
+        // if (audioRef.current) audioRef.current.play();
 
         const formData = new FormData(e.currentTarget);
         const result = await sendContactEmail(formData);
@@ -72,8 +88,13 @@ export function ContactSection() {
                                 <span>ENCRYPTED_CONNECTION</span>
                             </div>
                         </div>
-                        <div className="text-xs font-mono text-slate-500">
-                            SMTP_RELAY_V4
+                        <div className="flex items-center gap-4">
+                            <div className="text-xs font-mono text-neon-pink animate-pulse">
+                                BUFFER: {byteCount}B
+                            </div>
+                            <div className="text-xs font-mono text-slate-500">
+                                SMTP_RELAY_V4
+                            </div>
                         </div>
                     </div>
 
@@ -98,6 +119,7 @@ export function ContactSection() {
                                 <motion.form
                                     key="form"
                                     onSubmit={handleSubmit}
+                                    onChange={handleInput}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
@@ -159,6 +181,7 @@ export function ContactSection() {
                                         </div>
                                         {/* Scanline Effect on Button */}
                                         <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.3)_50%,transparent_75%)] -translate-x-full group-hover:animate-[shimmer_1s_infinite]" />
+                                        <div className="absolute inset-x-0 bottom-0 h-[2px] bg-neon-cyan opacity-0 group-hover:opacity-100 transition-opacity" />
                                     </button>
                                 </motion.form>
                             )}
@@ -169,11 +192,11 @@ export function ContactSection() {
                     <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-pink via-neon-cyan to-neon-pink opacity-20" />
                 </GlassPanel>
 
-                {/* Decorative floating code */}
+                {/* Decorative floating code - Fixed Octal literals */}
                 <div className="absolute -right-20 -bottom-20 -z-10 opacity-10 blur-sm select-none pointer-events-none hidden md:block">
                     <pre className="text-neon-cyan font-mono text-xs leading-4">
-                        {`01010100 01010010 01000001
-01001110 01010011 01001101
+                        {`10101010 01010010 01000001
+00101110 01010011 01001101
 01001001 01010100 01010100
 ESTABLISHED_CONNECTION: TRUE
 PACKET_LOSS: 0.00%

@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, TorusKnot, PerspectiveCamera } from "@react-three/drei";
+import { Float, MeshDistortMaterial, Sphere, PerspectiveCamera } from "@react-three/drei";
 import { motion } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { CyberLogo } from "@/components/ui/cyber-logo";
@@ -10,33 +10,42 @@ import * as THREE from "three";
 import { Cpu, Zap, Terminal, Code2 } from "lucide-react";
 
 function ArchitecturalCore() {
-    const meshRef = useRef<THREE.Mesh>(null!);
+    const groupRef = useRef<THREE.Group>(null!);
 
     useFrame((state) => {
         const t = state.clock.getElapsedTime();
-        meshRef.current.rotation.x = t * 0.2;
-        meshRef.current.rotation.y = t * 0.1;
+
+        // Gentle organic rotation
+        groupRef.current.rotation.y = t * 0.1;
+        groupRef.current.rotation.z = t * 0.05;
     });
 
     return (
-        <group>
-            {/* Inner Core */}
-            <TorusKnot args={[1, 0.3, 128, 16]} ref={meshRef}>
+        <group ref={groupRef}>
+
+
+            {/* Core: Distorted Brain/Energy Matter */}
+            <Sphere args={[1, 64, 64]}>
                 <MeshDistortMaterial
                     color="#00f3ff"
                     attach="material"
-                    distort={0.4}
-                    speed={2}
+                    distort={0.6}
+                    speed={3}
                     roughness={0.2}
                     metalness={0.8}
-                    emissive="#000000"
+                    emissive="#000020" // Darker emissive for depth
                 />
-            </TorusKnot>
+            </Sphere>
 
-            {/* Outer Wireframe Shell */}
-            <mesh scale={2.5}>
+            {/* Neural Web: Connecting lines (Wireframe Sphere) */}
+            <mesh scale={2.8} rotation-x={Math.PI / 4}>
+                <icosahedronGeometry args={[1, 2]} />
+                <meshBasicMaterial color="#ff00ff" wireframe transparent opacity={0.05} />
+            </mesh>
+
+            <mesh scale={2.2} rotation-y={-Math.PI / 4}>
                 <icosahedronGeometry args={[1, 1]} />
-                <meshBasicMaterial color="#ff00ff" wireframe transparent opacity={0.2} />
+                <meshBasicMaterial color="#00f3ff" wireframe transparent opacity={0.05} />
             </mesh>
         </group>
     );

@@ -61,8 +61,54 @@ export function ArchitectureSection() {
                 {/* Main Widescreen Layout */}
                 <div className="relative h-[800px] md:h-[700px] w-full max-w-[95%] mx-auto grid grid-cols-1 md:grid-cols-[350px_1fr_350px] gap-8">
 
+                    {/* DATA FLOW OVERLAY */}
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 hidden md:block">
+                        <defs>
+                            <linearGradient id="flow-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stopColor="#00f3ff" stopOpacity="0" />
+                                <stop offset="50%" stopColor="#00f3ff" stopOpacity="1" />
+                                <stop offset="100%" stopColor="#ff00ff" stopOpacity="0" />
+                            </linearGradient>
+                        </defs>
+                        {/* Lines from Left Cards to Center - Distributing targets */}
+                        <motion.line
+                            x1="350" y1="150" x2="45%" y2="40%"
+                            stroke="url(#flow-gradient)"
+                            strokeWidth="2"
+                            initial={{ pathLength: 0, opacity: 0 }}
+                            whileInView={{ pathLength: 1, opacity: 0.8 }}
+                            transition={{ duration: 1.5, delay: 0.5 }}
+                        />
+                        <motion.line
+                            x1="350" y1="350" x2="42%" y2="55%"
+                            stroke="url(#flow-gradient)"
+                            strokeWidth="2"
+                            initial={{ pathLength: 0, opacity: 0 }}
+                            whileInView={{ pathLength: 1, opacity: 0.8 }}
+                            transition={{ duration: 1.5, delay: 0.7 }}
+                        />
+                        <motion.line
+                            x1="350" y1="550" x2="48%" y2="65%"
+                            stroke="url(#flow-gradient)"
+                            strokeWidth="2"
+                            initial={{ pathLength: 0, opacity: 0 }}
+                            whileInView={{ pathLength: 1, opacity: 0.8 }}
+                            transition={{ duration: 1.5, delay: 0.9 }}
+                        />
+
+                        {/* Lines from Right Cards to Center - Distributing targets */}
+                        <motion.line
+                            x1="calc(100% - 350px)" y1="250" x2="55%" y2="45%"
+                            stroke="url(#flow-gradient)"
+                            strokeWidth="2"
+                            initial={{ pathLength: 0, opacity: 0 }}
+                            whileInView={{ pathLength: 1, opacity: 0.8 }}
+                            transition={{ duration: 1.5, delay: 1 }}
+                        />
+                    </svg>
+
                     {/* LEFT COLUMN - EXPERTISE */}
-                    <div className="flex flex-col gap-6 justify-center">
+                    <div className="flex flex-col gap-6 justify-center relative z-10">
                         <GlassPanel intensity="low" className="p-6 border-l-4 border-l-neon-cyan border-y-0 border-r-0 rounded-none bg-gradient-to-r from-neon-cyan/5 to-transparent hover:from-neon-cyan/10 transition-all group">
                             <div className="flex justify-between items-center mb-4">
                                 <span className="text-xs font-mono text-neon-cyan group-hover:text-white transition-colors tracking-widest">CLOUD_NATIVE</span>
@@ -98,7 +144,7 @@ export function ArchitectureSection() {
                     </div>
 
                     {/* CENTER - EXPANDED 3D HOLOGRAPHIC MAP */}
-                    <div className="relative h-[400px] md:h-full [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_100%)]">
+                    <div className="relative h-[400px] md:h-full [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_100%)] z-10">
                         <div className="absolute inset-0 bg-[linear-gradient(rgba(0,243,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,243,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px] opacity-50" />
 
                         <Canvas camera={{ position: [6, 6, 6], fov: 40 }} className="z-10 relative">
@@ -130,27 +176,28 @@ export function ArchitectureSection() {
                     </div>
 
                     {/* RIGHT COLUMN - TECH STACK & TOOLS */}
-                    <div className="flex flex-col gap-6 justify-center">
-                        <GlassPanel intensity="high" className="h-fit border-r-4 border-r-white/10 border-y-0 border-l-0 rounded-none bg-gradient-to-l from-white/5 to-transparent p-6">
+                    <div className="flex flex-col gap-6 justify-center relative z-10">
+                        {/* Refactored GlassPanel with consistent style */}
+                        <GlassPanel intensity="low" className="p-6 border-r-4 border-r-neon-cyan border-y-0 border-l-0 rounded-none bg-gradient-to-l from-neon-cyan/5 to-transparent hover:from-neon-cyan/10 transition-all group">
                             <div className="flex items-center gap-3 mb-6 text-slate-300 border-b border-white/10 pb-4">
                                 <Layers className="w-5 h-5 text-neon-cyan" />
-                                <span className="font-mono text-sm font-bold tracking-widest">FULLSTACK_OVERVIEW</span>
+                                <span className="font-mono text-sm font-bold tracking-widest text-white group-hover:text-neon-cyan transition-colors">FULLSTACK_OVERVIEW</span>
                             </div>
                             <div className="space-y-4 font-mono text-xs">
-                                <div className="flex justify-between items-center p-2 hover:bg-white/5 rounded transition-colors group">
-                                    <span className="text-slate-400 group-hover:text-white">Frontend</span>
+                                <div className="flex justify-between items-center p-2 hover:bg-white/5 rounded transition-colors group/item">
+                                    <span className="text-slate-400 group-hover/item:text-white">Frontend</span>
                                     <span className="text-neon-cyan">Next.js 15</span>
                                 </div>
-                                <div className="flex justify-between items-center p-2 hover:bg-white/5 rounded transition-colors group">
-                                    <span className="text-slate-400 group-hover:text-white">Styling</span>
+                                <div className="flex justify-between items-center p-2 hover:bg-white/5 rounded transition-colors group/item">
+                                    <span className="text-slate-400 group-hover/item:text-white">Styling</span>
                                     <span className="text-neon-pink">Tailwind v4</span>
                                 </div>
-                                <div className="flex justify-between items-center p-2 hover:bg-white/5 rounded transition-colors group">
-                                    <span className="text-slate-400 group-hover:text-white">Visuals</span>
+                                <div className="flex justify-between items-center p-2 hover:bg-white/5 rounded transition-colors group/item">
+                                    <span className="text-slate-400 group-hover/item:text-white">Visuals</span>
                                     <span className="text-white">Three.js R3F</span>
                                 </div>
-                                <div className="flex justify-between items-center p-2 hover:bg-white/5 rounded transition-colors group">
-                                    <span className="text-slate-400 group-hover:text-white">Security</span>
+                                <div className="flex justify-between items-center p-2 hover:bg-white/5 rounded transition-colors group/item">
+                                    <span className="text-slate-400 group-hover/item:text-white">Security</span>
                                     <span className="text-green-400">OWASP Hardened</span>
                                 </div>
                             </div>
