@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Stars, Sparkles, TorusKnot, PerspectiveCamera } from "@react-three/drei";
+import { Float, MeshDistortMaterial, TorusKnot, PerspectiveCamera } from "@react-three/drei";
 import { motion } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { CyberLogo } from "@/components/ui/cyber-logo";
