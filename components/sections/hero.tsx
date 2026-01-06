@@ -12,7 +12,16 @@ import { TypewriterText } from "@/components/ui/typewriter-text";
 import { CardTilt } from "@/components/ui/card-tilt";
 
 function FloatingLogo() {
-    const texture = useTexture("/logo-3d.png");
+    // Load all 6 face textures
+    const textures = useTexture([
+        "/cube-faces/database.png",    // Face 0 (right/droite +X)
+        "/cube-faces/cloud.png",       // Face 1 (left/gauche -X)
+        "/cube-faces/ai.png",          // Face 2 (top/haut +Y)
+        "/cube-faces/security.png",    // Face 3 (bottom/bas -Y)
+        "/cube-faces/react.png",       // Face 4 (front/avant +Z)
+        "/cube-faces/kubernetes.png"   // Face 5 (back/arrière -Z)
+    ]);
+
     const meshRef = useRef<THREE.Mesh>(null!);
 
     useFrame((state) => {
@@ -28,17 +37,21 @@ function FloatingLogo() {
             {/* Perfect Cube */}
             <boxGeometry args={[1, 1, 1]} />
 
-            {/* Material applied to ALL faces */}
-            <meshStandardMaterial
-                map={texture}
-                emissiveMap={texture}
-                emissive="#ffffff"
-                emissiveIntensity={2}
-                color="#ffffff"
-                metalness={0.2}
-                roughness={0.1}
-                toneMapped={false}
-            />
+            {/* Different material for each face */}
+            {textures.map((texture, index) => (
+                <meshStandardMaterial
+                    key={index}
+                    attach={`material-${index}`}
+                    map={texture}
+                    emissiveMap={texture}
+                    emissive="#ffffff"
+                    emissiveIntensity={2}
+                    color="#ffffff"
+                    metalness={0.2}
+                    roughness={0.1}
+                    toneMapped={false}
+                />
+            ))}
         </mesh>
     );
 }
