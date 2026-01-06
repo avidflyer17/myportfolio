@@ -28,15 +28,7 @@ function ChangeView({ center, zoom }: { center: [number, number]; zoom: number }
     return null;
 }
 
-// Simulated network nodes for visual interest
-const NETWORK_NODES: Location[] = [
-    { lat: 48.8566, lng: 2.3522, city: "Paris", country: "FR" }, // Paris
-    { lat: 40.7128, lng: -74.0060, city: "New York", country: "US" }, // NY
-    { lat: 35.6762, lng: 139.6503, city: "Tokyo", country: "JP" }, // Tokyo
-    { lat: 51.5074, lng: -0.1278, city: "London", country: "UK" }, // London
-    { lat: 1.3521, lng: 103.8198, city: "Singapore", country: "SG" }, // Singapore
-    { lat: 52.5200, lng: 13.4050, city: "Berlin", country: "DE" }, // Berlin
-];
+
 
 export function VisitorMap() {
     const [userLocation, setUserLocation] = useState<Location | null>(null);
@@ -52,10 +44,9 @@ export function VisitorMap() {
             .catch(err => console.error("Failed to load map data", err));
         const fetchLocation = async () => {
             try {
+                // Primary service: ipapi.co
                 const res = await fetch("https://ipapi.co/json/");
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                }
+                if (!res.ok) throw new Error(`ipapi.co error: ${res.status}`);
                 const data = await res.json();
                 if (data.latitude && data.longitude) {
                     setUserLocation({
@@ -64,10 +55,29 @@ export function VisitorMap() {
                         city: data.city,
                         country: data.country_name,
                     });
+                    return;
                 }
             } catch (err) {
-                console.warn("Could not fetch visitor location (likely blocked or offline):", err);
-                // Fallback is already handled by default center
+                console.warn("Primary IP fetch failed, trying fallback...", err);
+            }
+
+            try {
+                // Fallback service: ipwho.is
+                const res = await fetch("https://ipwho.is/");
+                if (!res.ok) throw new Error(`ipwho.is error: ${res.status}`);
+                const data = await res.json();
+                if (data.success && data.latitude && data.longitude) {
+                    setUserLocation({
+                        lat: data.latitude,
+                        lng: data.longitude,
+                        city: data.city,
+                        country: data.country,
+                    });
+                } else {
+                    console.warn("Fallback IP service failed or returned invalid data", data);
+                }
+            } catch (err) {
+                console.warn("All IP fetch attempts failed. Defaulting to headquarters.", err);
             } finally {
                 setLoading(false);
             }
@@ -102,7 +112,7 @@ export function VisitorMap() {
     };
 
     const userIcon = createCustomIcon("#FF00FF"); // Neon Pink for user
-    const nodeIcon = createCustomIcon("#00FFFF"); // Cyan for network nodes
+
 
     return (
         <div className="relative w-full h-[400px] rounded-xl overflow-hidden border border-neon-cyan/30 shadow-[0_0_15px_rgba(0,255,255,0.2)] bg-black/90 group">
@@ -161,17 +171,7 @@ export function VisitorMap() {
                     </Marker>
                 )}
 
-                {/* Simulated Network Nodes */}
-                {NETWORK_NODES.map((node, idx) => (
-                    <Marker key={idx} position={[node.lat, node.lng]} icon={nodeIcon}>
-                        <Popup className="custom-popup">
-                            <div className="font-mono text-xs">
-                                <strong className="text-neon-cyan block mb-1">NODE {idx + 1}</strong>
-                                <span className="text-gray-300">{node.city} Uplink Active</span>
-                            </div>
-                        </Popup>
-                    </Marker>
-                ))}
+
             </MapContainer>
 
             {/* Decorative Corners */}

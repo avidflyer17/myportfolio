@@ -30,7 +30,7 @@ export function FooterSection() {
                             <span className="text-neon-pink">/&gt;</span>
                         </h3>
                         <p className="text-gray-400 max-w-md">
-                            Monitoring global connection nodes. Real-time visitor analytics disabled for privacy.
+                            Monitoring global connection nodes. Real-time visitor analytics active.
                             Visualizing active endpoints.
                         </p>
 
