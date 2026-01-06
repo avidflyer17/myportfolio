@@ -151,11 +151,18 @@ function EnergyParticles({ active }: { active: boolean }) {
 }
 
 export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            id: 'init-1',
+            role: 'assistant',
+            content: "Bonjour. Je suis l'Architecte Neuronal de ce portfolio."
+        }
+    ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isBooting, setIsBooting] = useState(true);
+    const [visitorId, setVisitorId] = useState<string>('VISITOR_UNKNOWN_XX');
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -163,6 +170,23 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
+
+    // Fetch visitor location and generate ID
+    useEffect(() => {
+        if (isOpen && visitorId === 'VISITOR_UNKNOWN_XX') {
+            fetch('/api/location')
+                .then(res => res.json())
+                .then(data => {
+                    const city = (data.city || 'UNKNOWN').toUpperCase().replace(/[^A-Z0-9]/g, '_');
+                    const countryCode = (data.country_code || data.country || 'XX').toUpperCase().slice(0, 2);
+                    setVisitorId(`VISITOR_${city}_${countryCode}`);
+                })
+                .catch(() => {
+                    // Keep default VISITOR_UNKNOWN_XX on error
+                    console.log('Could not fetch visitor location');
+                });
+        }
+    }, [isOpen, visitorId]);
 
     // Simulated Boot Sequence
     useEffect(() => {
@@ -246,13 +270,16 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
         <AnimatePresence>
             {isOpen && (
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ type: "spring", duration: 0.5 }}
+                    key="neural-backdrop"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8 }}
                     className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                    style={{ perspective: "1000px" }}
                 >
                     <motion.div
+                        key="neural-modal"
                         className={cn(
                             "w-full max-w-2xl h-[600px] flex flex-col bg-black/90 rounded-lg overflow-hidden font-mono relative",
                             "border-2 transition-all duration-300",
@@ -260,14 +287,26 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                 ? "border-neon-cyan shadow-[0_0_30px_rgba(0,243,255,0.4),0_0_60px_rgba(0,243,255,0.2),inset_0_0_30px_rgba(0,243,255,0.1)]"
                                 : "border-neon-cyan/30 shadow-[0_0_50px_rgba(0,243,255,0.15)]"
                         )}
-                        animate={isLoading ? {
-                            boxShadow: [
-                                '0 0 30px rgba(0,243,255,0.4), 0 0 60px rgba(0,243,255,0.2), inset 0 0 30px rgba(0,243,255,0.1)',
-                                '0 0 40px rgba(0,243,255,0.6), 0 0 80px rgba(0,243,255,0.3), inset 0 0 40px rgba(0,243,255,0.15)',
-                                '0 0 30px rgba(0,243,255,0.4), 0 0 60px rgba(0,243,255,0.2), inset 0 0 30px rgba(0,243,255,0.1)',
-                            ]
-                        } : {}}
-                        transition={{ duration: 2, repeat: isLoading ? Infinity : 0 }}
+                        initial={{ opacity: 0, scale: 0.8, rotateX: 90, y: 100 }}
+                        animate={{
+                            opacity: 1,
+                            scale: 1,
+                            rotateX: 0,
+                            y: 0,
+                            ...(isLoading ? {
+                                boxShadow: [
+                                    '0 0 30px rgba(0,243,255,0.4), 0 0 60px rgba(0,243,255,0.2), inset 0 0 30px rgba(0,243,255,0.1)',
+                                    '0 0 40px rgba(0,243,255,0.6), 0 0 80px rgba(0,243,255,0.3), inset 0 0 40px rgba(0,243,255,0.15)',
+                                    '0 0 30px rgba(0,243,255,0.4), 0 0 60px rgba(0,243,255,0.2), inset 0 0 30px rgba(0,243,255,0.1)',
+                                ]
+                            } : {})
+                        }}
+                        exit={{ opacity: 0, scale: 0.5, rotateY: 90, x: 100, boxShadow: "none" }}
+                        transition={{
+                            default: { type: "spring", stiffness: 100, damping: 15, duration: 0.6 },
+                            opacity: { duration: 0.4 },
+                            boxShadow: { duration: 2, repeat: isLoading ? Infinity : 0, ease: "easeInOut" }
+                        }}
                     >
                         {/* CRT Effects */}
                         <CRTScanLines />
@@ -316,17 +355,6 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                 </div>
                             ) : (
                                 <>
-                                    {/* Message de bienvenue TOUJOURS visible */}
-                                    <motion.div
-                                        initial={{ opacity: 0, y: -10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="text-slate-300 text-sm space-y-2 p-3 border-l-2 border-neon-cyan/30 bg-neon-cyan/5 rounded-r sticky top-0 z-10 backdrop-blur-sm"
-                                    >
-                                        <p className="font-bold text-neon-cyan mb-1 flex items-center gap-2">
-                                            <Cpu size={14} /> SYSTEM:
-                                        </p>
-                                        <p>Bonjour. Je suis l'Architecte Neuronal de ce portfolio.</p>
-                                    </motion.div>
 
                                     {messages.map((m, index) => (
                                         <motion.div
@@ -341,7 +369,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                             )}
                                         >
                                             <span className="text-[10px] opacity-50 mb-1 font-bold tracking-wider">
-                                                {m.role === 'user' ? 'VISITOR_ID_X7' : 'NEURAL_CORE'}
+                                                {m.role === 'user' ? visitorId : 'NEURAL_ARCHITECT_V2.0'}
                                             </span>
                                             <p className="whitespace-pre-wrap leading-relaxed">{m.content}</p>
                                         </motion.div>

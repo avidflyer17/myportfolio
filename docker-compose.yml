@@ -10,6 +10,7 @@ services:
     environment:
       - GMAIL_USER=${GMAIL_USER}
       - GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
+      - GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
     labels:
       traefik.enable: true
       traefik.http.routers.portfolio.rule: Host(`portfolio.damswallace.fr`)

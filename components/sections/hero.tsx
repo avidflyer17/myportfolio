@@ -288,7 +288,7 @@ export function HeroSection() {
                     </CardTilt>
 
                     {/* RIGHT WIDGET: SYSTEM STATUS */}
-                    <CardTilt className="w-full h-full hidden md:block">
+                    <CardTilt className="w-full h-full">
                         <motion.div
                             whileHover={{
                                 y: -4,
@@ -377,7 +377,7 @@ export function HeroSection() {
             </div>
 
             {/* Floating AI Assistant */}
-            <FloatingAIOrb onClick={() => setIsNeuralInterfaceOpen(true)} />
+            <FloatingAIOrb onClick={() => setIsNeuralInterfaceOpen(prev => !prev)} />
 
             {/* Bottom Fade Transition */}
             <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black via-black/80 to-transparent z-20 pointer-events-none" />

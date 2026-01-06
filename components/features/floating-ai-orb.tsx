@@ -38,7 +38,7 @@ export function FloatingAIOrb({ onClick }: FloatingAIOrbProps) {
     ];
 
     return (
-        <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 pointer-events-none">
+        <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[100] pointer-events-none">
             {/* Welcome Tooltip */}
             <AnimatePresence>
                 {showWelcome && (

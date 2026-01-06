@@ -44,9 +44,9 @@ export function VisitorMap() {
             .catch(err => console.error("Failed to load map data", err));
         const fetchLocation = async () => {
             try {
-                // Primary service: ipapi.co
-                const res = await fetch("https://ipapi.co/json/");
-                if (!res.ok) throw new Error(`ipapi.co error: ${res.status}`);
+                // Primary service: Local API proxy (avoids CORS)
+                const res = await fetch("/api/location");
+                if (!res.ok) throw new Error(`API error: ${res.status}`);
                 const data = await res.json();
                 if (data.latitude && data.longitude) {
                     setUserLocation({
