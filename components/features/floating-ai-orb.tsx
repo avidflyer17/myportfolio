@@ -11,6 +11,11 @@ interface FloatingAIOrbProps {
 export function FloatingAIOrb({ onClick }: FloatingAIOrbProps) {
     const [showWelcome, setShowWelcome] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        setIsMobile(window.innerWidth < 768);
+    }, []);
 
     // Show welcome message after 3 seconds
     useEffect(() => {
@@ -41,7 +46,7 @@ export function FloatingAIOrb({ onClick }: FloatingAIOrbProps) {
         <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[100] pointer-events-none">
             {/* Welcome Tooltip */}
             <AnimatePresence>
-                {showWelcome && (
+                {showWelcome && !isMobile && (
                     <motion.div
                         initial={{ opacity: 0, x: 20, scale: 0.9 }}
                         animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -63,8 +68,8 @@ export function FloatingAIOrb({ onClick }: FloatingAIOrbProps) {
 
             {/* Main Orb Container */}
             <div className="relative pointer-events-auto">
-                {/* Orbital Particles */}
-                {particles.map((p, i) => (
+                {/* Orbital Particles - Hide on Mobile to reduce complex layers */}
+                {!isMobile && particles.map((p, i) => (
                     <motion.div
                         key={i}
                         className="absolute"
@@ -98,10 +103,13 @@ export function FloatingAIOrb({ onClick }: FloatingAIOrbProps) {
                 {/* Main Orb */}
                 <motion.button
                     onClick={onClick}
-                    onHoverStart={() => setIsHovering(true)}
-                    onHoverEnd={() => setIsHovering(false)}
+                    onHoverStart={() => !isMobile && setIsHovering(true)}
+                    onHoverEnd={() => !isMobile && setIsHovering(false)}
                     className="relative w-14 h-14 md:w-16 md:h-16 rounded-full cursor-pointer group border-2 border-neon-cyan/30 overflow-hidden"
-                    animate={{
+                    animate={isMobile ? {
+                        scale: [1, 1.05, 1],
+                        boxShadow: '0 0 20px rgba(0,243,255,0.4)'
+                    } : {
                         scale: isHovering ? [1, 1.05, 1] : [1, 1.08, 1],
                         boxShadow: isHovering
                             ? [
@@ -116,7 +124,7 @@ export function FloatingAIOrb({ onClick }: FloatingAIOrbProps) {
                             ]
                     }}
                     transition={{
-                        duration: isHovering ? 1 : 2,
+                        duration: isMobile ? 3 : (isHovering ? 1 : 2),
                         repeat: Infinity,
                         ease: "easeInOut"
                     }}
@@ -136,7 +144,7 @@ export function FloatingAIOrb({ onClick }: FloatingAIOrbProps) {
                     {/* Icon */}
                     <div className="relative flex items-center justify-center w-full h-full">
                         <motion.div
-                            animate={isHovering ? {
+                            animate={(!isMobile && isHovering) ? {
                                 rotate: [0, 5, -5, 0],
                                 scale: [1, 1.1, 1]
                             } : {}}
@@ -168,7 +176,7 @@ export function FloatingAIOrb({ onClick }: FloatingAIOrbProps) {
 
                 {/* Hover Tooltip */}
                 <AnimatePresence>
-                    {isHovering && (
+                    {isHovering && !isMobile && (
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9, y: 10 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}

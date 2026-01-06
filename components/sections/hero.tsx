@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Sphere, PerspectiveCamera, useTexture } from "@react-three/drei";
 import { motion } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
@@ -117,6 +117,20 @@ function MovingGrid() {
     )
 }
 
+function ResponsiveGroup({ children }: { children: React.ReactNode }) {
+    const { viewport } = useThree();
+    const isMobile = viewport.width < 5.5; // Adjusted threshold roughly for mobile portrait
+
+    return (
+        <group
+            scale={isMobile ? 0.4 : 1}
+            position={isMobile ? [0, 0.5, 0] : [0, 0, 0]}
+        >
+            {children}
+        </group>
+    );
+}
+
 import { NeuralInterface } from "@/components/features/neural-interface";
 import { FloatingAIOrb } from "@/components/features/floating-ai-orb";
 import { useState, useRef, Suspense } from "react";
@@ -127,10 +141,10 @@ export function HeroSection() {
     const [isNeuralInterfaceOpen, setIsNeuralInterfaceOpen] = useState(false);
 
     return (
-        <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
+        <section className="relative min-h-screen md:h-screen w-full flex flex-col items-center justify-center overflow-x-hidden md:overflow-hidden bg-transparent py-24 md:py-0">
             <NeuralInterface isOpen={isNeuralInterfaceOpen} onClose={() => setIsNeuralInterfaceOpen(false)} />
             {/* 3D Background */}
-            <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 z-0 fixed md:absolute">
                 <Canvas>
                     <PerspectiveCamera makeDefault position={[0, 0, 5]} />
 
@@ -142,7 +156,9 @@ export function HeroSection() {
                     {/* Architectural Core */}
                     <Float speed={2} rotationIntensity={1} floatIntensity={1}>
                         <Suspense fallback={null}>
-                            <ArchitecturalCore />
+                            <ResponsiveGroup>
+                                <ArchitecturalCore />
+                            </ResponsiveGroup>
                         </Suspense>
                     </Float>
 

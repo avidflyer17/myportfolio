@@ -395,7 +395,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                             <div className="relative flex items-center">
                                 <span className="absolute left-3 text-neon-cyan animate-pulse">{'>'}</span>
                                 <input
-                                    className="w-full bg-black/50 border border-white/10 rounded px-8 py-3 text-white focus:outline-none focus:border-neon-cyan/50 font-mono text-sm placeholder:text-slate-600 focus:shadow-[0_0_15px_rgba(0,243,255,0.1)] transition-all"
+                                    className="w-full bg-black/50 border border-white/10 rounded px-8 py-3 text-white focus:outline-none focus:border-neon-cyan/50 font-mono text-base md:text-sm placeholder:text-slate-600 focus:shadow-[0_0_15px_rgba(0,243,255,0.1)] transition-all"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     placeholder={isBooting ? "INITIALIZING..." : "Entrez votre commande..."}
