@@ -2,16 +2,19 @@
 
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { motion } from "framer-motion";
-import { Server, Database, Shield, Cpu, Cloud, Terminal, Layers, Hash } from "lucide-react";
+import { Server, Database, Shield, Cpu, Cloud, Terminal, Layers, Hash, Github, FileText, ArrowUpRight } from "lucide-react";
 import { Canvas } from "@react-three/fiber";
 import { CityMap } from "@/components/canvas/city-map";
 import { OrbitControls } from "@react-three/drei";
 
 export function ArchitectureSection() {
     return (
-        <section id="architecture" className="py-24 relative overflow-hidden bg-black w-full min-h-screen flex flex-col justify-center">
+        <section id="architecture" className="py-24 relative overflow-hidden w-full min-h-screen flex flex-col justify-center">
+            {/* Smooth Transition Gradient (Fade in/out to blend with stars) */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/90 to-transparent z-0" />
+
             {/* Background elements */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-neon-cyan/5 via-transparent to-transparent opacity-50" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-neon-cyan/5 via-transparent to-transparent opacity-50 z-0" />
 
             {/* Widescreen Side Decorations (Hidden on mobile) */}
             <div className="hidden 2xl:flex flex-col justify-between absolute left-8 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-neon-cyan/30 to-transparent">
@@ -204,26 +207,77 @@ export function ArchitectureSection() {
                         </GlassPanel>
 
                         <div className="grid grid-cols-1 gap-4">
-                            <div className="bg-white/5 border border-white/10 p-4 relative group hover:border-neon-cyan/50 transition-colors">
-                                <div className="absolute top-0 right-0 p-1 opacity-20 group-hover:opacity-100 transition-opacity">
-                                    <Hash className="w-4 h-4 text-neon-cyan" />
+                            {/* GIT REPOS CARD */}
+                            <a
+                                href="https://github.com/avidflyer17"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-white/5 border border-white/10 p-4 relative group overflow-hidden transition-all hover:border-neon-cyan/50"
+                            >
+                                {/* Scanline Effect */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-neon-cyan/10 to-transparent opacity-0 group-hover:opacity-100 transform translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-out" />
+
+                                {/* Corner Accents */}
+                                <div className="absolute top-0 right-0 p-1 opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div className="w-2 h-2 border-t border-r border-neon-cyan" />
                                 </div>
-                                <div className="text-xs font-mono text-slate-500 mb-1">CURRENT_PROJECTS</div>
-                                <div className="text-white font-bold flex items-center gap-2">
-                                    <Terminal className="w-4 h-4 text-neon-cyan" />
-                                    <span>GIT_REPOS</span>
+                                <div className="absolute bottom-0 left-0 p-1 opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div className="w-2 h-2 border-b border-l border-neon-cyan" />
                                 </div>
-                            </div>
-                            <div className="bg-white/5 border border-white/10 p-4 relative group hover:border-neon-pink/50 transition-colors">
-                                <div className="absolute top-0 right-0 p-1 opacity-20 group-hover:opacity-100 transition-opacity">
-                                    <Shield className="w-4 h-4 text-neon-pink" />
+
+                                <div className="relative z-10">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <div className="text-[10px] font-mono text-slate-500 group-hover:text-neon-cyan transition-colors">SOURCE_CODE</div>
+                                        <ArrowUpRight className="w-3 h-3 text-slate-600 group-hover:text-neon-cyan group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                                    </div>
+
+                                    <div className="text-white font-bold flex items-center gap-3 mb-1">
+                                        <Github className="w-5 h-5 text-neon-cyan" />
+                                        <span className="tracking-wide">GIT_REPOS</span>
+                                    </div>
+
+                                    <div className="font-mono text-[10px] text-neon-cyan/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                                        <span className="w-1.5 h-1.5 bg-neon-cyan rounded-full animate-pulse" />
+                                        // 12 ACTIVE REPOS
+                                    </div>
                                 </div>
-                                <div className="text-xs font-mono text-slate-500 mb-1">VERIFICATION</div>
-                                <div className="text-white font-bold flex items-center gap-2">
-                                    <Cpu className="w-4 h-4 text-neon-pink" />
-                                    <span>CERTIFICATIONS</span>
+                            </a>
+
+                            {/* DATA SELECTION CARD */}
+                            <a
+                                href="/cv-schonbakler-damien.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-white/5 border border-white/10 p-4 relative group overflow-hidden transition-all hover:border-neon-pink/50"
+                            >
+                                {/* Scanline Effect */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-neon-pink/10 to-transparent opacity-0 group-hover:opacity-100 transform translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-out" />
+
+                                {/* Corner Accents */}
+                                <div className="absolute top-0 right-0 p-1 opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div className="w-2 h-2 border-t border-r border-neon-pink" />
                                 </div>
-                            </div>
+                                <div className="absolute bottom-0 left-0 p-1 opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div className="w-2 h-2 border-b border-l border-neon-pink" />
+                                </div>
+
+                                <div className="relative z-10">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <div className="text-[10px] font-mono text-slate-500 group-hover:text-neon-pink transition-colors">SYSTEM_DATA</div>
+                                        <ArrowUpRight className="w-3 h-3 text-slate-600 group-hover:text-neon-pink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                                    </div>
+
+                                    <div className="text-white font-bold flex items-center gap-3 mb-1">
+                                        <FileText className="w-5 h-5 text-neon-pink" />
+                                        <span className="tracking-wide">DATA_EXTRACTION</span>
+                                    </div>
+
+                                    <div className="font-mono text-[10px] text-neon-pink/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                                        <span className="animate-[spin_1s_linear_infinite]">⟳</span>
+                                        &gt;&gt; INITIATING DOWNLOAD...
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>

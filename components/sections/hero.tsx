@@ -8,6 +8,9 @@ import { CyberLogo } from "@/components/ui/cyber-logo";
 import { useRef } from "react";
 import * as THREE from "three";
 import { Cpu, Zap, Terminal, Code2 } from "lucide-react";
+import { GlitchText } from "@/components/ui/glitch-text";
+import { TypewriterText } from "@/components/ui/typewriter-text";
+import { CardTilt } from "@/components/ui/card-tilt";
 
 function ArchitecturalCore() {
     const groupRef = useRef<THREE.Group>(null!);
@@ -108,14 +111,18 @@ export function HeroSection() {
                         <span className="text-xs font-mono text-neon-cyan tracking-[0.2em]">NEURAL_LINK_ESTABLISHED</span>
                     </motion.div>
 
-                    <motion.h1
-                        className="text-5xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter filter drop-shadow-[0_0_30px_rgba(0,243,255,0.4)] mix-blend-screen"
+                    <motion.div
+                        className="text-5xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter filter drop-shadow-[0_0_30px_rgba(0,243,255,0.4)] mix-blend-screen flex flex-col md:block items-center"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.4, type: "spring", stiffness: 50 }}
                     >
-                        DAMIEN <br className="md:hidden" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-white">SCHONBAKLER</span>
-                    </motion.h1>
+                        <GlitchText text="DAMIEN" className="mr-0 md:mr-8" />
+                        <GlitchText
+                            text="SCHONBAKLER"
+                            textClassName="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-white"
+                        />
+                    </motion.div>
 
                     <motion.div
                         className="flex items-center gap-4 mt-6 text-xl md:text-3xl font-mono text-slate-300 font-bold"
@@ -124,7 +131,9 @@ export function HeroSection() {
                         transition={{ delay: 0.5 }}
                     >
                         <span className="text-neon-pink hidden md:inline">&lt;</span>
-                        <span className="tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Architecte Solutions</span>
+                        <span className="tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                            <TypewriterText text="Architecte Solutions" delay={0.8} />
+                        </span>
                         <span className="text-neon-pink hidden md:inline">/&gt;</span>
                     </motion.div>
                 </div>
@@ -133,110 +142,128 @@ export function HeroSection() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl mx-auto pointer-events-auto">
 
                     {/* LEFT WIDGET: ACTION CENTER */}
-                    <GlassPanel
-                        intensity="low"
-                        className="bg-black/40 backdrop-blur-xl border border-white/10 hover:border-neon-cyan/50 transition-colors duration-500 p-8 flex flex-col justify-between gap-6 group"
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.6 }}
-                    >
-                        <div>
-                            <h3 className="text-sm font-mono text-neon-cyan mb-4 flex items-center gap-2">
-                                <Code2 className="w-4 h-4" />
-                                MISSION_PROFILE
-                            </h3>
-                            <p className="text-slate-300 text-lg leading-relaxed font-light">
-                                Conception d&apos;architectures <span className="text-white font-medium">distribuées</span> et d&apos;interfaces <span className="text-white font-medium">immersives</span> pour le web de demain.
-                            </p>
-                        </div>
+                    <CardTilt className="w-full h-full">
+                        <GlassPanel
+                            intensity="low"
+                            className="bg-black/40 backdrop-blur-xl border border-white/10 hover:border-neon-cyan/50 transition-colors duration-500 p-8 flex flex-col justify-between gap-6 group h-full"
+                            initial={{ opacity: 0, x: -50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.6 }}
+                        >
+                            <div>
+                                <div className="flex justify-between items-start mb-4">
+                                    <h3 className="text-sm font-mono text-neon-cyan flex items-center gap-2">
+                                        <Code2 className="w-4 h-4" />
+                                        MISSION_PROFILE
+                                    </h3>
+                                    <div className="flex items-center gap-2 px-2 py-1 rounded bg-green-500/10 border border-green-500/20">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                                        <span className="text-[10px] font-mono text-green-500 tracking-wider">OPERATIONAL</span>
+                                    </div>
+                                </div>
 
-                        <div className="flex gap-4">
-                            <button
-                                aria-label="Initialiser la navigation vers l'architecture"
-                                onClick={() => document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' })}
-                                className="flex-1 py-4 bg-neon-cyan text-black font-bold tracking-widest uppercase rounded hover:bg-white transition-colors flex items-center justify-center gap-2 group/btn"
-                            >
-                                <Zap className="w-4 h-4" />
-                                Initialize
-                            </button>
-                            <button
-                                aria-label="Voir l'historique de carrière"
-                                onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
-                                className="flex-1 py-4 bg-white/5 border border-white/10 text-white hover:border-neon-pink hover:text-neon-pink transition-all font-bold tracking-widest uppercase rounded backdrop-blur-md"
-                            >
-                                Logs
-                            </button>
-                        </div>
+                                <div className="space-y-4">
+                                    <p className="text-slate-400 text-sm font-mono border-l-2 border-neon-cyan/30 pl-3 italic">
+                                        &quot;Je ne me contente pas d&apos;écrire du code, je conçois des systèmes.&quot;
+                                    </p>
+                                    <p className="text-slate-300 text-lg leading-relaxed font-light">
+                                        Conception d&apos;architectures <span className="text-white font-medium">distribuées</span> et d&apos;interfaces <span className="text-white font-medium">immersives</span> pour le web de demain.
+                                    </p>
+                                </div>
+                            </div>
 
-                        {/* Corner Accents */}
-                        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/30" />
-                        <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/30" />
-                    </GlassPanel>
+                            <div className="flex gap-4">
+                                <button
+                                    aria-label="Initialiser la navigation vers l'architecture"
+                                    onClick={() => document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' })}
+                                    className="flex-1 py-4 bg-neon-cyan text-black font-bold tracking-widest uppercase rounded hover:bg-white transition-colors flex items-center justify-center gap-2 group/btn"
+                                >
+                                    <Zap className="w-4 h-4" />
+                                    Initialize
+                                </button>
+                                <button
+                                    aria-label="Voir l'historique de carrière"
+                                    onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
+                                    className="flex-1 py-4 bg-white/5 border border-white/10 text-white hover:border-neon-pink hover:text-neon-pink transition-all font-bold tracking-widest uppercase rounded backdrop-blur-md"
+                                >
+                                    Logs
+                                </button>
+                            </div>
+
+                            {/* Corner Accents */}
+                            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/30" />
+                            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/30" />
+                        </GlassPanel>
+                    </CardTilt>
 
                     {/* RIGHT WIDGET: SYSTEM STATUS */}
-                    <GlassPanel
-                        intensity="low"
-                        className="bg-black/40 backdrop-blur-xl border border-white/10 hover:border-neon-pink/50 transition-colors duration-500 p-8 hidden md:flex flex-col justify-between gap-6"
-                        initial={{ opacity: 0, x: 50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.8 }}
-                    >
-                        <h3 className="text-sm font-mono text-neon-pink mb-4 flex items-center gap-2">
-                            <Terminal className="w-4 h-4" />
-                            SYSTEM_METRICS
-                        </h3>
+                    <CardTilt className="w-full h-full hidden md:block">
+                        <GlassPanel
+                            intensity="low"
+                            className="bg-black/40 backdrop-blur-xl border border-white/10 hover:border-neon-pink/50 transition-colors duration-500 p-8 flex flex-col justify-between gap-6 h-full"
+                            initial={{ opacity: 0, x: 50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.8 }}
+                        >
+                            <h3 className="text-sm font-mono text-neon-pink mb-4 flex items-center gap-2">
+                                <Terminal className="w-4 h-4" />
+                                SYSTEM_METRICS
+                            </h3>
 
-                        <div className="space-y-6">
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-xs font-mono text-slate-400">
-                                    <span>FULLSTACK_MASTERY</span>
-                                    <span className="text-neon-cyan">98%</span>
+                            <div className="space-y-3 font-mono text-xs">
+                                <div className="flex items-center justify-between text-slate-400">
+                                    <span className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 bg-neon-cyan rounded-full" />
+                                        NEXT.JS_KERNEL
+                                    </span>
+                                    <span className="text-neon-cyan">[LOADED]</span>
                                 </div>
-                                <div className="h-1 bg-white/10 rounded-full overflow-hidden">
-                                    <motion.div
-                                        className="h-full bg-gradient-to-r from-neon-cyan to-blue-500"
-                                        initial={{ width: 0 }}
-                                        animate={{ width: "98%" }}
-                                        transition={{ delay: 1.2, duration: 1.5 }}
-                                    />
+                                <div className="flex items-center justify-between text-slate-400">
+                                    <span className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 bg-neon-cyan rounded-full" />
+                                        REACT_CORE
+                                    </span>
+                                    <span className="text-neon-cyan">[LOADED]</span>
+                                </div>
+                                <div className="flex items-center justify-between text-slate-400">
+                                    <span className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 bg-neon-pink rounded-full animate-pulse" />
+                                        AI_MODULES
+                                    </span>
+                                    <span className="text-neon-pink">[SYNCING...]</span>
+                                </div>
+                                <div className="flex items-center justify-between text-slate-400">
+                                    <span className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+                                        TYPESCRIPT
+                                    </span>
+                                    <span className="text-blue-500">[STRICT]</span>
+                                </div>
+                                <div className="mt-4 pt-4 border-t border-white/5 flex justify-between items-center text-slate-500">
+                                    <span>AVAILABILITY</span>
+                                    <span className="bg-green-500/20 text-green-400 px-2 py-0.5 rounded text-[10px] border border-green-500/30">OPEN_FOR_WORK</span>
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-xs font-mono text-slate-400">
-                                    <span>CLOUD_INFRASTRUCTURE</span>
-                                    <span className="text-neon-pink">95%</span>
+                            <div className="grid grid-cols-2 gap-4 mt-2">
+                                <div className="bg-white/5 p-3 rounded flex items-center gap-3">
+                                    <div className="relative">
+                                        <div className="w-2 h-2 bg-green-500 rounded-full animate-ping absolute inset-0" />
+                                        <div className="w-2 h-2 bg-green-500 rounded-full relative" />
+                                    </div>
+                                    <div className="text-xs font-mono text-slate-300">ONLINE</div>
                                 </div>
-                                <div className="h-1 bg-white/10 rounded-full overflow-hidden">
-                                    <motion.div
-                                        className="h-full bg-gradient-to-r from-neon-pink to-purple-500"
-                                        initial={{ width: 0 }}
-                                        animate={{ width: "95%" }}
-                                        transition={{ delay: 1.4, duration: 1.5 }}
-                                    />
+                                <div className="bg-white/5 p-3 rounded flex items-center gap-3">
+                                    <Cpu className="w-4 h-4 text-purple-400" />
+                                    <div className="text-xs font-mono text-slate-300">v2.0.4</div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="grid grid-cols-2 gap-4 mt-2">
-                            <div className="bg-white/5 p-3 rounded flex items-center gap-3">
-                                <div className="relative">
-                                    <div className="w-2 h-2 bg-green-500 rounded-full animate-ping absolute inset-0" />
-                                    <div className="w-2 h-2 bg-green-500 rounded-full relative" />
-                                </div>
-                                <div className="text-xs font-mono text-slate-300">ONLINE</div>
-                            </div>
-                            <div className="bg-white/5 p-3 rounded flex items-center gap-3">
-                                <Cpu className="w-4 h-4 text-purple-400" />
-                                <div className="text-xs font-mono text-slate-300">v2.0.4</div>
-                            </div>
-                        </div>
-
-                        {/* Corner Accents */}
-                        <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/30" />
-                        <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/30" />
-                    </GlassPanel>
-
+                            {/* Corner Accents */}
+                            <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/30" />
+                            <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/30" />
+                        </GlassPanel>
+                    </CardTilt>
                 </div>
             </div>
             {/* Bottom Fade Transition */}

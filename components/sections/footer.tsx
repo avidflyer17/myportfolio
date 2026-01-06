@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from 'next/dynamic';
+import { Github, Linkedin } from 'lucide-react';
 
 const VisitorMap = dynamic(() => import('@/components/ui/visitor-map').then(mod => mod.VisitorMap), {
     ssr: false,
@@ -56,8 +57,14 @@ export function FooterSection() {
                         © {new Date().getFullYear()} Damien Schonbakler. All systems operational.
                     </p>
                     <div className="flex gap-6 text-gray-500 text-sm">
-                        <a href="https://github.com/avidflyer17" target="_blank" rel="noopener noreferrer" className="hover:text-neon-cyan transition-colors">GITHUB</a>
-                        <a href="https://www.linkedin.com/in/damien-s-1995bb108/" target="_blank" rel="noopener noreferrer" className="hover:text-neon-cyan transition-colors">LINKEDIN</a>
+                        <a href="https://github.com/avidflyer17" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-neon-cyan transition-colors group">
+                            <Github className="w-4 h-4 group-hover:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)] transition-all" />
+                            <span>GITHUB</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/damien-s-1995bb108/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-neon-cyan transition-colors group">
+                            <Linkedin className="w-4 h-4 group-hover:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)] transition-all" />
+                            <span>LINKEDIN</span>
+                        </a>
                     </div>
                 </div>
 

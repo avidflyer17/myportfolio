@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     siteName: "Damien Schonbakler Portfolio",
   },
   icons: {
-    icon: ["/favicon.ico", "/logo.png"],
+    icon: "/logo.png",
     apple: "/apple-touch-icon.png",
   },
 };
