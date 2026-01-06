@@ -5,7 +5,7 @@
   --color-foreground: var(--foreground);
   --color-neon-cyan: var(--neon-cyan);
   --color-neon-pink: var(--neon-pink);
-  
+
   --font-mono: var(--font-geist-mono);
 }
 
@@ -33,13 +33,11 @@ body::before {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0) 50%,
-    rgba(0, 0, 0, 0.2) 50%,
-    rgba(0, 0, 0, 0.2)
-  );
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.2));
   background-size: 100% 4px;
   pointer-events: none;
   z-index: 9999;
@@ -70,25 +68,23 @@ body::after {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, 
-    rgba(0, 243, 255, 0.3) 0%, 
-    rgba(0, 243, 255, 0.6) 50%, 
-    rgba(0, 243, 255, 0.3) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(0, 243, 255, 0.3) 0%,
+      rgba(0, 243, 255, 0.6) 50%,
+      rgba(0, 243, 255, 0.3) 100%);
   border-radius: 5px;
   border: 1px solid rgba(0, 243, 255, 0.3);
-  box-shadow: 
+  box-shadow:
     0 0 10px rgba(0, 243, 255, 0.4),
     inset 0 0 10px rgba(0, 243, 255, 0.2);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, 
-    rgba(0, 243, 255, 0.5) 0%, 
-    rgba(0, 243, 255, 0.8) 50%, 
-    rgba(0, 243, 255, 0.5) 100%
-  );
-  box-shadow: 
+  background: linear-gradient(180deg,
+      rgba(0, 243, 255, 0.5) 0%,
+      rgba(0, 243, 255, 0.8) 50%,
+      rgba(0, 243, 255, 0.5) 100%);
+  box-shadow:
     0 0 15px rgba(0, 243, 255, 0.6),
     inset 0 0 15px rgba(0, 243, 255, 0.3);
 }
@@ -97,4 +93,15 @@ body::after {
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 243, 255, 0.5) rgba(0, 0, 0, 0.5);
+}
+
+/* Cyberpunk Scan Line Animation */
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100vh);
+  }
 }

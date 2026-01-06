@@ -75,52 +75,67 @@ export function ProjectsSection() {
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.2 }}
                     >
-                        <GlassPanel intensity="low" className="h-full p-8 flex flex-col group hover:bg-white/5 transition-colors duration-500 border border-white/10 hover:border-neon-cyan/50 relative overflow-hidden">
+                        <GlassPanel
+                            intensity="low"
+                            className="h-full flex flex-col group relative overflow-hidden border border-white/10 hover:border-neon-cyan/30 transition-all duration-700 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] hover:-translate-y-1"
+                        >
 
-                            {/* Hover Reveal Effect */}
-                            <div className="absolute inset-0 bg-gradient-to-b from-neon-cyan/10 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-out" />
+                            {/* Animated Glow Effect - Full Coverage */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/0 via-neon-cyan/0 to-purple-500/0 group-hover:from-neon-cyan/8 group-hover:via-purple-500/4 group-hover:to-neon-pink/8 transition-all duration-700 pointer-events-none" />
 
-                            {/* Header */}
-                            <div className="flex justify-between items-start mb-6 relative z-10">
-                                <div className="p-3 bg-white/5 rounded border border-white/10 group-hover:border-neon-cyan/50 transition-colors">
-                                    <project.icon className="w-8 h-8 text-white group-hover:text-neon-cyan transition-colors" />
-                                </div>
-                                <div className="flex items-center gap-1 px-2 py-1 bg-black/50 border border-white/10 rounded text-[10px] font-mono text-slate-400">
-                                    <Lock className="w-3 h-3" />
-                                    {project.status}
-                                </div>
+                            {/* Scan Line Effect - Full Coverage */}
+                            <div className="absolute inset-0 opacity-0 group-hover:opacity-50 transition-opacity duration-500 pointer-events-none">
+                                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-cyan/20 to-transparent h-[2px] w-full animate-[scan_3s_ease-in-out_infinite]" />
                             </div>
 
-                            {/* Content */}
-                            <div className="flex-1 relative z-10">
-                                <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-neon-cyan transition-colors font-mono tracking-tight">
-                                    {project.title}
-                                </h3>
-                                <div className="text-xs text-neon-pink font-mono mb-4 uppercase tracking-widest">
-                                    {project.subtitle}
-                                </div>
-                                <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                                    {project.description}
-                                </p>
-                            </div>
-
-                            {/* Tech Stack Footer */}
-                            <div className="relative z-10 pt-6 border-t border-white/5">
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {project.tech.map(t => (
-                                        <span key={t} className="px-2 py-1 bg-white/5 rounded text-xs font-mono text-slate-300 border border-transparent group-hover:border-neon-cyan/20 transition-all">
-                                            {t}
-                                        </span>
-                                    ))}
+                            {/* Content Wrapper with Padding */}
+                            <div className="relative z-10 p-8 flex flex-col h-full">
+                                {/* Header */}
+                                <div className="flex justify-between items-start mb-6">
+                                    <div className="p-3 bg-white/5 rounded border border-white/10 group-hover:border-neon-cyan/60 group-hover:bg-neon-cyan/10 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all duration-500 group-hover:rotate-[5deg]">
+                                        <project.icon className="w-8 h-8 text-white group-hover:text-neon-cyan transition-all duration-500 group-hover:scale-110" />
+                                    </div>
+                                    <div className="flex items-center gap-1 px-2 py-1 bg-black/50 border border-white/10 group-hover:border-neon-pink/50 group-hover:bg-neon-pink/10 rounded text-[10px] font-mono text-slate-400 group-hover:text-neon-pink transition-all duration-500">
+                                        <Lock className="w-3 h-3 group-hover:animate-pulse" />
+                                        {project.status}
+                                    </div>
                                 </div>
 
-                                <button
-                                    aria-label={`Voir l'architecture du projet ${project.title}`}
-                                    className="w-full py-2 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors border border-dashed border-white/10 group-hover:border-white/30 rounded"
-                                >
-                                    <Server className="w-3 h-3" />
-                                    Architecture View
-                                </button>
+                                {/* Content */}
+                                <div className="flex-1">
+                                    <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-neon-cyan transition-all duration-500 font-mono tracking-tight group-hover:tracking-wide">
+                                        {project.title}
+                                    </h3>
+                                    <div className="text-xs text-neon-pink font-mono mb-4 uppercase tracking-widest group-hover:tracking-[0.3em] transition-all duration-500">
+                                        {project.subtitle}
+                                    </div>
+                                    <p className="text-slate-400 group-hover:text-slate-300 text-sm leading-relaxed mb-6 transition-colors duration-500">
+                                        {project.description}
+                                    </p>
+                                </div>
+
+                                {/* Tech Stack Footer */}
+                                <div className="pt-6 border-t border-white/5 group-hover:border-neon-cyan/20 transition-colors duration-500">
+                                    <div className="flex flex-wrap gap-2 mb-4">
+                                        {project.tech.map((t, i) => (
+                                            <span
+                                                key={t}
+                                                className="px-2 py-1 bg-white/5 rounded text-xs font-mono text-slate-300 border border-transparent group-hover:border-neon-cyan/40 group-hover:bg-neon-cyan/10 group-hover:text-white group-hover:shadow-[0_0_10px_rgba(6,182,212,0.3)] transition-all duration-500"
+                                                style={{ transitionDelay: `${i * 50}ms` }}
+                                            >
+                                                {t}
+                                            </span>
+                                        ))}
+                                    </div>
+
+                                    <button
+                                        aria-label={`Voir l'architecture du projet ${project.title}`}
+                                        className="w-full py-2 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-white group-hover:bg-neon-cyan/10 transition-all duration-500 border border-dashed border-white/10 group-hover:border-neon-cyan/50 rounded group-hover:shadow-[0_0_15px_rgba(6,182,212,0.2)]"
+                                    >
+                                        <Server className="w-3 h-3 group-hover:animate-pulse" />
+                                        Architecture View
+                                    </button>
+                                </div>
                             </div>
 
                         </GlassPanel>
