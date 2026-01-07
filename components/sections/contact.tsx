@@ -134,23 +134,7 @@ export function ContactSection() {
                     )}
                 </AnimatePresence>
 
-                {/* Decorative Elements */}
-                <div className="absolute left-10 bottom-10 opacity-20 pointer-events-none hidden lg:block">
-                    <div className="font-mono text-[8px] space-y-1 text-neon-cyan">
-                        <p>COORD_LAT: 43.6047</p>
-                        <p>COORD_LON: 1.4442</p>
-                        <p>SEC_LEVEL: ALPHA_MAX</p>
-                    </div>
-                </div>
-
-                <div className="absolute right-10 bottom-10 opacity-20 pointer-events-none hidden lg:block">
-                    <pre className="font-mono text-[8px] text-neon-pink text-right leading-tight">
-                        {`0x4A 0xDB 0x3F 0x92
-0xBC 0x4D 0xE1 0x05
-0x98 0x33 0xFF 0x1A
-LINK_STATUS: STABLE`}
-                    </pre>
-                </div>
+                {/* Decorative Elements - Removed to avoid overlap with form */}
 
             </div>
         </section>

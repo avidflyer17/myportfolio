@@ -50,7 +50,7 @@ export function ClassicContactForm() {
     // Auto-close success message after 6 seconds
 
 
-    const inputClasses = "w-full bg-transparent border-none text-white placeholder:text-slate-500/50 focus:ring-0 focus:outline-none font-mono text-base md:text-lg h-full pl-16 pr-6 py-4 relative z-10 tracking-wide font-medium placeholder:uppercase placeholder:tracking-widest placeholder:text-xs md:placeholder:text-sm";
+    const inputClasses = "w-full bg-transparent border-none text-white placeholder:text-slate-500/50 focus:ring-0 focus:outline-none font-mono text-sm md:text-base h-full pl-14 pr-4 py-3 relative z-10 tracking-wide font-medium placeholder:uppercase placeholder:tracking-widest placeholder:text-xs";
     const labelClasses = "text-[10px] uppercase font-mono text-neon-cyan/60 tracking-[0.3em] mb-2 block pl-1";
 
     return (
@@ -66,8 +66,8 @@ export function ClassicContactForm() {
                 {/* CYBER DECORATIONS */}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-cyan/50 to-transparent opacity-50" />
                 <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-pink/50 to-transparent opacity-50" />
-                <div className="absolute top-0 right-0 p-4 opacity-30 pointer-events-none hidden md:block">
-                    <div className="font-mono text-[8px] text-neon-cyan text-right leading-relaxed">
+                <div className="absolute top-2 right-2 p-2 opacity-20 pointer-events-none hidden xl:block">
+                    <div className="font-mono text-[7px] text-neon-cyan text-right leading-tight">
                         SECURE_UPLINK_ESTABLISHED<br />
                         ENCRYPTION: QUANTUM-256<br />
                         LATENCY: 12ms
@@ -100,16 +100,16 @@ export function ClassicContactForm() {
                         setFieldErrors({});
                         handleSubmit(formData);
                     }}
-                    className="relative z-10 p-6 md:p-12 space-y-12"
+                    className="relative z-10 p-4 md:p-8 space-y-6"
                 >
                     {/* HEADER */}
-                    <div className="flex items-end gap-4 mb-4 border-b border-white/5 pb-8">
-                        <div className="w-16 h-16 bg-neon-cyan/10 rounded-lg border border-neon-cyan/30 flex items-center justify-center relative overflow-hidden group">
+                    <div className="flex items-end gap-3 mb-2 border-b border-white/5 pb-4">
+                        <div className="w-12 h-12 bg-neon-cyan/10 rounded-lg border border-neon-cyan/30 flex items-center justify-center relative overflow-hidden group">
                             <div className="absolute inset-0 bg-neon-cyan/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                            <Send className="w-8 h-8 text-neon-cyan group-hover:scale-110 transition-transform duration-300 relative z-10" />
+                            <Send className="w-6 h-6 text-neon-cyan group-hover:scale-110 transition-transform duration-300 relative z-10" />
                         </div>
                         <div>
-                            <h3 className="text-2xl md:text-3xl font-black text-white uppercase tracking-wider italic">
+                            <h3 className="text-xl md:text-2xl font-black text-white uppercase tracking-wider italic">
                                 Transmit <span className="text-neon-cyan">Signal</span>
                             </h3>
                             <p className="text-xs font-mono text-slate-400 tracking-widest mt-1">
@@ -118,7 +118,7 @@ export function ClassicContactForm() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* NAME INPUT */}
                         <div className="space-y-2 group">
                             <div className="flex justify-between items-baseline">
@@ -126,11 +126,11 @@ export function ClassicContactForm() {
                                 {fieldErrors.name && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">//! REQUIRED</span>}
                             </div>
                             <div className={cn(
-                                "relative h-16 bg-black/40 border transition-all duration-300 rounded-lg overflow-hidden group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]",
+                                "relative h-12 bg-black/40 border transition-all duration-300 rounded-lg overflow-hidden group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]",
                                 fieldErrors.name ? "border-red-500/50" : "border-white/10 group-focus-within:border-neon-cyan/50"
                             )}>
-                                <div className="absolute left-0 top-0 bottom-0 w-14 flex items-center justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
-                                    <User className={cn("w-6 h-6 transition-colors", fieldErrors.name ? "text-red-400" : "text-slate-500 group-focus-within:text-neon-cyan")} />
+                                <div className="absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
+                                    <User className={cn("w-5 h-5 transition-colors", fieldErrors.name ? "text-red-400" : "text-slate-500 group-focus-within:text-neon-cyan")} />
                                 </div>
                                 <input
                                     name="name"
@@ -151,11 +151,11 @@ export function ClassicContactForm() {
                                 {fieldErrors.email && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">//! REQUIRED</span>}
                             </div>
                             <div className={cn(
-                                "relative h-16 bg-black/40 border transition-all duration-300 rounded-lg overflow-hidden group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]",
+                                "relative h-12 bg-black/40 border transition-all duration-300 rounded-lg overflow-hidden group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]",
                                 fieldErrors.email ? "border-red-500/50" : "border-white/10 group-focus-within:border-neon-cyan/50"
                             )}>
-                                <div className="absolute left-0 top-0 bottom-0 w-14 flex items-center justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
-                                    <Mail className={cn("w-6 h-6 transition-colors", fieldErrors.email ? "text-red-400" : "text-slate-500 group-focus-within:text-neon-cyan")} />
+                                <div className="absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
+                                    <Mail className={cn("w-5 h-5 transition-colors", fieldErrors.email ? "text-red-400" : "text-slate-500 group-focus-within:text-neon-cyan")} />
                                 </div>
                                 <input
                                     name="email"
@@ -173,9 +173,9 @@ export function ClassicContactForm() {
                     {/* COMPANY INPUT */}
                     <div className="space-y-2 group">
                         <label className={labelClasses}>03 // AFFILIATION (OPTIONAL)</label>
-                        <div className="relative h-16 bg-black/40 border border-white/10 transition-all duration-300 rounded-lg overflow-hidden group-focus-within:border-neon-cyan/50 group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]">
-                            <div className="absolute left-0 top-0 bottom-0 w-14 flex items-center justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
-                                <Building className="w-6 h-6 text-slate-500 group-focus-within:text-neon-cyan transition-colors" />
+                        <div className="relative h-12 bg-black/40 border border-white/10 transition-all duration-300 rounded-lg overflow-hidden group-focus-within:border-neon-cyan/50 group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]">
+                            <div className="absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
+                                <Building className="w-5 h-5 text-slate-500 group-focus-within:text-neon-cyan transition-colors" />
                             </div>
                             <input
                                 name="company"
@@ -187,7 +187,7 @@ export function ClassicContactForm() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <CyberSelect
                             key={`project-${resetKey}`}
                             name="projectType"
@@ -241,12 +241,12 @@ export function ClassicContactForm() {
                             "relative bg-black/40 border transition-all duration-300 rounded-lg overflow-hidden group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]",
                             fieldErrors.message ? "border-red-500/50" : "border-white/10 group-focus-within:border-neon-cyan/50"
                         )}>
-                            <div className="absolute left-0 top-0 w-14 h-full flex pt-5 justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
-                                <MessageSquare className={cn("w-6 h-6 transition-colors", fieldErrors.message ? "text-red-400" : "text-slate-500 group-focus-within:text-neon-cyan")} />
+                            <div className="absolute left-0 top-0 w-12 h-full flex pt-3 justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
+                                <MessageSquare className={cn("w-5 h-5 transition-colors", fieldErrors.message ? "text-red-400" : "text-slate-500 group-focus-within:text-neon-cyan")} />
                             </div>
                             <textarea
                                 name="message"
-                                rows={6}
+                                rows={4}
                                 placeholder={t('form.messagePlaceholder')}
                                 className={cn(inputClasses, "resize-none")}
                                 onChange={() => setFieldErrors(prev => ({ ...prev, message: false }))}
@@ -281,7 +281,7 @@ export function ClassicContactForm() {
                     <button
                         type="submit"
                         disabled={state === 'sending'}
-                        className="w-full group relative py-6 overflow-hidden rounded-xl bg-transparent border border-neon-cyan/50 hover:bg-neon-cyan/5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full group relative py-4 overflow-hidden rounded-xl bg-transparent border border-neon-cyan/50 hover:bg-neon-cyan/5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <div className="absolute inset-0 bg-neon-cyan/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
 
