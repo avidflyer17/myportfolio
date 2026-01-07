@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             disallow: '/private/',
         },
-        sitemap: 'https://damienschonbakler.com/sitemap.xml',
+        sitemap: 'https://portfolio.damswallace.fr/sitemap.xml',
     }
 }
