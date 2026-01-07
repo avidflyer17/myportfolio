@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { motion } from "framer-motion";
-import { Server, Database, Shield, Cpu, Cloud, Terminal, Layers, Hash, Github, FileText, ArrowUpRight, ChevronRight } from "lucide-react";
+import { Server, Database, Cloud, Layers, Github, FileText, ArrowUpRight, ChevronRight } from "lucide-react";
 import { Canvas } from "@react-three/fiber";
 import { CityMap } from "@/components/canvas/city-map";
 import { OrbitControls } from "@react-three/drei";
@@ -246,7 +246,7 @@ export function ArchitectureSection() {
 
                                     <div className="font-mono text-[10px] text-neon-cyan/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
                                         <span className="w-1.5 h-1.5 bg-neon-cyan rounded-full animate-pulse" />
-                                        // {t('activeRepos')}
+                                        {'//'} {t('activeRepos')}
                                     </div>
                                 </div>
                             </a>

@@ -15,7 +15,8 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "DamienS Portfolio"
-  }
+  },
+  metadataBase: new URL("https://portfolio.damswallace.fr")
 };
 
 export const viewport: Viewport = {

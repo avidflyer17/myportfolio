@@ -3,7 +3,6 @@
 import { useTranslations } from 'next-intl';
 import { motion } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
-import { Badge } from "@/components/ui/badge";
 import { CTAButton } from "@/components/ui/cta-button";
 import { smoothScrollTo } from "@/lib/smooth-scroll";
 import { Lock, Server, Database, Cloud, Shield, Wifi, MessageSquare } from "lucide-react";

@@ -1,22 +1,21 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Float, Sphere, MeshDistortMaterial, Html } from "@react-three/drei";
+import { Float } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bot, Sparkles } from "lucide-react";
-import { NeuralInterface, useNeuralInterface } from "@/components/features/neural-interface";
+import { useNeuralInterface } from "@/components/features/neural-interface";
 import { useTranslations } from 'next-intl';
 import * as THREE from 'three';
 
 
 function CyberOrb({ isHovered, onClick }: { isHovered: boolean; onClick: () => void }) {
-    const meshRef = useRef<any>(null);
-    const nodesRef = useRef<any>(null);
-    const wireRef = useRef<any>(null);
-    const outerRef = useRef<any>(null);
-    const groupRef = useRef<any>(null);
+    const meshRef = useRef<THREE.Mesh>(null);
+    const nodesRef = useRef<THREE.Points>(null);
+    const wireRef = useRef<THREE.Mesh>(null);
+    const outerRef = useRef<THREE.Mesh>(null);
+    const groupRef = useRef<THREE.Group>(null);
 
     // Spring-like scale animation
     const springScale = useRef(1.1);
@@ -111,11 +110,7 @@ export function FloatingAIOrb() {
     const t = useTranslations('neuralInterface');
 
     // Reset hover state when the orb re-appears to prevent it being stuck "white/hover"
-    useEffect(() => {
-        if (!isOpen) {
-            setIsHovered(false);
-        }
-    }, [isOpen]);
+
 
     if (isOpen) return null;
 

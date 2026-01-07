@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Download, FileText, ShieldCheck, Printer } from "lucide-react";
+import { X, Download, FileText, ShieldCheck } from "lucide-react";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";

@@ -5,13 +5,12 @@ export const maxDuration = 30;
 
 export async function POST(req: Request) {
   try {
-    console.log("API_CHAT: Request received");
     const body = await req.json();
-    console.log("API_CHAT: Body:", JSON.stringify(body, null, 2));
+
 
     // Check for API key first
     if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-      console.error("API_CHAT: Missing API Key");
+
       return new Response(JSON.stringify({
         error: "Configuration Error",
         message: "API Key not configured. Please set GOOGLE_GENERATIVE_AI_API_KEY."
@@ -24,8 +23,7 @@ export async function POST(req: Request) {
     // Extract messages and locale properly
     const messages = body.messages || [];
     const locale = body.locale || 'fr'; // Default to French if not specified
-    console.log("API_CHAT: Messages count:", messages.length);
-    console.log("API_CHAT: Locale:", locale);
+
 
     if (messages.length === 0) {
       return new Response(JSON.stringify({
@@ -97,25 +95,24 @@ export async function POST(req: Request) {
 
     const systemPrompt = locale === 'en' ? SYSTEM_PROMPTS.en : SYSTEM_PROMPTS.fr;
 
-    console.log("API_CHAT: Calling Gemini API...");
     const result = await streamText({
-      model: google('gemini-3-flash-preview'),
+      model: google('gemini-1.5-pro'),
       messages: messages,
       system: systemPrompt,
     });
 
-    console.log("API_CHAT: Returning stream response");
     return result.toTextStreamResponse();
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("API_CHAT_ERROR:", error);
 
+    const err = error as Error & { status?: number };
     // Detect quota error
-    const isQuotaError = error.message?.includes('quota') || error.message?.includes('429') || error.status === 429;
+    const isQuotaError = err.message?.includes('quota') || err.message?.includes('429') || err.status === 429;
     const status = isQuotaError ? 429 : 500;
 
     return new Response(JSON.stringify({
-      error: error.message || "Internal Server Error",
+      error: err.message || "Internal Server Error",
       status: status
     }), {
       status: status,

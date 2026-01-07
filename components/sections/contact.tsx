@@ -15,8 +15,9 @@ export function ContactSection() {
 
     // Listen for AI fallback redirection signal
     useEffect(() => {
-        const handleSwitchSignal = (e: any) => {
-            if (e.detail === 'classic') {
+        const handleSwitchSignal = (e: Event) => {
+            const customEvent = e as CustomEvent<string>;
+            if (customEvent.detail === 'classic') {
                 setView('classic');
             }
         };

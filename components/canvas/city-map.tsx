@@ -18,7 +18,7 @@ function Buildings() {
     const buildingsRef = useRef<THREE.Group>(null!);
     const [buildings, setBuildings] = useState<BuildingData[]>([]);
 
-    useFrame((_state) => {
+    useFrame(() => {
         if (buildingsRef.current) {
             buildingsRef.current.rotation.y += 0.002;
         }

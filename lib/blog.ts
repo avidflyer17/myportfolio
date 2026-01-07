@@ -17,7 +17,7 @@ export interface BlogPost {
     readingTime: string;
 }
 
-export interface BlogPostMetadata extends Omit<BlogPost, 'content'> { }
+export type BlogPostMetadata = Omit<BlogPost, 'content'>;
 
 /**
  * Get all blog post slugs
@@ -72,8 +72,9 @@ export function getAllPosts(): BlogPostMetadata[] {
             const post = getPostBySlug(slug);
             if (!post) return null;
 
-            // Exclude content for listing
-            const { content, ...metadata } = post;
+            // Exclude content for listing - implicitly excluded by function return type handling
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { content: _content, ...metadata } = post;
             return metadata;
         })
         .filter((post): post is BlogPostMetadata => post !== null)

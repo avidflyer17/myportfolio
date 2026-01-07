@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 
-import { Send, Loader2, AlertTriangle } from "lucide-react";
+import { Send, Loader2, AlertTriangle, User, Mail, Building, MessageSquare } from "lucide-react";
+import { GlassPanel } from "@/components/ui/glass-panel";
 import { sendContactEmail } from "@/app/actions";
 import { CyberSelect } from "@/components/ui/cyber-select";
 import { ContactSubmissionOverlay } from "@/components/features/contact-submission-overlay";
@@ -40,7 +41,7 @@ export function ClassicContactForm() {
                 setState('error');
                 setErrorMessage(result.error || "System failure.");
             }
-        } catch (err) {
+        } catch {
             setState('error');
             setErrorMessage("Connection lost.");
         }
@@ -49,185 +50,268 @@ export function ClassicContactForm() {
     // Auto-close success message after 6 seconds
 
 
-    const inputClasses = "w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-neon-pink/50 focus:bg-neon-pink/[0.02] transition-all font-mono text-sm";
-    const labelClasses = "text-[10px] uppercase font-mono text-neon-pink/60 tracking-[0.3em] ml-2 block mb-2";
+    const inputClasses = "w-full bg-transparent border-none text-white placeholder:text-slate-500/50 focus:ring-0 focus:outline-none font-mono text-base md:text-lg h-full pl-16 pr-6 py-4 relative z-10 tracking-wide font-medium placeholder:uppercase placeholder:tracking-widest placeholder:text-xs md:placeholder:text-sm";
+    const labelClasses = "text-[10px] uppercase font-mono text-neon-cyan/60 tracking-[0.3em] mb-2 block pl-1";
 
     return (
         <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-4xl mx-auto"
+            className="w-full max-w-5xl mx-auto"
         >
-            <form
-                ref={formRef}
-                noValidate
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    const formData = new FormData(e.currentTarget);
-
-                    // Manual Validation
-                    const errors: typeof fieldErrors = {};
-                    if (!formData.get('name')) errors.name = true;
-                    if (!formData.get('email')) errors.email = true;
-                    if (!formData.get('message')) errors.message = true;
-
-                    if (Object.keys(errors).length > 0) {
-                        setFieldErrors(errors);
-                        return;
-                    }
-
-                    setFieldErrors({});
-                    handleSubmit(formData);
-                }}
-                className="relative space-y-8 bg-black/40 backdrop-blur-xl p-6 md:p-10 rounded-[2.5rem] border border-white/5 overflow-hidden"
+            <GlassPanel
+                intensity="high"
+                className="relative p-0 overflow-hidden border-neon-cyan/30 shadow-[0_0_50px_rgba(0,243,255,0.05)]"
             >
-                {/* TECHNICAL OVERLAYS */}
-                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-                    <div className="font-mono text-[8px] text-neon-pink text-right">
-                        UPLINK_STRENGTH: 98%<br />
-                        ENCRYPTION: AES-256
+                {/* CYBER DECORATIONS */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-cyan/50 to-transparent opacity-50" />
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-pink/50 to-transparent opacity-50" />
+                <div className="absolute top-0 right-0 p-4 opacity-30 pointer-events-none hidden md:block">
+                    <div className="font-mono text-[8px] text-neon-cyan text-right leading-relaxed">
+                        SECURE_UPLINK_ESTABLISHED<br />
+                        ENCRYPTION: QUANTUM-256<br />
+                        LATENCY: 12ms
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-2 group/field">
-                        <div className="flex justify-between items-baseline">
-                            <label className={labelClasses}>01_Identification_Name</label>
-                            {fieldErrors.name && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">//! REQUIRED</span>}
-                        </div>
-                        <input
-                            name="name"
-                            placeholder={t('form.namePlaceholder')}
-                            className={cn(inputClasses, fieldErrors.name && "border-red-500/50 focus:border-red-500/80 bg-red-500/[0.02]")}
-                            onChange={() => setFieldErrors(prev => ({ ...prev, name: false }))}
-                        />
-                    </div>
-                    <div className="space-y-2 group/field">
-                        <div className="flex justify-between items-baseline">
-                            <label className={labelClasses}>02_Signal_Origin</label>
-                            {fieldErrors.email && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">//! REQUIRED</span>}
-                        </div>
-                        <input
-                            name="email"
-                            type="email"
-                            placeholder={t('form.emailPlaceholder')}
-                            className={cn(inputClasses, fieldErrors.email && "border-red-500/50 focus:border-red-500/80 bg-red-500/[0.02]")}
-                            onChange={() => setFieldErrors(prev => ({ ...prev, email: false }))}
-                        />
-                    </div>
+                {/* SCANNING LINE */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
+                    <div className="absolute top-0 left-0 w-full h-[2px] bg-neon-cyan/30 shadow-[0_0_15px_rgba(0,243,255,0.5)] animate-[scan_8s_ease-in-out_infinite]" />
                 </div>
 
-                <div className="space-y-2 group/field">
-                    <label className={labelClasses}>03_Corporation_Entity</label>
-                    <input
-                        name="company"
-                        placeholder={t('form.companyPlaceholder')}
-                        className={inputClasses}
-                    />
-                </div>
+                <form
+                    ref={formRef}
+                    noValidate
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        const formData = new FormData(e.currentTarget);
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <CyberSelect
-                        key={`project-${resetKey}`}
-                        name="projectType"
-                        label="04_Strategic_Type"
-                        placeholder={t('form.projectTypePlaceholder')}
-                        options={[
-                            { label: t('projectTypes.cloud'), value: 'cloud' },
-                            { label: t('projectTypes.fullstack'), value: 'fullstack' },
-                            { label: t('projectTypes.security'), value: 'security' },
-                            { label: t('projectTypes.iot'), value: 'iot' },
-                            { label: t('projectTypes.consulting'), value: 'consulting' },
-                            { label: t('projectTypes.other'), value: 'other' }
-                        ]}
-                    />
-                    <CyberSelect
-                        key={`budget-${resetKey}`}
-                        name="budget"
-                        label="05_Resource_Allocation"
-                        placeholder={t('form.budgetPlaceholder')}
-                        options={[
-                            { label: t('budgets.small'), value: 'small' },
-                            { label: t('budgets.medium'), value: 'medium' },
-                            { label: t('budgets.large'), value: 'large' },
-                            { label: t('budgets.xlarge'), value: 'xlarge' },
-                            { label: t('budgets.enterprise'), value: 'enterprise' },
-                            { label: t('budgets.discuss'), value: 'discuss' }
-                        ]}
-                    />
-                    <CyberSelect
-                        key={`timeline-${resetKey}`}
-                        name="timeline"
-                        label="06_Temporal_Horizon"
-                        placeholder={t('form.timelinePlaceholder')}
-                        options={[
-                            { label: t('timelines.urgent'), value: 'urgent' },
-                            { label: t('timelines.short'), value: 'short' },
-                            { label: t('timelines.medium'), value: 'medium' },
-                            { label: t('timelines.long'), value: 'long' },
-                            { label: t('timelines.flexible'), value: 'flexible' }
-                        ]}
-                    />
-                </div>
+                        // Manual Validation
+                        const errors: typeof fieldErrors = {};
+                        if (!formData.get('name')) errors.name = true;
+                        if (!formData.get('email')) errors.email = true;
+                        if (!formData.get('message')) errors.message = true;
 
-                <div className="space-y-2 group/field">
-                    <div className="flex justify-between items-baseline">
-                        <label className={labelClasses}>07_Transmission_Payload</label>
-                        {fieldErrors.message && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">//! REQUIRED</span>}
-                    </div>
-                    <textarea
-                        name="message"
-                        rows={4}
-                        placeholder={t('form.messagePlaceholder')}
-                        className={cn(inputClasses, "resize-none h-40", fieldErrors.message && "border-red-500/50 focus:border-red-500/80 bg-red-500/[0.02]")}
-                        onChange={() => setFieldErrors(prev => ({ ...prev, message: false }))}
-                    />
-                </div>
+                        if (Object.keys(errors).length > 0) {
+                            setFieldErrors(errors);
+                            return;
+                        }
 
-                <ContactSubmissionOverlay
-                    status={state}
-                    onClose={() => setState('idle')}
-                />
-
-                <AnimatePresence>
-                    {state === 'error' && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="bg-red-500/10 border border-red-500/50 rounded-xl p-4 flex items-center gap-3"
-                        >
-                            <AlertTriangle className="w-5 h-5 text-red-500 shrink-0" />
-                            <p className="text-red-500 text-xs font-mono uppercase tracking-wider">{errorMessage}</p>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-
-                <button
-                    type="submit"
-                    disabled={state === 'sending'}
-                    className={cn(
-                        "w-full py-6 rounded-2xl font-black italic tracking-[0.4em] transition-all relative overflow-hidden group/btn flex items-center justify-center gap-4",
-                        state === 'sending'
-                            ? "bg-white/5 text-slate-500 cursor-not-allowed border border-white/10"
-                            : "bg-neon-pink text-black hover:bg-white hover:shadow-[0_0_50px_rgba(255,0,255,0.4)]"
-                    )}
+                        setFieldErrors({});
+                        handleSubmit(formData);
+                    }}
+                    className="relative z-10 p-6 md:p-12 space-y-12"
                 >
-                    <div className="relative z-10 flex items-center justify-center gap-3">
-                        {state === 'sending' ? (
-                            <>
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                                <span className="uppercase text-xs">Transmitting...</span>
-                            </>
-                        ) : (
-                            <>
-                                <span className="uppercase text-sm">{t('form.submit')}</span>
-                                <Send className="w-5 h-5 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-                            </>
-                        )}
+                    {/* HEADER */}
+                    <div className="flex items-end gap-4 mb-4 border-b border-white/5 pb-8">
+                        <div className="w-16 h-16 bg-neon-cyan/10 rounded-lg border border-neon-cyan/30 flex items-center justify-center relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-neon-cyan/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                            <Send className="w-8 h-8 text-neon-cyan group-hover:scale-110 transition-transform duration-300 relative z-10" />
+                        </div>
+                        <div>
+                            <h3 className="text-2xl md:text-3xl font-black text-white uppercase tracking-wider italic">
+                                Transmit <span className="text-neon-cyan">Signal</span>
+                            </h3>
+                            <p className="text-xs font-mono text-slate-400 tracking-widest mt-1">
+                                DIRECT_NEURAL_INTERFACE_READY
+                            </p>
+                        </div>
                     </div>
-                </button>
-            </form>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* NAME INPUT */}
+                        <div className="space-y-2 group">
+                            <div className="flex justify-between items-baseline">
+                                <label className={labelClasses}>01 // IDENTITY</label>
+                                {fieldErrors.name && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">//! REQUIRED</span>}
+                            </div>
+                            <div className={cn(
+                                "relative h-16 bg-black/40 border transition-all duration-300 rounded-lg overflow-hidden group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]",
+                                fieldErrors.name ? "border-red-500/50" : "border-white/10 group-focus-within:border-neon-cyan/50"
+                            )}>
+                                <div className="absolute left-0 top-0 bottom-0 w-14 flex items-center justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
+                                    <User className={cn("w-6 h-6 transition-colors", fieldErrors.name ? "text-red-400" : "text-slate-500 group-focus-within:text-neon-cyan")} />
+                                </div>
+                                <input
+                                    name="name"
+                                    placeholder={t('form.namePlaceholder')}
+                                    className={inputClasses}
+                                    onChange={() => setFieldErrors(prev => ({ ...prev, name: false }))}
+                                />
+                                {/* Corner Accents */}
+                                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/20 group-focus-within:border-neon-cyan transition-colors" />
+                                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/20 group-focus-within:border-neon-cyan transition-colors" />
+                            </div>
+                        </div>
+
+                        {/* EMAIL INPUT */}
+                        <div className="space-y-2 group">
+                            <div className="flex justify-between items-baseline">
+                                <label className={labelClasses}>02 // FREQUENCY (EMAIL)</label>
+                                {fieldErrors.email && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">//! REQUIRED</span>}
+                            </div>
+                            <div className={cn(
+                                "relative h-16 bg-black/40 border transition-all duration-300 rounded-lg overflow-hidden group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]",
+                                fieldErrors.email ? "border-red-500/50" : "border-white/10 group-focus-within:border-neon-cyan/50"
+                            )}>
+                                <div className="absolute left-0 top-0 bottom-0 w-14 flex items-center justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
+                                    <Mail className={cn("w-6 h-6 transition-colors", fieldErrors.email ? "text-red-400" : "text-slate-500 group-focus-within:text-neon-cyan")} />
+                                </div>
+                                <input
+                                    name="email"
+                                    type="email"
+                                    placeholder={t('form.emailPlaceholder')}
+                                    className={inputClasses}
+                                    onChange={() => setFieldErrors(prev => ({ ...prev, email: false }))}
+                                />
+                                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/20 group-focus-within:border-neon-cyan transition-colors" />
+                                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/20 group-focus-within:border-neon-cyan transition-colors" />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* COMPANY INPUT */}
+                    <div className="space-y-2 group">
+                        <label className={labelClasses}>03 // AFFILIATION (OPTIONAL)</label>
+                        <div className="relative h-16 bg-black/40 border border-white/10 transition-all duration-300 rounded-lg overflow-hidden group-focus-within:border-neon-cyan/50 group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]">
+                            <div className="absolute left-0 top-0 bottom-0 w-14 flex items-center justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
+                                <Building className="w-6 h-6 text-slate-500 group-focus-within:text-neon-cyan transition-colors" />
+                            </div>
+                            <input
+                                name="company"
+                                placeholder={t('form.companyPlaceholder')}
+                                className={inputClasses}
+                            />
+                            <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/20 group-focus-within:border-neon-cyan transition-colors" />
+                            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/20 group-focus-within:border-neon-cyan transition-colors" />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                        <CyberSelect
+                            key={`project-${resetKey}`}
+                            name="projectType"
+                            label="04 // MISSION_TYPE"
+                            placeholder={t('form.projectTypePlaceholder')}
+                            options={[
+                                { label: t('projectTypes.cloud'), value: 'cloud' },
+                                { label: t('projectTypes.fullstack'), value: 'fullstack' },
+                                { label: t('projectTypes.security'), value: 'security' },
+                                { label: t('projectTypes.iot'), value: 'iot' },
+                                { label: t('projectTypes.consulting'), value: 'consulting' },
+                                { label: t('projectTypes.other'), value: 'other' }
+                            ]}
+                        />
+                        <CyberSelect
+                            key={`budget-${resetKey}`}
+                            name="budget"
+                            label="05 // RESOURCES"
+                            placeholder={t('form.budgetPlaceholder')}
+                            options={[
+                                { label: t('budgets.small'), value: 'small' },
+                                { label: t('budgets.medium'), value: 'medium' },
+                                { label: t('budgets.large'), value: 'large' },
+                                { label: t('budgets.xlarge'), value: 'xlarge' },
+                                { label: t('budgets.enterprise'), value: 'enterprise' },
+                                { label: t('budgets.discuss'), value: 'discuss' }
+                            ]}
+                        />
+                        <CyberSelect
+                            key={`timeline-${resetKey}`}
+                            name="timeline"
+                            label="06 // TIMELINE"
+                            placeholder={t('form.timelinePlaceholder')}
+                            options={[
+                                { label: t('timelines.urgent'), value: 'urgent' },
+                                { label: t('timelines.short'), value: 'short' },
+                                { label: t('timelines.medium'), value: 'medium' },
+                                { label: t('timelines.long'), value: 'long' },
+                                { label: t('timelines.flexible'), value: 'flexible' }
+                            ]}
+                        />
+                    </div>
+
+                    {/* MESSAGE INPUT */}
+                    <div className="space-y-2 group">
+                        <div className="flex justify-between items-baseline">
+                            <label className={labelClasses}>07 // PAYLOAD (MESSAGE)</label>
+                            {fieldErrors.message && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">//! REQUIRED</span>}
+                        </div>
+                        <div className={cn(
+                            "relative bg-black/40 border transition-all duration-300 rounded-lg overflow-hidden group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]",
+                            fieldErrors.message ? "border-red-500/50" : "border-white/10 group-focus-within:border-neon-cyan/50"
+                        )}>
+                            <div className="absolute left-0 top-0 w-14 h-full flex pt-5 justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
+                                <MessageSquare className={cn("w-6 h-6 transition-colors", fieldErrors.message ? "text-red-400" : "text-slate-500 group-focus-within:text-neon-cyan")} />
+                            </div>
+                            <textarea
+                                name="message"
+                                rows={6}
+                                placeholder={t('form.messagePlaceholder')}
+                                className={cn(inputClasses, "resize-none")}
+                                onChange={() => setFieldErrors(prev => ({ ...prev, message: false }))}
+                            />
+                            {/* Corner Accents */}
+                            <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/20 group-focus-within:border-neon-cyan transition-colors" />
+                            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/20 group-focus-within:border-neon-cyan transition-colors" />
+                            <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/20 group-focus-within:border-neon-cyan transition-colors" />
+                        </div>
+                    </div>
+
+                    <ContactSubmissionOverlay
+                        status={state}
+                        onClose={() => setState('idle')}
+                    />
+
+                    <AnimatePresence>
+                        {state === 'error' && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="bg-red-500/10 border border-red-500/50 rounded-xl p-4 flex items-center gap-3"
+                            >
+                                <AlertTriangle className="w-5 h-5 text-red-500 shrink-0" />
+                                <p className="text-red-500 text-xs font-mono uppercase tracking-wider">{errorMessage}</p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* SUBMIT BUTTON */}
+                    <button
+                        type="submit"
+                        disabled={state === 'sending'}
+                        className="w-full group relative py-6 overflow-hidden rounded-xl bg-transparent border border-neon-cyan/50 hover:bg-neon-cyan/5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <div className="absolute inset-0 bg-neon-cyan/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+
+                        {/* Button Scanline */}
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-30 pointer-events-none">
+                            <div className="absolute top-0 left-0 w-full h-[1px] bg-neon-cyan shadow-[0_0_10px_#00f3ff] animate-[scan_2s_ease-in-out_infinite]" />
+                        </div>
+
+                        <div className="relative z-10 flex items-center justify-center gap-4">
+                            {state === 'sending' ? (
+                                <>
+                                    <Loader2 className="w-5 h-5 animate-spin text-neon-cyan" />
+                                    <span className="font-mono text-neon-cyan text-xs uppercase tracking-[0.3em] animate-pulse">Encoding...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="font-black italic text-white uppercase tracking-[0.4em] group-hover:tracking-[0.6em] transition-all duration-300 group-hover:text-neon-cyan">
+                                        {t('form.submit')}
+                                    </span>
+                                    <Send className="w-5 h-5 text-neon-cyan group-hover:translate-x-2 group-hover:-translate-y-1 transition-transform duration-300" />
+                                </>
+                            )}
+                        </div>
+
+                        {/* Button Corners */}
+                        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-neon-cyan" />
+                        <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-neon-cyan" />
+                    </button>
+                </form>
+            </GlassPanel>
         </motion.div>
     );
 }

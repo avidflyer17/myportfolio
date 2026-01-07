@@ -305,8 +305,18 @@ export async function sendContactEmail(formData: FormData) {
     }
 }
 
+interface AIContactData {
+    name: string;
+    email: string;
+    company?: string;
+    projectType?: string;
+    budget?: string;
+    timeline?: string;
+    message: string;
+}
+
 // AI Contact flow
-export async function sendContactEmailJSON(data: any) {
+export async function sendContactEmailJSON(data: AIContactData) {
     const limiter = await checkRateLimit();
     if (!limiter.allowed) {
         return { success: false, error: "Too many requests. Please try again later." };

@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from 'next-intl';
+import { useRef, Suspense, useState } from "react";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Sphere, PerspectiveCamera, useTexture, PerformanceMonitor } from "@react-three/drei";
@@ -135,9 +136,7 @@ function ResponsiveGroup({ children }: { children: React.ReactNode }) {
     );
 }
 
-import { useRef, Suspense, useState } from "react";
 
-// ... existing code ...
 
 export function HeroSection() {
     const t = useTranslations('hero');
@@ -149,7 +148,7 @@ export function HeroSection() {
             {/* 3D Background */}
             <div className="absolute inset-0 z-0 fixed md:absolute">
                 <Canvas
-                    dpr={[1, 2]}
+                    dpr={dpr}
                     gl={{
                         powerPreference: "high-performance",
                         antialias: true,

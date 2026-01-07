@@ -1,7 +1,7 @@
 "use client";
 
-import { useChat } from '@ai-sdk/react';
-import { Send, X, Terminal, Sparkles, Loader2, Minimize2, ExternalLink, Cpu } from 'lucide-react';
+
+import { Send, X, Terminal, Loader2, ExternalLink, Cpu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState, createContext, useContext } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
@@ -118,13 +118,18 @@ function ProcessingHologram() {
 }
 
 function EnergyParticles({ active }: { active: boolean }) {
-    const particles = Array.from({ length: active ? 20 : 8 }, (_, i) => ({
-        id: i,
-        delay: Math.random() * 3,
-        duration: 3 + Math.random() * 2,
-        x: Math.random() * 100,
-        size: 1 + Math.random() * 2
-    }));
+    const [particles, setParticles] = useState<{ id: number; delay: number; duration: number; x: number; size: number }[]>([]);
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setParticles(Array.from({ length: active ? 20 : 8 }, (_, i) => ({
+            id: i,
+            delay: Math.random() * 3,
+            duration: 3 + Math.random() * 2,
+            x: Math.random() * 100,
+            size: 1 + Math.random() * 2
+        })));
+    }, [active]);
 
     return (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -196,7 +201,6 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                 })
                 .catch(() => {
                     // Keep default VISITOR_UNKNOWN_XX on error
-                    console.log('Could not fetch visitor location');
                 });
         }
     }, [isOpen, visitorId]);
@@ -294,8 +298,8 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                         });
                                         assistantContent = assistantContent.replace(/```json[\s\S]*```/, 'Processing transmission request...');
                                     }
-                                } catch (e) {
-                                    console.error("JSON Parse Error", e);
+                                } catch {
+                                    // JSON Parsing Error - ignore
                                 }
                             }
                         }
@@ -439,7 +443,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                 </div>
                             ) : (
                                 <>
-                                    {messages.map((m, index) => (
+                                    {messages.map((m) => (
                                         <motion.div
                                             key={m.id}
                                             initial={{ opacity: 0, x: m.role === 'user' ? 20 : -20 }}
