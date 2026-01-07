@@ -1,21 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { notFound } from 'next/navigation';
-import "../globals.css";
-
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"],
-});
 
 export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
@@ -103,64 +89,54 @@ export default async function LocaleLayout({
         notFound();
     }
 
-    // Providing all messages to the client
-    // side is the easiest way to get started
-    const messages = await getMessages();
-
     return (
-        <html lang={locale}>
-            <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-            >
-                {/* JSON-LD Structured Data for SEO */}
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{
-                        __html: JSON.stringify({
-                            "@context": "https://schema.org",
-                            "@type": "Person",
-                            name: "Damien Schonbakler",
-                            url: "https://portfolio.damswallace.fr",
-                            jobTitle: locale === 'fr' ? "Architecte Solutions & Fullstack Developer" : "Solutions Architect & Fullstack Developer",
-                            description: locale === 'fr'
-                                ? "Expert en architecture cloud, Kubernetes, développement fullstack et domotique avancée"
-                                : "Expert in cloud architecture, Kubernetes, fullstack development and advanced home automation",
-                            image: "https://portfolio.damswallace.fr/logo.webp",
-                            sameAs: [
-                                "https://github.com/avidflyer17",
-                                "https://www.linkedin.com/in/damien-schonbakler"
-                            ],
-                            knowsAbout: [
-                                "Cloud Architecture",
-                                "Kubernetes",
-                                "React",
-                                "Node.js",
-                                "TypeScript",
-                                "Cybersecurity",
-                                "Home Automation",
-                                "IoT"
-                            ],
-                            alumniOf: {
-                                "@type": "Organization",
-                                name: "Airbus"
-                            },
-                            inLanguage: locale
-                        })
-                    }}
-                />
+        <>
+            {/* JSON-LD Structured Data for SEO */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Person",
+                        name: "Damien Schonbakler",
+                        url: "https://portfolio.damswallace.fr",
+                        jobTitle: locale === 'fr' ? "Architecte Solutions & Fullstack Developer" : "Solutions Architect & Fullstack Developer",
+                        description: locale === 'fr'
+                            ? "Expert en architecture cloud, Kubernetes, développement fullstack et domotique avancée"
+                            : "Expert in cloud architecture, Kubernetes, fullstack development and advanced home automation",
+                        image: "https://portfolio.damswallace.fr/logo.webp",
+                        sameAs: [
+                            "https://github.com/avidflyer17",
+                            "https://www.linkedin.com/in/damien-schonbakler"
+                        ],
+                        knowsAbout: [
+                            "Cloud Architecture",
+                            "Kubernetes",
+                            "React",
+                            "Node.js",
+                            "TypeScript",
+                            "Cybersecurity",
+                            "Home Automation",
+                            "IoT"
+                        ],
+                        alumniOf: {
+                            "@type": "Organization",
+                            name: "Airbus"
+                        },
+                        inLanguage: locale
+                    })
+                }}
+            />
 
-                {/* Plausible Analytics - Privacy-first, no cookies */}
-                <Script
-                    defer
-                    data-domain="portfolio.damswallace.fr"
-                    src="https://plausible.io/js/script.js"
-                    strategy="afterInteractive"
-                />
+            {/* Plausible Analytics - Privacy-first, no cookies */}
+            <Script
+                defer
+                data-domain="portfolio.damswallace.fr"
+                src="https://plausible.io/js/script.js"
+                strategy="afterInteractive"
+            />
 
-                <NextIntlClientProvider messages={messages}>
-                    {children}
-                </NextIntlClientProvider>
-            </body>
-        </html>
+            {children}
+        </>
     );
 }

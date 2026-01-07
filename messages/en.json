@@ -160,6 +160,10 @@
     "contact": {
         "title": "INITIALIZE_CONTACT",
         "subtitle": "Transmit Signal",
+        "signalStrength": "SIGNAL_RATIO: 100%",
+        "secureChannel": "Secure channel ready. Establish a neural link with the AI to discuss your project, collaboration, or encrypted payload.",
+        "triggerButton": "INITIALIZE_SIGNAL",
+        "triggerSub": "ESTABLISH_CONNECTION_V4",
         "form": {
             "name": "Name",
             "namePlaceholder": "Your full name",
@@ -252,7 +256,12 @@
         "initialMessage": "Hello. I am the Neural Architect. I can answer your questions about this site's architecture, Dams Wallace's profile, or initiate the [Contact Protocol](#contact).",
         "error": "COMMUNICATION_ERROR",
         "accessRefused": "ACCESS DENIED: Data not relevant to current operational context. Request outside Security Protocol perimeter.",
-        "contactProtocol": "INITIATE CONTACT PROTOCOL: Please use the communication terminal [Contact Section](#contact)."
+        "contactProtocol": "INITIATE CONTACT PROTOCOL: Please use the communication terminal [Contact Section](#contact).",
+        "orbTooltip": "AI_ASSISTANT",
+        "orbStatus": "ONLINE - CLICK TO INTERACT",
+        "aiOffline": "AI_INTERFACE_OFFLINE: Quota reached.",
+        "useClassicForm": "USE CLASSIC FORM",
+        "fallbackAction": "REDIRECTING TO EMERGENCY CHANNEL..."
     },
     "common": {
         "loading": "Loading...",

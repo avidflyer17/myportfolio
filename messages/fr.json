@@ -160,6 +160,10 @@
     "contact": {
         "title": "INITIALISER_CONTACT",
         "subtitle": "Transmettre Signal",
+        "signalStrength": "SIGNAL_RATIO: 100%",
+        "secureChannel": "Canal sécurisé prêt. Établissez une liaison neuronale avec l'IA pour discuter de votre projet ou collaboration.",
+        "triggerButton": "INITIALISER_SIGNAL",
+        "triggerSub": "ÉTABLIR_CONNEXION_V4",
         "form": {
             "name": "Nom",
             "namePlaceholder": "Votre nom complet",
@@ -252,7 +256,12 @@
         "initialMessage": "Bonjour. Je suis l'Architecte Neuronal. Je peux répondre à vos questions sur l'architecture de ce site, le profil de Dams Wallace, ou initier le [Protocole de Contact](#contact).",
         "error": "COMMUNICATION_ERROR",
         "accessRefused": "ACCÈS REFUSÉ : Donnée non pertinente pour le contexte opérationnel actuel. Requête hors périmètre du Protocole de Sécurité.",
-        "contactProtocol": "INITIALISER PROTOCOLE DE CONTACT : Veuillez utiliser le terminal de communication [Section Contact](#contact)."
+        "contactProtocol": "INITIALISER PROTOCOLE DE CONTACT : Veuillez utiliser le terminal de communication [Section Contact](#contact).",
+        "orbTooltip": "IA_ASSISTANT",
+        "orbStatus": "EN LIGNE - CLIQUER",
+        "aiOffline": "IA_INTERFACE_OFFLINE : Quota atteint.",
+        "useClassicForm": "UTILISER LE FORMULAIRE CLASSIQUE",
+        "fallbackAction": "REDIRECTION VERS CANAL DE SECOURS..."
     },
     "common": {
         "loading": "Chargement...",

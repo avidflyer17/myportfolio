@@ -1,11 +1,45 @@
 "use client";
 
+import { useChat } from '@ai-sdk/react';
+import { Send, X, Terminal, Sparkles, Loader2, Minimize2, ExternalLink, Cpu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Terminal, Cpu } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, createContext, useContext } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { cn } from '@/lib/utils';
+import { WarpSpeed } from '@/components/ui/warp-speed';
 
+// --- Context for Global Access ---
+interface NeuralInterfaceContextType {
+    isOpen: boolean;
+    open: () => void;
+    close: () => void;
+}
+
+const NeuralInterfaceContext = createContext<NeuralInterfaceContextType | undefined>(undefined);
+
+// Signal for external components to switch view
+export const CONTACT_VIEW_SIGNAL = 'site:switch_contact_view';
+
+export function useNeuralInterface() {
+    const context = useContext(NeuralInterfaceContext);
+    if (!context) {
+        throw new Error('useNeuralInterface must be used within a NeuralInterfaceProvider');
+    }
+    return context;
+}
+
+export function NeuralInterfaceProvider({ children }: { children: React.ReactNode }) {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <NeuralInterfaceContext.Provider value={{ isOpen, open: () => setIsOpen(true), close: () => setIsOpen(false) }}>
+            {children}
+            <NeuralInterface isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        </NeuralInterfaceContext.Provider>
+    );
+}
+
+// --- Internal Component ---
 interface NeuralInterfaceProps {
     isOpen: boolean;
     onClose: () => void;
@@ -13,11 +47,10 @@ interface NeuralInterfaceProps {
 
 interface Message {
     id: string;
-    role: 'user' | 'assistant';
+    role: 'user' | 'assistant' | 'system';
     content: string;
 }
 
-// Composant pour l'hologramme 3D pendant le traitement
 function ProcessingHologram() {
     return (
         <motion.div
@@ -84,9 +117,6 @@ function ProcessingHologram() {
     );
 }
 
-
-
-// Composant pour les particules d'énergie
 function EnergyParticles({ active }: { active: boolean }) {
     const particles = Array.from({ length: active ? 20 : 8 }, (_, i) => ({
         id: i,
@@ -142,12 +172,17 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
     const [isBooting, setIsBooting] = useState(true);
     const [visitorId, setVisitorId] = useState<string>('VISITOR_UNKNOWN_XX');
 
+    // Contact Protocol States
+    const [contactState, setContactState] = useState<'idle' | 'executing' | 'success'>('idle');
+    const [isAIUnavailable, setIsAIUnavailable] = useState(false);
+    const [isRedirecting, setIsRedirecting] = useState(false);
+
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // Auto-scroll to bottom
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+    }, [messages, contactState, error, isAIUnavailable, isRedirecting]);
 
     // Fetch visitor location and generate ID
     useEffect(() => {
@@ -219,35 +254,132 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
             setMessages(prev => [...prev, assistantMessage]);
 
             if (reader) {
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
+                try {
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
 
-                    const chunk = decoder.decode(value, { stream: true });
-                    assistantContent += chunk;
+                        const chunk = decoder.decode(value, { stream: true });
+                        assistantContent += chunk;
 
-                    setMessages(prev => {
-                        const updated = [...prev];
-                        const lastMsg = updated[updated.length - 1];
-                        if (lastMsg.role === 'assistant') {
-                            lastMsg.content = assistantContent;
+                        // CHECK FOR JSON TOOL CALL
+                        if (assistantContent.includes('```json')) {
+                            const jsonMatch = assistantContent.match(/```json\n([\s\S]*?)\n```/);
+                            if (jsonMatch) {
+                                try {
+                                    const toolCall = JSON.parse(jsonMatch[1]);
+                                    if (toolCall.tool === 'send_email') {
+                                        setContactState('executing');
+                                        import('@/app/actions').then(async ({ sendContactEmailJSON }) => {
+                                            const result = await sendContactEmailJSON(toolCall.data);
+                                            if (result.success) {
+                                                setContactState('success');
+                                                setTimeout(() => {
+                                                    onClose();
+                                                    setContactState('idle');
+                                                    setMessages(prev => [...prev, {
+                                                        id: 'sys-end',
+                                                        role: 'assistant',
+                                                        content: '[SYSTEM] Transmission confirmed. Closing connection.'
+                                                    }]);
+                                                }, 6000);
+                                            } else {
+                                                setMessages(prev => [...prev, {
+                                                    id: 'err-send',
+                                                    role: 'assistant',
+                                                    content: `[ERROR] Transmission failed: ${result.error}`
+                                                }]);
+                                                setContactState('idle');
+                                            }
+                                        });
+                                        assistantContent = assistantContent.replace(/```json[\s\S]*```/, 'Processing transmission request...');
+                                    }
+                                } catch (e) {
+                                    console.error("JSON Parse Error", e);
+                                }
+                            }
                         }
-                        return updated;
-                    });
+
+                        setMessages(prev => {
+                            const updated = [...prev];
+                            const lastMsg = updated[updated.length - 1];
+                            if (lastMsg && lastMsg.role === 'assistant') {
+                                lastMsg.content = assistantContent;
+                            }
+                            return updated;
+                        });
+                    }
+                } finally {
+                    reader.releaseLock();
                 }
             }
 
+            // Force error if we got absolutely nothing (likely silent quota fail)
+            if (!assistantContent.trim()) {
+                throw new Error("COMMUNICATION_FAILURE: Zero packets received. Quota or system limit reached.");
+            }
+
         } catch (err) {
-            console.error("Neural Interface [Submit Error]:", err);
-            setError(err instanceof Error ? err.message : 'Unknown error');
+            // Log for dev but don't let it crash the UI
+            const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+            setError(errorMessage);
+
+            // Force fallback if any error occurs
+            setIsAIUnavailable(true);
+
+            // CLEANUP: Remove empty assistant bubbles
+            setMessages(prev => prev.filter(m => {
+                if (m.role === 'assistant') return m.content.trim() !== '';
+                return true;
+            }));
         } finally {
             setIsLoading(false);
         }
     };
 
+    const handleFallbackRedirect = () => {
+        setIsRedirecting(true);
+        setTimeout(() => {
+            onClose();
+
+            // Emit signal to switch ContactSection to 'classic' view
+            window.dispatchEvent(new CustomEvent(CONTACT_VIEW_SIGNAL, { detail: 'classic' }));
+
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            setIsRedirecting(false);
+            setIsAIUnavailable(false);
+        }, 1500);
+    };
+
     return (
         <AnimatePresence>
-            {isOpen && (
+            {/* SUCCESS FULLSCREEN OVERLAY */}
+            {contactState === 'success' && (
+                <motion.div
+                    key="success-overlay"
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    <WarpSpeed active={true} />
+                    <motion.h2
+                        initial={{ opacity: 0, scale: 0.5, z: -100 }}
+                        animate={{ opacity: 1, scale: 1.5, z: 0 }}
+                        transition={{ duration: 1, type: "spring" }}
+                        className="relative z-[110] text-4xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan via-white to-neon-pink italic tracking-tighter text-center"
+                        style={{ textShadow: '0 0 50px rgba(0,243,255,0.8)' }}
+                    >
+                        {locale === 'en' ? 'TRANSMISSION SENT' : 'TRANSMISSION ENVOYÉE'}
+                    </motion.h2>
+                </motion.div>
+            )}
+
+            {isOpen && contactState !== 'success' && (
                 <motion.div
                     key="neural-backdrop"
                     initial={{ opacity: 0 }}
@@ -264,7 +396,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                         className={cn(
                             "w-full max-w-2xl h-[600px] flex flex-col bg-black/90 rounded-lg overflow-hidden font-mono relative",
                             "border-2 transition-all duration-300",
-                            isLoading
+                            (isLoading || contactState === 'executing')
                                 ? "border-neon-cyan shadow-[0_0_30px_rgba(0,243,255,0.4),0_0_60px_rgba(0,243,255,0.2),inset_0_0_30px_rgba(0,243,255,0.1)]"
                                 : "border-neon-cyan/30 shadow-[0_0_50px_rgba(0,243,255,0.15)]"
                         )}
@@ -274,25 +406,11 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                             scale: 1,
                             rotateX: 0,
                             y: 0,
-                            ...(isLoading ? {
-                                boxShadow: [
-                                    '0 0 30px rgba(0,243,255,0.4), 0 0 60px rgba(0,243,255,0.2), inset 0 0 30px rgba(0,243,255,0.1)',
-                                    '0 0 40px rgba(0,243,255,0.6), 0 0 80px rgba(0,243,255,0.3), inset 0 0 40px rgba(0,243,255,0.15)',
-                                    '0 0 30px rgba(0,243,255,0.4), 0 0 60px rgba(0,243,255,0.2), inset 0 0 30px rgba(0,243,255,0.1)',
-                                ]
-                            } : {})
                         }}
                         exit={{ opacity: 0, scale: 0.5, rotateY: 90, x: 100, boxShadow: "none" }}
-                        transition={{
-                            default: { type: "spring", stiffness: 100, damping: 15, duration: 0.6 },
-                            opacity: { duration: 0.4 },
-                            boxShadow: { duration: 2, repeat: isLoading ? Infinity : 0, ease: "easeInOut" }
-                        }}
                     >
-
-
                         {/* Energy Particles */}
-                        <EnergyParticles active={isLoading} />
+                        <EnergyParticles active={isLoading || contactState === 'executing'} />
 
                         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5 bg-[size:20px_20px] pointer-events-none" />
 
@@ -302,23 +420,9 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                 <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
                                 <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50" />
                                 <div className="h-4 w-[1px] bg-white/10 mx-2" />
-                                <motion.span
-                                    className="text-neon-cyan text-xs tracking-widest flex items-center gap-2"
-                                    animate={{
-                                        textShadow: [
-                                            '0 0 10px rgba(0,243,255,0.8)',
-                                            '0 0 20px rgba(0,243,255,1), 2px 0 5px rgba(255,0,255,0.5)',
-                                            '0 0 10px rgba(0,243,255,0.8)'
-                                        ]
-                                    }}
-                                    transition={{
-                                        duration: 0.15,
-                                        repeat: Infinity,
-                                        repeatDelay: 4
-                                    }}
-                                >
+                                <motion.span className="text-neon-cyan text-xs tracking-widest flex items-center gap-2">
                                     <Terminal size={12} />
-                                    {t('title')}
+                                    {contactState === 'executing' ? 'TRANSMITTING...' : t('title')}
                                 </motion.span>
                             </div>
                             <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
@@ -335,7 +439,6 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                 </div>
                             ) : (
                                 <>
-
                                     {messages.map((m, index) => (
                                         <motion.div
                                             key={m.id}
@@ -352,39 +455,48 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                                 {m.role === 'user' ? visitorId : t('title')}
                                             </span>
                                             <div className="whitespace-pre-wrap leading-relaxed">
-                                                {m.content.split(/(\[[^\]]+\]\(#[^)]+\))/g).map((part, i) => {
-                                                    const match = part.match(/\[([^\]]+)\]\(#([^)]+)\)/);
-                                                    if (match) {
-                                                        const [_, text, id] = match;
-                                                        return (
-                                                            <button
-                                                                key={i}
-                                                                onClick={() => {
-                                                                    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                                                    onClose();
-                                                                }}
-                                                                className="text-neon-cyan hover:underline hover:text-white font-bold cursor-pointer inline-flex items-center gap-1"
-                                                            >
-                                                                {text}
-                                                                <span className="text-[10px] opacity-70">↗</span>
-                                                            </button>
-                                                        );
-                                                    }
-                                                    return part;
-                                                })}
+                                                {m.content}
                                             </div>
                                         </motion.div>
                                     ))}
 
-                                    {isLoading && <ProcessingHologram />}
+                                    {(isLoading || contactState === 'executing') && <ProcessingHologram />}
 
                                     {error && (
                                         <motion.div
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
-                                            className="self-center text-red-500 text-[10px] animate-pulse p-2 border border-red-500/30 bg-red-500/5 rounded"
+                                            className="self-center w-full mt-4"
                                         >
-                                            {t('error')}: {error}
+                                            <div className="text-red-500 text-[10px] animate-pulse p-2 border border-red-500/30 bg-red-500/5 rounded text-center">
+                                                {t('error')}: {error}
+                                            </div>
+                                        </motion.div>
+                                    )}
+
+                                    {isAIUnavailable && (
+                                        <motion.div
+                                            initial={{ y: 20, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            className="self-center w-full max-w-md mx-auto p-6 border border-neon-cyan/30 bg-neon-cyan/5 rounded-2xl text-center space-y-4 mt-8"
+                                        >
+                                            <p className="text-neon-cyan text-xs font-bold tracking-widest uppercase">
+                                                {isRedirecting ? t('fallbackAction') : t('aiOffline')}
+                                            </p>
+                                            <button
+                                                onClick={handleFallbackRedirect}
+                                                disabled={isRedirecting}
+                                                className="w-full py-4 bg-neon-cyan text-black font-black text-xs tracking-[0.2em] rounded-xl border-2 border-neon-cyan hover:bg-transparent hover:text-neon-cyan transition-all duration-300 flex items-center justify-center gap-2 group"
+                                            >
+                                                {isRedirecting ? (
+                                                    <Loader2 size={16} className="animate-spin" />
+                                                ) : (
+                                                    <>
+                                                        {t('useClassicForm')}
+                                                        <ExternalLink size={14} className="group-hover:translate-x-1 transition-transform" />
+                                                    </>
+                                                )}
+                                            </button>
                                         </motion.div>
                                     )}
                                 </>
@@ -399,18 +511,16 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                     className="w-full bg-black/50 border border-white/10 rounded px-8 py-3 text-white focus:outline-none focus:border-neon-cyan/50 font-mono text-base md:text-sm placeholder:text-slate-600 focus:shadow-[0_0_15px_rgba(0,243,255,0.1)] transition-all"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
-                                    placeholder={isBooting ? t('initializing') : t('inputPlaceholder')}
-                                    disabled={isBooting}
+                                    placeholder={contactState === 'executing' ? "TRANSMITTING DATA..." : (isBooting ? t('initializing') : t('inputPlaceholder'))}
+                                    disabled={isBooting || contactState === 'executing'}
                                     autoFocus
                                 />
-                                <button type="submit" disabled={isLoading || isBooting || !input.trim()} className="absolute right-2 p-1.5 text-neon-cyan hover:text-white disabled:opacity-30 transition-colors">
+                                <button type="submit" disabled={isLoading || isBooting || !input.trim() || contactState === 'executing'} className="absolute right-2 p-1.5 text-neon-cyan hover:text-white disabled:opacity-30 transition-colors">
                                     <Send size={16} />
                                 </button>
                             </div>
                         </form>
                     </motion.div>
-
-
                 </motion.div>
             )}
         </AnimatePresence>

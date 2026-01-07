@@ -1,196 +1,173 @@
 "use client";
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { Cpu, MessageCircle } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from "react";
+import { useFrame } from "@react-three/fiber";
+import { Float, Sphere, MeshDistortMaterial, Html } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { motion, AnimatePresence } from "framer-motion";
+import { Bot, Sparkles } from "lucide-react";
+import { NeuralInterface, useNeuralInterface } from "@/components/features/neural-interface";
+import { useTranslations } from 'next-intl';
+import * as THREE from 'three';
 
-interface FloatingAIOrbProps {
-    onClick: () => void;
-}
 
-export function FloatingAIOrb({ onClick }: FloatingAIOrbProps) {
-    const [showWelcome, setShowWelcome] = useState(false);
-    const [isHovering, setIsHovering] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
+function CyberOrb({ isHovered, onClick }: { isHovered: boolean; onClick: () => void }) {
+    const meshRef = useRef<any>(null);
+    const nodesRef = useRef<any>(null);
+    const wireRef = useRef<any>(null);
+    const outerRef = useRef<any>(null);
+    const groupRef = useRef<any>(null);
 
-    useEffect(() => {
-        setIsMobile(window.innerWidth < 768);
-    }, []);
+    // Spring-like scale animation
+    const springScale = useRef(1.1);
 
-    // Show welcome message after 3 seconds
-    useEffect(() => {
-        const timer = setTimeout(() => setShowWelcome(true), 3000);
-        const hideTimer = setTimeout(() => setShowWelcome(false), 8000);
+    useFrame((state) => {
+        const t = state.clock.getElapsedTime();
 
-        return () => {
-            clearTimeout(timer);
-            clearTimeout(hideTimer);
-        };
-    }, []);
+        // Target scale based on hover
+        const targetScale = isHovered ? 1.4 : 1.1;
+        // Smooth interpolation (lerp)
+        springScale.current += (targetScale - springScale.current) * 0.1;
 
-    // Hide welcome on first scroll
-    useEffect(() => {
-        const handleScroll = () => setShowWelcome(false);
-        window.addEventListener('scroll', handleScroll, { once: true });
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+        if (groupRef.current) {
+            groupRef.current.scale.setScalar(springScale.current);
+        }
 
-    // Orbital particles
-    const particles = [
-        { angle: 0, delay: 0, radius: 35 },
-        { angle: 120, delay: 0.5, radius: 40 },
-        { angle: 240, delay: 1, radius: 38 }
-    ];
+        if (meshRef.current) meshRef.current.rotation.y = t * 0.2;
+        if (nodesRef.current) {
+            nodesRef.current.rotation.y = t * 0.4;
+            nodesRef.current.scale.setScalar(1 + Math.sin(t * 2) * 0.04);
+        }
+        if (wireRef.current) {
+            wireRef.current.rotation.y = t * 0.4;
+            wireRef.current.rotation.x = t * 0.1;
+        }
+        if (outerRef.current) {
+            outerRef.current.rotation.y = -t * 0.2;
+        }
+    });
+
+    const themeColor = isHovered ? "#00f3ff" : "#ff00ff";
 
     return (
-        <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[100] pointer-events-none">
-            {/* Welcome Tooltip */}
+        <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+            <group ref={groupRef} onClick={onClick}>
+                {/* 1. Synaptic Nodes */}
+                <points ref={nodesRef}>
+                    <icosahedronGeometry args={[1, 3]} />
+                    <pointsMaterial
+                        color={themeColor}
+                        size={0.035}
+                        transparent
+                        opacity={0.9}
+                        sizeAttenuation
+                        blending={THREE.AdditiveBlending}
+                    />
+                </points>
+
+                {/* 2. Primary Neural Shell */}
+                <mesh ref={wireRef}>
+                    <icosahedronGeometry args={[1, 3]} />
+                    <meshBasicMaterial
+                        color={themeColor}
+                        wireframe
+                        transparent
+                        opacity={0.3}
+                        blending={THREE.AdditiveBlending}
+                    />
+                </mesh>
+
+                {/* 3. Outer Aura Shell (Slow) */}
+                <mesh ref={outerRef} scale={1.2}>
+                    <icosahedronGeometry args={[1, 1]} />
+                    <meshBasicMaterial
+                        color={themeColor}
+                        wireframe
+                        transparent
+                        opacity={0.1}
+                    />
+                </mesh>
+
+                {/* 4. Core Singularity */}
+                <mesh ref={meshRef}>
+                    <sphereGeometry args={[0.25, 32, 32]} />
+                    <meshStandardMaterial
+                        color={themeColor}
+                        emissive={themeColor}
+                        emissiveIntensity={1.5}
+                        metalness={1}
+                        roughness={0}
+                        toneMapped={false}
+                    />
+                </mesh>
+            </group>
+        </Float>
+    );
+}
+
+export function FloatingAIOrb() {
+    const [isHovered, setIsHovered] = useState(false);
+    const { isOpen, open } = useNeuralInterface();
+    const t = useTranslations('neuralInterface');
+
+    // Reset hover state when the orb re-appears to prevent it being stuck "white/hover"
+    useEffect(() => {
+        if (!isOpen) {
+            setIsHovered(false);
+        }
+    }, [isOpen]);
+
+    if (isOpen) return null;
+
+    return (
+        <div className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-50 w-32 h-32 md:w-56 md:h-56">
+            {/* Minimalist Tooltip */}
             <AnimatePresence>
-                {showWelcome && !isMobile && (
+                {!isOpen && !isHovered && (
                     <motion.div
-                        initial={{ opacity: 0, x: 20, scale: 0.9 }}
-                        animate={{ opacity: 1, x: 0, scale: 1 }}
-                        exit={{ opacity: 0, x: 20, scale: 0.9 }}
-                        className="absolute bottom-20 right-0 bg-black/90 backdrop-blur-xl border border-neon-cyan/30 rounded-lg p-3 pr-4 pointer-events-none shadow-[0_0_30px_rgba(0,243,255,0.3)]"
-                        style={{ width: '200px' }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ delay: 3 }}
+                        onAnimationComplete={() => {
+                            setTimeout(() => {
+                                const el = document.getElementById('orb-tooltip');
+                                if (el) el.style.opacity = '0';
+                            }, 10000);
+                        }}
+                        id="orb-tooltip"
+                        className="absolute bottom-[75%] right-8 mb-4 pointer-events-none transition-opacity duration-1000"
                     >
-                        <div className="flex items-start gap-2">
-                            <MessageCircle className="w-4 h-4 text-neon-cyan flex-shrink-0 mt-0.5" />
-                            <p className="text-xs text-slate-300 font-mono leading-relaxed">
-                                💬 <span className="text-neon-cyan">Besoin d'aide ?</span> Je suis là !
-                            </p>
+                        <div className="bg-black/90 border border-neon-cyan/40 p-2 font-mono rounded shadow-[0_0_20px_rgba(0,243,255,0.2)]">
+                            <div className="flex items-center gap-2 mb-1 border-b border-neon-cyan/20 pb-1">
+                                <div className="w-1.5 h-1.5 bg-neon-cyan rounded-full animate-pulse" />
+                                <span className="text-[9px] text-neon-cyan uppercase tracking-tighter">System_Active</span>
+                            </div>
+                            <div className="text-white text-[11px] font-bold">
+                                {t('orbTooltip')}
+                            </div>
+                            <div className="text-[9px] text-neon-cyan/60 mt-0.5">
+                                {'>'} {t('orbStatus')}
+                            </div>
                         </div>
-                        {/* Arrow */}
-                        <div className="absolute -bottom-2 right-8 w-4 h-4 bg-black/90 border-r border-b border-neon-cyan/30 rotate-45" />
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* Main Orb Container */}
-            <div className="relative pointer-events-auto">
-                {/* Orbital Particles - Hide on Mobile to reduce complex layers */}
-                {!isMobile && particles.map((p, i) => (
-                    <motion.div
-                        key={i}
-                        className="absolute"
-                        animate={{
-                            rotate: 360
-                        }}
-                        transition={{
-                            duration: 8,
-                            repeat: Infinity,
-                            ease: "linear",
-                            delay: p.delay
-                        }}
-                        style={{
-                            left: '50%',
-                            top: '50%',
-                            marginLeft: -1,
-                            marginTop: -1
-                        }}
-                    >
-                        <div
-                            className="w-1.5 h-1.5 rounded-full"
-                            style={{
-                                background: i % 2 === 0 ? '#00f3ff' : '#ff00ff',
-                                boxShadow: `0 0 8px currentColor`,
-                                transform: `translateX(${p.radius}px)`
-                            }}
-                        />
-                    </motion.div>
-                ))}
+            <div
+                className="w-full h-full cursor-pointer relative flex items-center justify-center translate-x-4 translate-y-4 md:translate-x-12 md:translate-y-12"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                onClick={open}
+            >
+                {/* Glow Backdrop */}
+                <div className={`absolute inset-16 rounded-full blur-3xl transition-all duration-1000 ${isHovered ? 'bg-neon-cyan/20' : 'bg-neon-pink/10'}`} />
 
-                {/* Main Orb */}
-                <motion.button
-                    onClick={onClick}
-                    onHoverStart={() => !isMobile && setIsHovering(true)}
-                    onHoverEnd={() => !isMobile && setIsHovering(false)}
-                    className="relative w-14 h-14 md:w-16 md:h-16 rounded-full cursor-pointer group border-2 border-neon-cyan/30 overflow-hidden"
-                    animate={isMobile ? {
-                        scale: [1, 1.05, 1],
-                        boxShadow: '0 0 20px rgba(0,243,255,0.4)'
-                    } : {
-                        scale: isHovering ? [1, 1.05, 1] : [1, 1.08, 1],
-                        boxShadow: isHovering
-                            ? [
-                                '0 0 30px rgba(0,243,255,0.8)',
-                                '0 0 50px rgba(0,243,255,1), 0 0 30px rgba(255,0,255,0.5)',
-                                '0 0 30px rgba(0,243,255,0.8)'
-                            ]
-                            : [
-                                '0 0 20px rgba(0,243,255,0.6)',
-                                '0 0 35px rgba(0,243,255,0.8)',
-                                '0 0 20px rgba(0,243,255,0.6)'
-                            ]
-                    }}
-                    transition={{
-                        duration: isMobile ? 3 : (isHovering ? 1 : 2),
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                    whileTap={{ scale: 0.9 }}
-                    aria-label="Ouvrir l'assistant IA"
-                >
-                    {/* Gradient Background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/20 via-neon-pink/20 to-neon-cyan/20 group-hover:from-neon-cyan/30 group-hover:via-neon-pink/30 group-hover:to-neon-cyan/30 transition-all duration-300" />
-
-                    {/* Rotating Gradient Overlay */}
-                    <motion.div
-                        className="absolute inset-0 bg-gradient-to-br from-transparent via-neon-cyan/20 to-transparent"
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                    />
-
-                    {/* Icon */}
-                    <div className="relative flex items-center justify-center w-full h-full">
-                        <motion.div
-                            animate={(!isMobile && isHovering) ? {
-                                rotate: [0, 5, -5, 0],
-                                scale: [1, 1.1, 1]
-                            } : {}}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <Cpu
-                                className="w-6 h-6 md:w-7 md:h-7 text-neon-cyan"
-                                style={{
-                                    filter: 'drop-shadow(0 0 8px rgba(0,243,255,0.8))'
-                                }}
-                            />
-                        </motion.div>
-                    </div>
-
-                    {/* Pulse Ring */}
-                    <motion.div
-                        className="absolute inset-0 rounded-full border-2 border-neon-cyan"
-                        animate={{
-                            scale: [1, 1.5],
-                            opacity: [0.5, 0]
-                        }}
-                        transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            ease: "easeOut"
-                        }}
-                    />
-                </motion.button>
-
-                {/* Hover Tooltip */}
-                <AnimatePresence>
-                    {isHovering && !isMobile && (
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                            className="absolute bottom-full right-0 mb-3 bg-black/90 backdrop-blur-xl border border-neon-cyan/30 rounded px-3 py-1.5 whitespace-nowrap pointer-events-none"
-                        >
-                            <p className="text-xs text-neon-cyan font-mono tracking-wide">
-                                Architecte Neuronal
-                            </p>
-                            {/* Arrow */}
-                            <div className="absolute -bottom-1.5 right-6 w-3 h-3 bg-black/90 border-r border-b border-neon-cyan/30 rotate-45" />
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                <Canvas camera={{ position: [0, 0, 5], fov: 45 }} gl={{ alpha: true }}>
+                    <ambientLight intensity={0.5} />
+                    <pointLight position={[5, 5, 5]} intensity={3} color={isHovered ? "#00f3ff" : "#ff00ff"} />
+                    <CyberOrb isHovered={isHovered} onClick={open} />
+                </Canvas>
             </div>
         </div>
     );

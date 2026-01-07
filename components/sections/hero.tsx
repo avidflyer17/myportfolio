@@ -135,20 +135,17 @@ function ResponsiveGroup({ children }: { children: React.ReactNode }) {
     );
 }
 
-import { NeuralInterface } from "@/components/features/neural-interface";
-import { FloatingAIOrb } from "@/components/features/floating-ai-orb";
-import { useState, useRef, Suspense } from "react";
+import { useRef, Suspense, useState } from "react";
 
 // ... existing code ...
 
 export function HeroSection() {
     const t = useTranslations('hero');
-    const [isNeuralInterfaceOpen, setIsNeuralInterfaceOpen] = useState(false);
     const [dpr, setDpr] = useState(1.5); // Default to reasonable quality
 
     return (
         <section className="relative min-h-screen md:h-screen w-full flex flex-col items-center justify-center overflow-x-hidden md:overflow-hidden bg-transparent py-24 md:py-0">
-            <NeuralInterface isOpen={isNeuralInterfaceOpen} onClose={() => setIsNeuralInterfaceOpen(false)} />
+
             {/* 3D Background */}
             <div className="absolute inset-0 z-0 fixed md:absolute">
                 <Canvas
@@ -406,8 +403,7 @@ export function HeroSection() {
                 </div>
             </div>
 
-            {/* Floating AI Assistant */}
-            <FloatingAIOrb onClick={() => setIsNeuralInterfaceOpen(prev => !prev)} />
+
 
             {/* Bottom Fade Transition */}
             <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black via-black/80 to-transparent z-20 pointer-events-none" />
