@@ -242,7 +242,13 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorData = await response.json().catch(() => ({}));
+                const isQuota = response.status === 429 || errorData.status === 429 || errorData.error?.includes('quota');
+
+                if (isQuota) {
+                    throw new Error("QUOTA_EXHAUSTED: Le service d'IA a atteint sa limite journalière.");
+                }
+                throw new Error(errorData.message || errorData.error || `HTTP error! status: ${response.status}`);
             }
 
             const reader = response.body?.getReader();
@@ -331,6 +337,13 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
             // Force fallback if any error occurs
             setIsAIUnavailable(true);
 
+            // AUTO-REDIRECT after 3 seconds if it's a quota error
+            if (errorMessage.includes('QUOTA') || errorMessage.includes('429')) {
+                setTimeout(() => {
+                    handleFallbackRedirect();
+                }, 3000);
+            }
+
             // CLEANUP: Remove empty assistant bubbles
             setMessages(prev => prev.filter(m => {
                 if (m.role === 'assistant') return m.content.trim() !== '';
@@ -343,6 +356,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
 
     const handleFallbackRedirect = () => {
         setIsRedirecting(true);
+        // Ensure error and state are visible before redirecting
         setTimeout(() => {
             onClose();
 
@@ -354,9 +368,13 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                 contactSection.scrollIntoView({ behavior: 'smooth' });
             }
 
-            setIsRedirecting(false);
-            setIsAIUnavailable(false);
-        }, 1500);
+            // Reset states for next open
+            setTimeout(() => {
+                setIsRedirecting(false);
+                setIsAIUnavailable(false);
+                setError(null);
+            }, 1000);
+        }, 2000);
     };
 
     return (

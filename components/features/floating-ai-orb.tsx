@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
@@ -109,13 +109,18 @@ export function FloatingAIOrb() {
     const { isOpen, open } = useNeuralInterface();
     const t = useTranslations('neuralInterface');
 
-    // Reset hover state when the orb re-appears to prevent it being stuck "white/hover"
-
-
-    if (isOpen) return null;
+    // Reset hover state when the chat opens/closes to prevent it being stuck in a highlight state
+    useEffect(() => {
+        if (isOpen) {
+            setIsHovered(false);
+        }
+    }, [isOpen]);
 
     return (
-        <div className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-50 w-32 h-32 md:w-56 md:h-56">
+        <div
+            className={`fixed bottom-6 right-6 md:bottom-10 md:right-10 z-50 w-32 h-32 md:w-56 md:h-56 transition-all duration-500 ${isOpen ? 'opacity-0 scale-0 pointer-events-none' : 'opacity-100 scale-100'
+                }`}
+        >
             {/* Minimalist Tooltip */}
             <AnimatePresence>
                 {!isOpen && !isHovered && (
@@ -153,7 +158,10 @@ export function FloatingAIOrb() {
                 className="w-full h-full cursor-pointer relative flex items-center justify-center translate-x-4 translate-y-4 md:translate-x-12 md:translate-y-12"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                onClick={open}
+                onClick={() => {
+                    setIsHovered(false);
+                    open();
+                }}
             >
                 {/* Glow Backdrop */}
                 <div className={`absolute inset-16 rounded-full blur-3xl transition-all duration-1000 ${isHovered ? 'bg-neon-cyan/20' : 'bg-neon-pink/10'}`} />

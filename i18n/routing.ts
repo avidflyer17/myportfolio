@@ -9,7 +9,7 @@ export const routing = defineRouting({
     defaultLocale: 'fr',
 
     // Locale detection strategy
-    localePrefix: 'as-needed' // French will have no prefix, English will have /en
+    localePrefix: 'always' // Each locale will have its own prefix (/fr, /en)
 });
 
 // Lightweight wrappers around Next.js' navigation APIs

@@ -12,20 +12,18 @@ export function LanguageSwitcher() {
     const pathname = usePathname();
     const [isHovered, setIsHovered] = useState(false);
 
-    const toggleLocale = () => {
-        const nextLocale = locale === 'fr' ? 'en' : 'fr';
-        router.replace(pathname, { locale: nextLocale });
+    const switchLocale = (newLocale: 'fr' | 'en') => {
+        if (newLocale === locale) return;
+        // console.log(`Switching locale to: ${newLocale} for path: ${pathname}`);
+        router.replace(pathname, { locale: newLocale });
     };
 
     return (
-        <motion.button
-            onClick={toggleLocale}
+        <motion.div
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className="relative inline-flex items-center gap-2 px-4 py-2 bg-black/50 border border-white/10 rounded-lg hover:border-neon-cyan/50 transition-all duration-300 backdrop-blur-md group"
             whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(0,243,255,0.3)' }}
-            whileTap={{ scale: 0.95 }}
-            aria-label="Switch language"
         >
             {/* Icon */}
             <Globe
@@ -34,24 +32,26 @@ export function LanguageSwitcher() {
             />
 
             {/* Language Codes */}
-            <div className="flex items-center gap-2 font-mono text-xs tracking-wider">
-                <span
-                    className={`transition-all duration-300 ${locale === 'fr'
-                            ? 'text-neon-cyan font-bold scale-110'
-                            : 'text-white/50'
+            <div className="flex items-center gap-2 font-mono text-xs tracking-wider relative z-20">
+                <button
+                    onClick={() => switchLocale('fr')}
+                    className={`transition-all duration-300 hover:text-white pulse-subtle ${locale === 'fr'
+                        ? 'text-neon-cyan font-bold scale-110'
+                        : 'text-white/50'
                         }`}
                 >
                     FR
-                </span>
+                </button>
                 <span className="text-white/30">|</span>
-                <span
-                    className={`transition-all duration-300 ${locale === 'en'
-                            ? 'text-neon-cyan font-bold scale-110'
-                            : 'text-white/50'
+                <button
+                    onClick={() => switchLocale('en')}
+                    className={`transition-all duration-300 hover:text-white pulse-subtle ${locale === 'en'
+                        ? 'text-neon-cyan font-bold scale-110'
+                        : 'text-white/50'
                         }`}
                 >
                     EN
-                </span>
+                </button>
             </div>
 
             {/* Glow Effect */}
@@ -70,6 +70,6 @@ export function LanguageSwitcher() {
             {/* Corner Accents */}
             <div className="absolute top-0 left-0 w-1.5 h-1.5 border-t border-l border-neon-cyan/0 group-hover:border-neon-cyan transition-colors" />
             <div className="absolute bottom-0 right-0 w-1.5 h-1.5 border-b border-r border-neon-cyan/0 group-hover:border-neon-cyan transition-colors" />
-        </motion.button>
+        </motion.div>
     );
 }

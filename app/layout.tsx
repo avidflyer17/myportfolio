@@ -2,10 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import "./globals.css";
-import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
-import { NeuralInterfaceProvider } from "@/components/features/neural-interface";
-import { FloatingAIOrb } from "@/components/features/floating-ai-orb";
 
 export const metadata: Metadata = {
   title: "DamienS | Architecte Solutions & Fullstack",
@@ -28,32 +24,19 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-import { GlitchOverlay } from "@/components/ui/glitch-overlay";
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = await getLocale();
-  const messages = await getMessages();
-
+  // This is the root layout that wraps all localized routes.
+  // It shouldn't contain localized logic as it's outside the [locale] segment.
   return (
-    <html lang={locale}>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} antialiased bg-black text-white overflow-x-hidden`}
       >
-        <GlitchOverlay />
-        <NextIntlClientProvider messages={messages}>
-          <NeuralInterfaceProvider>
-            {/* Scanline Effect Overlay */}
-            <div className="scanlines fixed inset-0 pointer-events-none z-[100] opacity-30 mix-blend-overlay"></div>
-            <div className="vignette fixed inset-0 pointer-events-none z-[90]"></div>
-
-            {children}
-            <FloatingAIOrb />
-          </NeuralInterfaceProvider>
-        </NextIntlClientProvider>
+        {children}
       </body>
     </html>
   );
