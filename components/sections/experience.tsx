@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from "react";
 import { extractDataFromPDF, ExtractedData } from "@/lib/data-extractor";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -8,6 +9,7 @@ import { GlassPanel } from "@/components/ui/glass-panel";
 import { Activity, Briefcase, Calendar, Hash, Terminal } from "lucide-react";
 
 export function ExperienceSection() {
+    const t = useTranslations('experience');
     const [data, setData] = useState<ExtractedData | null>(null);
     const [loading, setLoading] = useState(true);
     const { scrollYProgress } = useScroll();
@@ -32,7 +34,7 @@ export function ExperienceSection() {
                 <div className="flex flex-col items-center gap-4">
                     <div className="w-16 h-16 border-4 border-neon-cyan border-t-transparent rounded-full animate-spin" />
                     <div className="text-neon-cyan font-mono animate-pulse tracking-widest">
-                        DECRYPTING_CAREER_DATA...
+                        {t('decryptingData')}
                     </div>
                 </div>
             </section>
@@ -61,11 +63,10 @@ export function ExperienceSection() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                 >
-                    Career_Logs
+                    {t('careerLogs')}
                 </motion.h2>
                 <div className="font-mono text-neon-pink/60 mt-2 text-sm tracking-widest">
-                    {/* EXECUTION_HISTORY */}
-                    &gt; EXECUTION_HISTORY
+                    &gt; {t('executionHistory')}
                 </div>
             </div>
 
@@ -113,23 +114,23 @@ export function ExperienceSection() {
                                         <div>
                                             <div className="flex items-center gap-2 text-neon-cyan mb-1">
                                                 <Terminal className="w-4 h-4" />
-                                                <span className="font-mono text-xs">{job.company.toUpperCase()}</span>
+                                                <span className="font-mono text-xs">{t(job.companyKey).toUpperCase()}</span>
                                             </div>
                                             <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-neon-cyan transition-colors">
-                                                {job.title}
+                                                {t(job.titleKey)}
                                             </h3>
                                         </div>
 
                                         <div className="flex items-center gap-2 bg-black/30 px-3 py-1 rounded border border-white/10 font-mono text-xs text-neon-pink whitespace-nowrap">
                                             <Calendar className="w-3 h-3" />
-                                            {job.period}
+                                            {t(job.periodKey)}
                                         </div>
                                     </div>
 
                                     {/* Body */}
                                     <div className="p-6 md:p-8">
                                         <p className="text-slate-300 leading-relaxed mb-8 font-light border-l-2 border-white/10 pl-4">
-                                            {job.description}
+                                            {t(job.descriptionKey)}
                                         </p>
 
                                         <div className="flex flex-wrap gap-3">

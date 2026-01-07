@@ -1,23 +1,6 @@
-import { HeroSection } from "@/components/sections/hero";
-import { ExperienceSection } from "@/components/sections/experience";
-import { ArchitectureSection } from "@/components/sections/architecture";
-import { ContactSection } from "@/components/sections/contact";
-import { ProjectsSection } from "@/components/sections/projects";
-import { FooterSection } from "@/components/sections/footer";
-import { StarBackground } from "@/components/ui/star-background";
+import { redirect } from 'next/navigation';
 
-export default function Home() {
-  return (
-    <main className="min-h-screen bg-black text-white selection:bg-neon-pink selection:text-white relative">
-      <StarBackground />
-      <div className="relative z-10">
-        <HeroSection />
-        <ProjectsSection />
-        <ArchitectureSection />
-        <ExperienceSection />
-        <ContactSection />
-        <FooterSection />
-      </div>
-    </main>
-  );
+// This page only renders when the app is built statically (output: 'export')
+export default function RootPage() {
+  redirect('/');
 }

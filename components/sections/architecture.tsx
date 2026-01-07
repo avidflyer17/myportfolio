@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from 'next-intl';
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { motion } from "framer-motion";
 import { Server, Database, Shield, Cpu, Cloud, Terminal, Layers, Hash, Github, FileText, ArrowUpRight } from "lucide-react";
@@ -8,6 +9,8 @@ import { CityMap } from "@/components/canvas/city-map";
 import { OrbitControls } from "@react-three/drei";
 
 export function ArchitectureSection() {
+    const t = useTranslations('architecture');
+
     return (
         <section id="architecture" className="py-24 relative overflow-hidden w-full min-h-screen flex flex-col justify-center">
             {/* Smooth Transition Gradient (Fade in/out to blend with stars) */}
@@ -50,12 +53,12 @@ export function ArchitectureSection() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                     >
-                        CORE_ARCHITECTURE
+                        {t('coreArchitecture')}
                     </motion.h2>
                     <div className="flex items-center gap-4 mt-6">
                         <div className="h-px w-24 bg-gradient-to-r from-transparent to-neon-pink/50" />
                         <div className="text-neon-pink font-mono text-sm tracking-[0.3em] font-bold uppercase">
-                            Scalable Experience Design
+                            {t('scalableDesign')}
                         </div>
                         <div className="h-px w-24 bg-gradient-to-l from-transparent to-neon-pink/50" />
                     </div>
@@ -114,34 +117,34 @@ export function ArchitectureSection() {
                     <div className="flex flex-col gap-6 justify-center relative z-10">
                         <GlassPanel intensity="low" className="p-6 border-l-4 border-l-neon-cyan border-y-0 border-r-0 rounded-none bg-gradient-to-r from-neon-cyan/5 to-transparent hover:from-neon-cyan/10 transition-all group">
                             <div className="flex justify-between items-center mb-4">
-                                <span className="text-xs font-mono text-neon-cyan group-hover:text-white transition-colors tracking-widest">CLOUD_NATIVE</span>
+                                <span className="text-xs font-mono text-neon-cyan group-hover:text-white transition-colors tracking-widest">{t('cloudNative.label')}</span>
                                 <Cloud className="w-5 h-5 text-neon-cyan group-hover:text-white transition-colors" />
                             </div>
-                            <div className="text-2xl font-bold text-white mb-2">Docker & K8s</div>
+                            <div className="text-2xl font-bold text-white mb-2">{t('cloudNative.title')}</div>
                             <div className="text-sm text-slate-400 font-mono leading-relaxed">
-                                Advanced container orchestration and microservices architecture.
+                                {t('cloudNative.description')}
                             </div>
                         </GlassPanel>
 
                         <GlassPanel intensity="low" className="p-6 border-l-4 border-l-neon-pink border-y-0 border-r-0 rounded-none bg-gradient-to-r from-neon-pink/5 to-transparent hover:from-neon-pink/10 transition-all group">
                             <div className="flex justify-between items-center mb-4">
-                                <span className="text-xs font-mono text-neon-pink group-hover:text-white transition-colors tracking-widest">INFRASTRUCTURE</span>
+                                <span className="text-xs font-mono text-neon-pink group-hover:text-white transition-colors tracking-widest">{t('infrastructure.label')}</span>
                                 <Server className="w-5 h-5 text-neon-pink animate-pulse" />
                             </div>
-                            <div className="text-2xl font-bold text-white mb-2">Ansible & Linux</div>
+                            <div className="text-2xl font-bold text-white mb-2">{t('infrastructure.title')}</div>
                             <div className="text-sm text-slate-400 font-mono leading-relaxed">
-                                Automated provisioning and system hardening for mission-critical environments.
+                                {t('infrastructure.description')}
                             </div>
                         </GlassPanel>
 
                         <GlassPanel intensity="low" className="p-6 border-l-4 border-l-purple-500 border-y-0 border-r-0 rounded-none bg-gradient-to-r from-purple-500/5 to-transparent hover:from-purple-500/10 transition-all group">
                             <div className="flex justify-between items-center mb-4">
-                                <span className="text-xs font-mono text-purple-400 group-hover:text-white transition-colors tracking-widest">OBSERVABILITY</span>
+                                <span className="text-xs font-mono text-purple-400 group-hover:text-white transition-colors tracking-widest">{t('observability.label')}</span>
                                 <Database className="w-5 h-5 text-purple-400" />
                             </div>
-                            <div className="text-2xl font-bold text-white mb-2">Grafana Stack</div>
+                            <div className="text-2xl font-bold text-white mb-2">{t('observability.title')}</div>
                             <div className="text-sm text-slate-400 font-mono leading-relaxed">
-                                Full-stack monitoring with Prometheus, Loki, and Promtail.
+                                {t('observability.description')}
                             </div>
                         </GlassPanel>
                     </div>
@@ -169,11 +172,11 @@ export function ArchitectureSection() {
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-neon-cyan"></span>
                             </span>
-                            LIVE_TOPOLOGY_VIEW
+                            {t('liveTopology')}
                         </div>
 
                         <div className="absolute bottom-8 right-8 text-right">
-                            <div className="text-xs font-mono text-slate-500 mb-1">UPTIME</div>
+                            <div className="text-xs font-mono text-slate-500 mb-1">{t('uptime')}</div>
                             <div className="text-2xl font-bold text-white font-mono">99.99<span className="text-neon-pink">%</span></div>
                         </div>
                     </div>
@@ -184,23 +187,23 @@ export function ArchitectureSection() {
                         <GlassPanel intensity="low" className="p-6 border-r-4 border-r-neon-cyan border-y-0 border-l-0 rounded-none bg-gradient-to-l from-neon-cyan/5 to-transparent hover:from-neon-cyan/10 transition-all group">
                             <div className="flex items-center gap-3 mb-6 text-slate-300 border-b border-white/10 pb-4">
                                 <Layers className="w-5 h-5 text-neon-cyan" />
-                                <span className="font-mono text-sm font-bold tracking-widest text-white group-hover:text-neon-cyan transition-colors">FULLSTACK_OVERVIEW</span>
+                                <span className="font-mono text-sm font-bold tracking-widest text-white group-hover:text-neon-cyan transition-colors">{t('fullstack.label')}</span>
                             </div>
                             <div className="space-y-4 font-mono text-xs">
                                 <div className="flex justify-between items-center p-2 hover:bg-white/5 rounded transition-colors group/item">
-                                    <span className="text-slate-400 group-hover/item:text-white">Frontend</span>
+                                    <span className="text-slate-400 group-hover/item:text-white">{t('fullstack.frontend')}</span>
                                     <span className="text-neon-cyan">Next.js 15</span>
                                 </div>
                                 <div className="flex justify-between items-center p-2 hover:bg-white/5 rounded transition-colors group/item">
-                                    <span className="text-slate-400 group-hover/item:text-white">Styling</span>
+                                    <span className="text-slate-400 group-hover/item:text-white">{t('fullstack.styling')}</span>
                                     <span className="text-neon-pink">Tailwind v4</span>
                                 </div>
                                 <div className="flex justify-between items-center p-2 hover:bg-white/5 rounded transition-colors group/item">
-                                    <span className="text-slate-400 group-hover/item:text-white">Visuals</span>
+                                    <span className="text-slate-400 group-hover/item:text-white">{t('fullstack.visuals')}</span>
                                     <span className="text-white">Three.js R3F</span>
                                 </div>
                                 <div className="flex justify-between items-center p-2 hover:bg-white/5 rounded transition-colors group/item">
-                                    <span className="text-slate-400 group-hover/item:text-white">Security</span>
+                                    <span className="text-slate-400 group-hover/item:text-white">{t('fullstack.security')}</span>
                                     <span className="text-green-400">OWASP Hardened</span>
                                 </div>
                             </div>
@@ -227,18 +230,18 @@ export function ArchitectureSection() {
 
                                 <div className="relative z-10">
                                     <div className="flex justify-between items-start mb-2">
-                                        <div className="text-[10px] font-mono text-slate-500 group-hover:text-neon-cyan transition-colors">SOURCE_CODE</div>
+                                        <div className="text-[10px] font-mono text-slate-500 group-hover:text-neon-cyan transition-colors">{t('sourceCode')}</div>
                                         <ArrowUpRight className="w-3 h-3 text-slate-600 group-hover:text-neon-cyan group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                                     </div>
 
                                     <div className="text-white font-bold flex items-center gap-3 mb-1">
                                         <Github className="w-5 h-5 text-neon-cyan" />
-                                        <span className="tracking-wide">GIT_REPOS</span>
+                                        <span className="tracking-wide">{t('gitRepos')}</span>
                                     </div>
 
                                     <div className="font-mono text-[10px] text-neon-cyan/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
                                         <span className="w-1.5 h-1.5 bg-neon-cyan rounded-full animate-pulse" />
-                                        // 12 ACTIVE REPOS
+                                        // {t('activeRepos')}
                                     </div>
                                 </div>
                             </a>
@@ -263,18 +266,18 @@ export function ArchitectureSection() {
 
                                 <div className="relative z-10">
                                     <div className="flex justify-between items-start mb-2">
-                                        <div className="text-[10px] font-mono text-slate-500 group-hover:text-neon-pink transition-colors">SYSTEM_DATA</div>
+                                        <div className="text-[10px] font-mono text-slate-500 group-hover:text-neon-pink transition-colors">{t('systemData')}</div>
                                         <ArrowUpRight className="w-3 h-3 text-slate-600 group-hover:text-neon-pink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                                     </div>
 
                                     <div className="text-white font-bold flex items-center gap-3 mb-1">
                                         <FileText className="w-5 h-5 text-neon-pink" />
-                                        <span className="tracking-wide">DATA_EXTRACTION</span>
+                                        <span className="tracking-wide">{t('dataExtraction')}</span>
                                     </div>
 
                                     <div className="font-mono text-[10px] text-neon-pink/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
                                         <span className="animate-[spin_1s_linear_infinite]">⟳</span>
-                                        &gt;&gt; INITIATING DOWNLOAD...
+                                        {t('downloadInitiate')}
                                     </div>
                                 </div>
                             </a>

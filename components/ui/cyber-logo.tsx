@@ -27,7 +27,7 @@ export function CyberLogo() {
                 {/* Main Logo Image */}
                 <div className="relative z-10 w-full h-full overflow-hidden p-2">
                     <Image
-                        src="/logo.png"
+                        src="/logo.webp"
                         alt="Logo"
                         fill
                         className="object-contain drop-shadow-[0_0_15px_rgba(0,243,255,0.5)]"

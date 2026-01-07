@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from 'next-intl';
+
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Sphere, PerspectiveCamera, useTexture } from "@react-three/drei";
 import { motion } from "framer-motion";
@@ -12,14 +14,14 @@ import { TypewriterText } from "@/components/ui/typewriter-text";
 import { CardTilt } from "@/components/ui/card-tilt";
 
 function FloatingLogo() {
-    // Load all 6 face textures
+    // Load all 6 face textures (optimized WebP format)
     const textures = useTexture([
-        "/cube-faces/database.png",    // Face 0 (right/droite +X)
-        "/cube-faces/cloud.png",       // Face 1 (left/gauche -X)
-        "/cube-faces/ai.png",          // Face 2 (top/haut +Y)
-        "/cube-faces/security.png",    // Face 3 (bottom/bas -Y)
-        "/cube-faces/react.png",       // Face 4 (front/avant +Z)
-        "/cube-faces/kubernetes.png"   // Face 5 (back/arrière -Z)
+        "/cube-faces/database.webp",    // Face 0 (right/droite +X)
+        "/cube-faces/cloud.webp",       // Face 1 (left/gauche -X)
+        "/cube-faces/ai.webp",          // Face 2 (top/haut +Y)
+        "/cube-faces/security.webp",    // Face 3 (bottom/bas -Y)
+        "/cube-faces/react.webp",       // Face 4 (front/avant +Z)
+        "/cube-faces/kubernetes.webp"   // Face 5 (back/arrière -Z)
     ]);
 
     const meshRef = useRef<THREE.Mesh>(null!);
@@ -138,6 +140,7 @@ import { useState, useRef, Suspense } from "react";
 // ... existing code ...
 
 export function HeroSection() {
+    const t = useTranslations('hero');
     const [isNeuralInterfaceOpen, setIsNeuralInterfaceOpen] = useState(false);
 
     return (
@@ -183,7 +186,7 @@ export function HeroSection() {
                         transition={{ delay: 0.3 }}
                     >
                         <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse" />
-                        <span className="text-xs font-mono text-neon-cyan tracking-[0.2em]">NEURAL_LINK_ESTABLISHED</span>
+                        <span className="text-xs font-mono text-neon-cyan tracking-[0.2em]">{t('statusBadge')}</span>
                     </motion.div>
 
                     <motion.div
@@ -192,9 +195,9 @@ export function HeroSection() {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.4, type: "spring", stiffness: 50 }}
                     >
-                        <GlitchText text="DAMIEN" className="mr-0 md:mr-8" />
+                        <GlitchText text={t('title.firstName')} className="mr-0 md:mr-8" />
                         <GlitchText
-                            text="SCHONBAKLER"
+                            text={t('title.lastName')}
                             textClassName="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-white"
                         />
                     </motion.div>
@@ -207,7 +210,7 @@ export function HeroSection() {
                     >
                         <span className="text-neon-pink hidden md:inline">&lt;</span>
                         <span className="tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-                            <TypewriterText text="Architecte Solutions" delay={0.8} />
+                            <TypewriterText text={t('subtitle')} delay={0.8} />
                         </span>
                         <span className="text-neon-pink hidden md:inline">/&gt;</span>
                     </motion.div>
@@ -243,21 +246,19 @@ export function HeroSection() {
                                     <div className="flex justify-between items-start mb-4">
                                         <h3 className="text-sm font-mono text-neon-cyan flex items-center gap-2">
                                             <Code2 className="w-4 h-4" />
-                                            MISSION_PROFILE
+                                            {t('missionProfile.title')}
                                         </h3>
                                         <div className="flex items-center gap-2 px-2 py-1 rounded bg-green-500/10 border border-green-500/20">
                                             <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]" />
-                                            <span className="text-[10px] font-mono text-green-500 tracking-wider">OPERATIONAL</span>
+                                            <span className="text-[10px] font-mono text-green-500 tracking-wider">{t('missionProfile.status')}</span>
                                         </div>
                                     </div>
 
                                     <div className="space-y-4">
-                                        <p className="text-white text-lg leading-relaxed">
-                                            Conception d&apos;architectures <span className="text-neon-cyan font-semibold">distribuées</span> et d&apos;interfaces <span className="text-neon-cyan font-semibold">immersives</span> pour le web de demain.
-                                        </p>
+                                        <p className="text-white text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: t.raw('missionProfile.description').replace(/<highlight>/g, '<span class="text-neon-cyan font-semibold">').replace(/<\/highlight>/g, '</span>') }} />
                                         <div className="relative">
                                             <p className="text-slate-300 text-sm font-mono border-l-2 border-neon-cyan/40 pl-3 italic bg-neon-cyan/5 py-2 rounded-r">
-                                                &quot;Je ne me contente pas d&apos;écrire du code, je conçois des systèmes.&quot;
+                                                {t('missionProfile.quote')}
                                                 <motion.span
                                                     className="inline-block ml-1 text-neon-cyan"
                                                     animate={{ opacity: [1, 0, 1] }}
@@ -272,7 +273,7 @@ export function HeroSection() {
 
                                 <div className="flex gap-4 mt-10">
                                     <motion.button
-                                        aria-label="Initialiser la navigation vers l'architecture"
+                                        aria-label={t('buttons.initializeAriaLabel')}
                                         onClick={() => document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' })}
                                         className="relative flex-1 py-4 bg-neon-cyan text-black font-bold tracking-widest uppercase rounded overflow-hidden flex items-center justify-center gap-2 group/btn"
                                         whileHover={{ scale: 1.02 }}
@@ -285,14 +286,14 @@ export function HeroSection() {
                                             transition={{ duration: 0.6 }}
                                         />
                                         <Zap className="w-4 h-4 relative z-10" />
-                                        <span className="relative z-10">Initialize</span>
+                                        <span className="relative z-10">{t('buttons.initialize')}</span>
                                     </motion.button>
                                     <button
-                                        aria-label="Voir l'historique de carrière"
+                                        aria-label={t('buttons.logsAriaLabel')}
                                         onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
                                         className="flex-1 py-4 bg-white/5 border border-white/10 text-white hover:border-neon-pink hover:text-neon-pink transition-all font-bold tracking-widest uppercase rounded backdrop-blur-md hover:bg-white/10"
                                     >
-                                        Logs
+                                        {t('buttons.logs')}
                                     </button>
                                 </div>
 
@@ -328,41 +329,41 @@ export function HeroSection() {
 
                                 <h3 className="text-sm font-mono text-neon-pink mb-4 flex items-center gap-2">
                                     <Terminal className="w-4 h-4" />
-                                    SYSTEM_METRICS
+                                    {t('systemMetrics.title')}
                                 </h3>
 
                                 <div className="space-y-3 font-mono text-xs">
                                     <div className="flex items-center justify-between text-slate-300 hover:text-white transition-colors">
                                         <span className="flex items-center gap-2">
                                             <div className="w-1.5 h-1.5 bg-neon-cyan rounded-full shadow-[0_0_6px_#00f3ff]" />
-                                            NEXT.JS_KERNEL
+                                            {t('systemMetrics.nextjs')}
                                         </span>
-                                        <span className="text-neon-cyan">[LOADED]</span>
+                                        <span className="text-neon-cyan">{t('systemMetrics.loaded')}</span>
                                     </div>
                                     <div className="flex items-center justify-between text-slate-300 hover:text-white transition-colors">
                                         <span className="flex items-center gap-2">
                                             <div className="w-1.5 h-1.5 bg-neon-cyan rounded-full shadow-[0_0_6px_#00f3ff]" />
-                                            REACT_CORE
+                                            {t('systemMetrics.react')}
                                         </span>
-                                        <span className="text-neon-cyan">[LOADED]</span>
+                                        <span className="text-neon-cyan">{t('systemMetrics.loaded')}</span>
                                     </div>
                                     <div className="flex items-center justify-between text-slate-300">
                                         <span className="flex items-center gap-2">
                                             <div className="w-1.5 h-1.5 bg-neon-pink rounded-full animate-pulse shadow-[0_0_8px_#ff00ff]" />
-                                            AI_MODULES
+                                            {t('systemMetrics.ai')}
                                         </span>
-                                        <span className="text-neon-pink">[GEMINI-3-FLASH]</span>
+                                        <span className="text-neon-pink">{t('systemMetrics.gemini')}</span>
                                     </div>
                                     <div className="flex items-center justify-between text-slate-300 hover:text-white transition-colors">
                                         <span className="flex items-center gap-2">
                                             <div className="w-1.5 h-1.5 bg-blue-500 rounded-full shadow-[0_0_6px_#3b82f6]" />
-                                            TYPESCRIPT
+                                            {t('systemMetrics.typescript')}
                                         </span>
-                                        <span className="text-blue-500">[STRICT]</span>
+                                        <span className="text-blue-500">{t('systemMetrics.strict')}</span>
                                     </div>
                                     <div className="mt-4 pt-4 border-t border-white/5 flex justify-between items-center text-slate-400">
-                                        <span>AVAILABILITY</span>
-                                        <span className="bg-green-500/20 text-green-400 px-2 py-0.5 rounded text-[10px] border border-green-500/30 shadow-[0_0_10px_rgba(34,197,94,0.3)]">OPEN_FOR_WORK</span>
+                                        <span>{t('systemMetrics.availability')}</span>
+                                        <span className="bg-green-500/20 text-green-400 px-2 py-0.5 rounded text-[10px] border border-green-500/30 shadow-[0_0_10px_rgba(34,197,94,0.3)]">{t('systemMetrics.openForWork')}</span>
                                     </div>
                                 </div>
 
@@ -372,14 +373,14 @@ export function HeroSection() {
                                             <div className="w-2 h-2 bg-green-500 rounded-full animate-ping absolute inset-0" />
                                             <div className="w-2 h-2 bg-green-500 rounded-full relative shadow-[0_0_10px_#22c55e]" />
                                         </div>
-                                        <div className="text-xs font-mono text-slate-300">20+ YRS_EXP</div>
+                                        <div className="text-xs font-mono text-slate-300">{t('systemMetrics.experience')}</div>
                                     </div>
                                     <div className="bg-white/5 border border-white/10 p-3 rounded flex items-center gap-3 hover:bg-white/10 hover:border-cyan-400/30 transition-all">
                                         <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
-                                        <div className="text-xs font-mono text-slate-300">ROCHEFORT_FR</div>
+                                        <div className="text-xs font-mono text-slate-300">{t('systemMetrics.location')}</div>
                                     </div>
                                 </div>
 

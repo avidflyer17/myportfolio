@@ -1,0 +1,57 @@
+---
+title: "Building a Cyberpunk UI with Three.js and React"
+description: "Découvrez comment créer une interface utilisateur cyberpunk immersive en utilisant Three.js, React Three Fiber, et des effets visuels avancés."
+date: "2026-01-07"
+tags: ["React", "Three.js", "UI/UX", "Cyberpunk"]
+author: "Damien Schonbakler"
+---
+
+Dans ce guide, je vais vous montrer comment j'ai créé l'interface cyberpunk de mon portfolio en utilisant **React Three Fiber**, **Framer Motion**, et des techniques avancées de shading.
+
+## Introduction
+
+L'esthétique cyberpunk se caractérise par des néons vifs, des effets de glitch, et une atmosphère futuriste. Pour mon portfolio, j'ai voulu créer une expérience immersive qui reflète ces principes tout en restant performante.
+
+## Technologies Utilisées
+
+- **React Three Fiber** : Pour le rendu 3D dans React
+- **@react-three/drei** : Helpers et composants utilitaires
+- **Framer Motion** : Pour les animations fluides
+- **Tailwind CSS v4** : Styling moderne et efficace
+
+## Le Cube 3D Rotatif
+
+L'élément central de ma page hero est un cube 3D avec des textures différentes sur chaque face.
+
+### Points Clés
+
+1. **Optimisation** : Utilisation de WebP au lieu de PNG pour réduire la taille de 74%
+2. **Emissive Material** : Pour créer l'effet de néon lumineux
+3. **Animation Smooth** : Rotation constante avec un léger mouvement de tilt
+
+## Effets Visuels
+
+### Spotlight au Curseur
+
+Un effet de spotlight qui suit le curseur de la souris crée une interaction immersive avec l'utilisateur. L'effet utilise un gradient radial centré sur la position du curseur.
+
+### Scanline Effect
+
+Pour l'effet de scanline rétro, j'utilise un gradient CSS répétitif qui s'anime verticalement sur toute la hauteur de la page.
+
+## Performance
+
+Pour maintenir 60fps constant :
+
+- **Lazy loading** des textures 3D
+- **Service Worker** pour le cache des assets
+- **WebP** pour réduire la taille des images de 74%
+- **Tailwind CSS** compilé pour un CSS minimal
+
+Les textures 3D passent de 3.6MB à seulement 800KB grâce à l'optimisation WebP.
+
+## Conclusion
+
+Créer une interface cyberpunk performante requiert un équilibre entre esthétique et optimisation. En utilisant les bonnes technologies et techniques, vous pouvez créer des expériences visuelles impressionnantes sans sacrifier la performance.
+
+**Code source complet** : Disponible sur GitHub

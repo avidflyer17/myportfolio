@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from 'next-intl';
 import { motion } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { Lock, Server, Database, Cloud, Shield, Wifi } from "lucide-react";
@@ -7,36 +8,45 @@ import { Lock, Server, Database, Cloud, Shield, Wifi } from "lucide-react";
 const PROJECTS = [
     {
         id: 1,
-        title: "K8s_ORCHESTRATOR",
-        subtitle: "Infrastructure Scalable",
-        description: "Déploiement d'un cluster Kubernetes haute disponibilité multi-région pour une charge critique. Automatisation GitOps complète.",
+        titleKey: "items.k8s.title",
+        subtitleKey: "items.k8s.subtitle",
+        descriptionKey: "items.k8s.description",
         tech: ["Kubernetes", "Terraform", "ArgoCD", "AWS"],
         status: "CLASSIFIED",
         icon: Cloud
     },
     {
         id: 2,
-        title: "SECURE_GATEWAY_V2",
-        subtitle: "Larme de Cybersécurité",
-        description: "Passerelle API durcie avec authentification mutuelle (mTLS) et analyse de trafic en temps réel pour l'IoT industriel.",
+        titleKey: "items.gateway.title",
+        subtitleKey: "items.gateway.subtitle",
+        descriptionKey: "items.gateway.description",
         tech: ["Node.js", "Redis", "Vault", "WAF"],
         status: "RESTRICTED",
         icon: Shield
     },
     {
         id: 3,
-        title: "DATA_LAKE_CORE",
-        subtitle: "Big Data Processing",
-        description: "Pipeline ETL temps réel traitant 5To+ de données télémétriques par jour. Architecture Event-Driven.",
+        titleKey: "items.dataLake.title",
+        subtitleKey: "items.dataLake.subtitle",
+        descriptionKey: "items.dataLake.description",
         tech: ["Kafka", "Spark", "PostgreSQL", "Python"],
         status: "PRIVATE",
         icon: Database
     },
     {
         id: 4,
-        title: "DOMOTIC_NEXUS",
-        subtitle: "Smart Environment Orchestration",
-        description: "Infrastructure domotique conteneurisée gérant 50+ IoTs (Zigbee/Thread). Monitoring énergétique (InfluxDB) et automations critiques via Node-RED.",
+        titleKey: "items.borsalino.title",
+        subtitleKey: "items.borsalino.subtitle",
+        descriptionKey: "items.borsalino.description",
+        tech: ["Next.js", "PostgreSQL", "Prisma", "TypeScript"],
+        status: "PRODUCTION",
+        icon: Server
+    },
+    {
+        id: 5,
+        titleKey: "items.domotic.title",
+        subtitleKey: "items.domotic.subtitle",
+        descriptionKey: "items.domotic.description",
         tech: ["Home Assistant", "Docker", "Zigbee", "InfluxDB"],
         status: "R&D_LAB",
         icon: Wifi
@@ -44,6 +54,8 @@ const PROJECTS = [
 ];
 
 export function ProjectsSection() {
+    const t = useTranslations('projects');
+
     return (
         <section id="projects" className="py-32 relative overflow-hidden container mx-auto px-4">
 
@@ -57,12 +69,12 @@ export function ProjectsSection() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                 >
-                    STRATEGIC<br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-pink to-purple-500">INITIATIVES</span>
+                    {t('strategic')}<br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-pink to-purple-500">{t('initiatives')}</span>
                 </motion.h2>
                 <div className="mt-2 text-sm font-mono text-neon-pink/60 flex items-center gap-2">
                     <Lock className="w-3 h-3" />
-                    <span>ACCESS_LEVEL: TOP_SECRET // AUTHORIZED_PERSONNEL_ONLY</span>
+                    <span>{t('accessLevel')}</span>
                 </div>
             </div>
 
@@ -104,13 +116,13 @@ export function ProjectsSection() {
                                 {/* Content */}
                                 <div className="flex-1">
                                     <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-neon-cyan transition-all duration-500 font-mono tracking-tight group-hover:tracking-wide">
-                                        {project.title}
+                                        {t(project.titleKey)}
                                     </h3>
                                     <div className="text-xs text-neon-pink font-mono mb-4 uppercase tracking-widest group-hover:tracking-[0.3em] transition-all duration-500">
-                                        {project.subtitle}
+                                        {t(project.subtitleKey)}
                                     </div>
                                     <p className="text-slate-400 group-hover:text-slate-300 text-sm leading-relaxed mb-6 transition-colors duration-500">
-                                        {project.description}
+                                        {t(project.descriptionKey)}
                                     </p>
                                 </div>
 
@@ -129,11 +141,11 @@ export function ProjectsSection() {
                                     </div>
 
                                     <button
-                                        aria-label={`Voir l'architecture du projet ${project.title}`}
+                                        aria-label={`Voir l'architecture du projet ${t(project.titleKey)}`}
                                         className="w-full py-2 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-white group-hover:bg-neon-cyan/10 transition-all duration-500 border border-dashed border-white/10 group-hover:border-neon-cyan/50 rounded group-hover:shadow-[0_0_15px_rgba(6,182,212,0.2)]"
                                     >
                                         <Server className="w-3 h-3 group-hover:animate-pulse" />
-                                        Architecture View
+                                        {t('architectureView')}
                                     </button>
                                 </div>
                             </div>

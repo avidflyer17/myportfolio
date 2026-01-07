@@ -1,7 +1,9 @@
 "use client";
 
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { Github, Linkedin } from 'lucide-react';
+import { LanguageSwitcher } from '@/components/ui/language-switcher';
 
 const VisitorMap = dynamic(() => import('@/components/ui/visitor-map').then(mod => mod.VisitorMap), {
     ssr: false,
@@ -16,6 +18,8 @@ const VisitorMap = dynamic(() => import('@/components/ui/visitor-map').then(mod 
 });
 
 export function FooterSection() {
+    const t = useTranslations('footer.globalPresence');
+
     return (
         <footer className="w-full py-10 bg-black/90 border-t border-neon-cyan/20 relative overflow-hidden">
             {/* Background Grid */}
@@ -27,22 +31,21 @@ export function FooterSection() {
                     <div className="space-y-4">
                         <h3 className="text-2xl font-bold font-mono text-white">
                             <span className="text-neon-pink">&lt;</span>
-                            GLOBAL_PRESENCE
+                            {t('title')}
                             <span className="text-neon-pink">/&gt;</span>
                         </h3>
                         <p className="text-gray-400 max-w-md">
-                            Monitoring global connection nodes. Real-time visitor analytics active.
-                            Visualizing active endpoints.
+                            {t('description')}
                         </p>
 
                         <div className="flex gap-4 text-sm font-mono text-neon-cyan opacity-80">
                             <div className="flex items-center gap-2">
                                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                SYSTEM NORMAL
+                                {t('systemNormal')}
                             </div>
                             <div className="flex items-center gap-2">
                                 <span className="w-2 h-2 bg-neon-pink rounded-full animate-pulse"></span>
-                                ENCRYPTION ACTIVE
+                                {t('encryptionActive')}
                             </div>
                         </div>
                     </div>
@@ -54,8 +57,12 @@ export function FooterSection() {
 
                 <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-gray-500 text-sm font-mono">
-                        © {new Date().getFullYear()} Damien Schonbakler. All systems operational.
+                        © {new Date().getFullYear()} Damien Schonbakler. {t('copyright')}
                     </p>
+
+                    {/* Language Switcher */}
+                    <LanguageSwitcher />
+
                     <div className="flex gap-6 text-gray-500 text-sm">
                         <a href="https://github.com/avidflyer17" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-neon-cyan transition-colors group">
                             <Github className="w-4 h-4 group-hover:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)] transition-all" />

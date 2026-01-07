@@ -1,0 +1,206 @@
+{
+    "hero": {
+        "statusBadge": "NEURAL_LINK_ESTABLISHED",
+        "title": {
+            "firstName": "DAMIEN",
+            "lastName": "SCHONBAKLER"
+        },
+        "subtitle": "Solutions Architect",
+        "missionProfile": {
+            "title": "MISSION_PROFILE",
+            "status": "OPERATIONAL",
+            "description": "Designing <highlight>distributed</highlight> architectures and <highlight>immersive</highlight> interfaces for tomorrow's web.",
+            "quote": "\"I don't just write code, I design systems.\""
+        },
+        "buttons": {
+            "initialize": "Initialize",
+            "initializeAriaLabel": "Navigate to architecture section",
+            "logs": "Logs",
+            "logsAriaLabel": "View career history"
+        },
+        "systemMetrics": {
+            "title": "SYSTEM_METRICS",
+            "nextjs": "NEXT.JS_KERNEL",
+            "react": "REACT_CORE",
+            "ai": "AI_MODULES",
+            "typescript": "TYPESCRIPT",
+            "availability": "AVAILABILITY",
+            "openForWork": "OPEN_FOR_WORK",
+            "loaded": "[LOADED]",
+            "gemini": "[GEMINI-3-FLASH]",
+            "strict": "[STRICT]",
+            "experience": "20+ YRS_EXP",
+            "location": "ROCHEFORT_FR"
+        }
+    },
+    "projects": {
+        "title": "SYSTEM_PROJECTS",
+        "subtitle": "Achievements & Integrations",
+        "viewAll": "View all projects",
+        "strategic": "STRATEGIC",
+        "initiatives": "INITIATIVES",
+        "accessLevel": "ACCESS_LEVEL: TOP_SECRET // AUTHORIZED_PERSONNEL_ONLY",
+        "architectureView": "Architecture View",
+        "items": {
+            "k8s": {
+                "title": "K8s_ORCHESTRATOR",
+                "subtitle": "Scalable Infrastructure",
+                "description": "Multi-region high-availability Kubernetes cluster deployment for critical workloads. Complete GitOps automation."
+            },
+            "gateway": {
+                "title": "SECURE_GATEWAY_V2",
+                "subtitle": "Cybersecurity Shield",
+                "description": "Hardened API gateway with mutual authentication (mTLS) and real-time traffic analysis for industrial IoT."
+            },
+            "dataLake": {
+                "title": "DATA_LAKE_CORE",
+                "subtitle": "Big Data Processing",
+                "description": "Real-time ETL pipeline processing 5TB+ of telemetry data daily. Event-Driven Architecture."
+            },
+            "borsalino": {
+                "title": "BORSALINO_OS",
+                "subtitle": "Pizzeria Management System",
+                "description": "Full-stack pizzeria management system with touch POS, real-time order planning, compliant fiscal system and admin interface. Next.js 15 + PostgreSQL architecture."
+            },
+            "domotic": {
+                "title": "DOMOTIC_NEXUS",
+                "subtitle": "Smart Environment Orchestration",
+                "description": "Containerized home automation infrastructure managing 50+ IoT devices (Zigbee/Thread). Energy monitoring (InfluxDB) and critical automations via Node-RED."
+            }
+        }
+    },
+    "architecture": {
+        "title": "ARCHITECTURE_SECTION",
+        "subtitle": "My 3 Pillars",
+        "description": "A versatility forged between industry, entrepreneurship and personal innovation",
+        "coreArchitecture": "CORE_ARCHITECTURE",
+        "scalableDesign": "Scalable Experience Design",
+        "cloudNative": {
+            "label": "CLOUD_NATIVE",
+            "title": "Docker & K8s",
+            "description": "Advanced container orchestration and microservices architecture."
+        },
+        "infrastructure": {
+            "label": "INFRASTRUCTURE",
+            "title": "Ansible & Linux",
+            "description": "Automated provisioning and system hardening for mission-critical environments."
+        },
+        "observability": {
+            "label": "OBSERVABILITY",
+            "title": "Grafana Stack",
+            "description": "Full-stack monitoring with Prometheus, Loki, and Promtail."
+        },
+        "fullstack": {
+            "label": "FULLSTACK_OVERVIEW",
+            "frontend": "Frontend",
+            "styling": "Styling",
+            "visuals": "Visuals",
+            "security": "Security"
+        },
+        "liveTopology": "LIVE_TOPOLOGY_VIEW",
+        "uptime": "UPTIME",
+        "sourceCode": "SOURCE_CODE",
+        "gitRepos": "GIT_REPOS",
+        "activeRepos": "12 ACTIVE REPOS",
+        "systemData": "SYSTEM_DATA",
+        "dataExtraction": "DATA_EXTRACTION",
+        "downloadInitiate": ">> INITIATING DOWNLOAD..."
+    },
+    "experience": {
+        "title": "PROFESSIONAL_JOURNEY",
+        "subtitle": "Execution History",
+        "years": "yrs",
+        "present": "Present",
+        "decryptingData": "DECRYPTING_CAREER_DATA...",
+        "careerLogs": "Career_Logs",
+        "executionHistory": "EXECUTION_HISTORY",
+        "identity": {
+            "role": "Solutions Architect"
+        },
+        "experienceItems": {
+            "airbus1": {
+                "title": "Solutions Architect",
+                "company": "Airbus Atlantic",
+                "period": "JULY 2024 - PRESENT",
+                "description": "Definition and management of technical architecture for industrial solutions. Ensuring sustainability, security and scalability of operational information systems."
+            },
+            "airbus2": {
+                "title": "IT Product Manager - Operator Solutions",
+                "company": "Airbus Atlantic",
+                "period": "JAN 2020 - JUNE 2024",
+                "description": "Management of MES (Manufacturing Execution System) solutions. Lifecycle management, CI/CD deployment, Agile/Scrum methodology. Development team management and functional architecture."
+            },
+            "adequat": {
+                "title": "Purchasing Manager / Technical Sales",
+                "company": "Adéquat-Système",
+                "period": "2018 - 2019",
+                "description": "Management of strategic supplier relationships. Deployment of WiFi4EU projects (Cisco-Meraki) and VOIP. Advanced technical support and partnership negotiations."
+            },
+            "ds17": {
+                "title": "Micro-entrepreneur",
+                "company": "DS17 IT",
+                "period": "2017 - 2018",
+                "description": "Infrastructure troubleshooting, visual design, SEO optimization and website enhancement. User training."
+            }
+        }
+    },
+    "contact": {
+        "title": "INITIALIZE_CONTACT",
+        "subtitle": "Transmit Signal",
+        "form": {
+            "name": "Name",
+            "namePlaceholder": "Your full name",
+            "email": "Email",
+            "emailPlaceholder": "your@email.com",
+            "message": "Message",
+            "messagePlaceholder": "Describe your project or inquiry...",
+            "submit": "Transmit",
+            "sending": "Transmitting...",
+            "byteCounter": "bytes",
+            "maxBytes": "max"
+        },
+        "success": "Message transmitted successfully!",
+        "error": "Error sending. Please try again.",
+        "directContact": {
+            "title": "Direct Channels",
+            "email": "Email",
+            "linkedin": "LinkedIn",
+            "github": "GitHub"
+        }
+    },
+    "footer": {
+        "description": "Solutions Architect & Fullstack Developer. Expert in Cloud, Kubernetes, Cybersecurity and Advanced Home Automation.",
+        "rights": "All rights reserved.",
+        "madeWith": "Crafted with",
+        "privacy": "Privacy",
+        "terms": "Terms",
+        "globalPresence": {
+            "title": "GLOBAL_PRESENCE",
+            "description": "Monitoring global connection nodes. Real-time visitor analytics active. Visualizing active endpoints.",
+            "systemNormal": "SYSTEM NORMAL",
+            "encryptionActive": "ENCRYPTION ACTIVE",
+            "copyright": "All systems operational."
+        }
+    },
+    "blog": {
+        "title": "Technical Blog",
+        "subtitle": "My thoughts on Cloud, Kubernetes, React and software architecture",
+        "backToPortfolio": "Back to portfolio",
+        "backToBlog": "Back to blog",
+        "allArticles": "View all articles",
+        "readingTime": "min read",
+        "publishedOn": "Published on",
+        "by": "By",
+        "noArticles": "No articles yet. Check back soon!",
+        "tags": "Tags"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "retry": "Retry",
+        "close": "Close",
+        "open": "Open",
+        "more": "More",
+        "less": "Less"
+    }
+}
