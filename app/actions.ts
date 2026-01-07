@@ -4,6 +4,8 @@ import nodemailer from 'nodemailer';
 
 import { z } from "zod";
 
+import { headers } from "next/headers";
+
 // Rate limiting map: IP -> { count, lastReset }
 const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
 
@@ -18,17 +20,15 @@ const ContactSchema = z.object({
 });
 
 export async function sendContactEmail(formData: FormData) {
-    // 1. Rate Limiting (Simple In-Memory) using a fixed IP key for now (since we can't easily get client IP in server actions without headers/middleware passing it)
-    // In production, we'd use X-Forwarded-For via headers(), but for this scale, we can limit based on global volume or assume valid traffic.
-    // Let's rely on a global limit for this demo or just proceed.
-    // IMPROVEMENT: actually, let's just limit "per server instance" to avoid spam.
+    // 1. Rate Limiting (IP-based)
+    const headerList = await headers();
+    const ip = headerList.get('x-forwarded-for') || 'unknown';
 
     const now = Date.now();
     const windowMs = 60 * 1000; // 1 minute
-    const limit = 5; // 5 requests per minute global (simple spam protection)
+    const limit = 5; // 5 requests per minute per IP
 
-    const globalKey = "global";
-    const record = rateLimitMap.get(globalKey) || { count: 0, lastReset: now };
+    const record = rateLimitMap.get(ip) || { count: 0, lastReset: now };
 
     if (now - record.lastReset > windowMs) {
         record.count = 0;
@@ -40,7 +40,7 @@ export async function sendContactEmail(formData: FormData) {
     }
 
     record.count++;
-    rateLimitMap.set(globalKey, record);
+    rateLimitMap.set(ip, record);
 
     // 2. Validation
     const rawData = {

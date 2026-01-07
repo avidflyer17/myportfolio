@@ -410,50 +410,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                         </form>
                     </motion.div>
 
-                    {/* Keyframes CSS inline */}
-                    <style jsx global>{`
 
-
-                        /* Custom Cyberpunk Scrollbar */
-                        .custom-scrollbar::-webkit-scrollbar {
-                            width: 8px;
-                        }
-                        
-                        .custom-scrollbar::-webkit-scrollbar-track {
-                            background: rgba(0, 0, 0, 0.3);
-                            border-left: 1px solid rgba(0, 243, 255, 0.1);
-                        }
-                        
-                        .custom-scrollbar::-webkit-scrollbar-thumb {
-                            background: linear-gradient(180deg, 
-                                rgba(0, 243, 255, 0.3) 0%, 
-                                rgba(0, 243, 255, 0.6) 50%, 
-                                rgba(0, 243, 255, 0.3) 100%
-                            );
-                            border-radius: 4px;
-                            border: 1px solid rgba(0, 243, 255, 0.3);
-                            box-shadow: 
-                                0 0 10px rgba(0, 243, 255, 0.4),
-                                inset 0 0 10px rgba(0, 243, 255, 0.2);
-                        }
-                        
-                        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                            background: linear-gradient(180deg, 
-                                rgba(0, 243, 255, 0.5) 0%, 
-                                rgba(0, 243, 255, 0.8) 50%, 
-                                rgba(0, 243, 255, 0.5) 100%
-                            );
-                            box-shadow: 
-                                0 0 15px rgba(0, 243, 255, 0.6),
-                                inset 0 0 15px rgba(0, 243, 255, 0.3);
-                        }
-                        
-                        /* Firefox */
-                        .custom-scrollbar {
-                            scrollbar-width: thin;
-                            scrollbar-color: rgba(0, 243, 255, 0.4) rgba(0, 0, 0, 0.3);
-                        }
-                    `}</style>
                 </motion.div>
             )}
         </AnimatePresence>

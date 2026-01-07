@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Sphere, PerspectiveCamera, useTexture } from "@react-three/drei";
+import { Float, MeshDistortMaterial, Sphere, PerspectiveCamera, useTexture, PerformanceMonitor } from "@react-three/drei";
 import { motion } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
 
@@ -144,34 +144,46 @@ import { useState, useRef, Suspense } from "react";
 export function HeroSection() {
     const t = useTranslations('hero');
     const [isNeuralInterfaceOpen, setIsNeuralInterfaceOpen] = useState(false);
+    const [dpr, setDpr] = useState(1.5); // Default to reasonable quality
 
     return (
         <section className="relative min-h-screen md:h-screen w-full flex flex-col items-center justify-center overflow-x-hidden md:overflow-hidden bg-transparent py-24 md:py-0">
             <NeuralInterface isOpen={isNeuralInterfaceOpen} onClose={() => setIsNeuralInterfaceOpen(false)} />
             {/* 3D Background */}
             <div className="absolute inset-0 z-0 fixed md:absolute">
-                <Canvas>
-                    <PerspectiveCamera makeDefault position={[0, 0, 5]} />
+                <Canvas
+                    dpr={[1, 2]}
+                    gl={{
+                        powerPreference: "high-performance",
+                        antialias: true,
+                        stencil: false,
+                        depth: true
+                    }}
+                    camera={{ position: [0, 0, 5], fov: 75 }}
+                >
+                    <PerformanceMonitor onIncline={() => setDpr(2)} onDecline={() => setDpr(1)} >
+                        <PerspectiveCamera makeDefault position={[0, 0, 5]} />
 
-                    {/* Atmospheric Lighting - Sufficient for our neon look */}
-                    <ambientLight intensity={0.2} />
-                    <pointLight position={[10, 10, 5]} intensity={1} color="#ff00ff" />
-                    <pointLight position={[-10, -5, -5]} color="#00f3ff" intensity={2} />
+                        {/* Atmospheric Lighting - Sufficient for our neon look */}
+                        <ambientLight intensity={0.2} />
+                        <pointLight position={[10, 10, 5]} intensity={1} color="#ff00ff" />
+                        <pointLight position={[-10, -5, -5]} color="#00f3ff" intensity={2} />
 
-                    {/* Architectural Core */}
-                    <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-                        <Suspense fallback={null}>
-                            <ResponsiveGroup>
-                                <ArchitecturalCore />
-                            </ResponsiveGroup>
-                        </Suspense>
-                    </Float>
+                        {/* Architectural Core */}
+                        <Float speed={2} rotationIntensity={1} floatIntensity={1}>
+                            <Suspense fallback={null}>
+                                <ResponsiveGroup>
+                                    <ArchitecturalCore />
+                                </ResponsiveGroup>
+                            </Suspense>
+                        </Float>
 
-                    {/* Cyber Grid Floor (Visual Depth) */}
-                    <MovingGrid />
+                        {/* Cyber Grid Floor (Visual Depth) */}
+                        <MovingGrid />
 
-                    {/* Environmental Fog */}
-                    <fog attach="fog" args={['#000', 5, 20]} />
+                        {/* Environmental Fog */}
+                        <fog attach="fog" args={['#000', 5, 20]} />
+                    </PerformanceMonitor>
                 </Canvas>
             </div>
 

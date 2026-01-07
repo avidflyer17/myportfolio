@@ -102,15 +102,7 @@ export function CVModal({ isOpen, onClose }: CVModalProps) {
                                 {/* Main Content (PDF) */}
                                 <div className="flex-1 relative w-full overflow-hidden bg-white">
                                     {/* Custom Scroll Wrapper with forced cyberpunk attributes */}
-                                    <div className="absolute inset-0 w-full h-full overflow-y-auto 
-                                        [&::-webkit-scrollbar]:w-[10px] 
-                                        [&::-webkit-scrollbar-track]:bg-black/50
-                                        [&::-webkit-scrollbar-thumb]:bg-neon-cyan/50 
-                                        [&::-webkit-scrollbar-thumb]:rounded-full
-                                        [&::-webkit-scrollbar-thumb]:border 
-                                        [&::-webkit-scrollbar-thumb]:border-neon-cyan/30
-                                        [&::-webkit-scrollbar-thumb]:shadow-[0_0_10px_rgba(0,243,255,0.4)]
-                                        hover:[&::-webkit-scrollbar-thumb]:bg-neon-cyan/80">
+                                    <div className="absolute inset-0 w-full h-full overflow-y-auto">
 
                                         {/* Container with A4 aspect ratio to match PDF size */}
                                         <div className="w-full aspect-[210/297] relative">
