@@ -7,6 +7,7 @@ import { GlassPanel } from "@/components/ui/glass-panel";
 import { CyberSelect } from "@/components/ui/cyber-select";
 import { Send, Shield, Wifi, CheckCircle2 } from "lucide-react";
 import { sendContactEmail } from "@/app/actions";
+import { analytics } from "@/lib/analytics";
 
 // --- Components ---
 
@@ -153,10 +154,15 @@ export function ContactSection() {
         // even if the API is faster.
         setTimeout(() => {
             if (result.success) {
+                const projectType = formData.get('projectType') as string;
+                const budget = formData.get('budget') as string;
+                analytics.trackFormSubmit(true, projectType, budget);
+
                 formRef.current?.reset();
                 setFormState('sent');
                 setTimeout(() => setFormState('idle'), 5000);
             } else {
+                analytics.trackFormSubmit(false);
                 setFormState('error');
                 setTimeout(() => setFormState('idle'), 3000);
             }
@@ -313,6 +319,7 @@ export function ContactSection() {
                                             name="projectType"
                                             label={tForm('projectType')}
                                             placeholder={tForm('projectTypePlaceholder')}
+                                            onChange={(val) => analytics.trackFormInteraction('projectType', val)}
                                             options={[
                                                 { value: 'cloud', label: tProjectTypes('cloud') },
                                                 { value: 'fullstack', label: tProjectTypes('fullstack') },
@@ -326,6 +333,7 @@ export function ContactSection() {
                                             name="budget"
                                             label={tForm('budget')}
                                             placeholder={tForm('budgetPlaceholder')}
+                                            onChange={(val) => analytics.trackFormInteraction('budget', val)}
                                             options={[
                                                 { value: 'small', label: tBudgets('small') },
                                                 { value: 'medium', label: tBudgets('medium') },
@@ -339,6 +347,7 @@ export function ContactSection() {
                                             name="timeline"
                                             label={tForm('timeline')}
                                             placeholder={tForm('timelinePlaceholder')}
+                                            onChange={(val) => analytics.trackFormInteraction('timeline', val)}
                                             options={[
                                                 { value: 'urgent', label: tTimelines('urgent') },
                                                 { value: 'short', label: tTimelines('short') },

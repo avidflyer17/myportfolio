@@ -168,6 +168,8 @@ export function ProjectsSection() {
                     variant="primary"
                     icon={MessageSquare}
                     onClick={(e) => smoothScrollTo(e, 'contact')}
+                    trackingLabel="Discuss Project"
+                    trackingLocation="Projects"
                 >
                     {t('cta.discussProject')}
                 </CTAButton>

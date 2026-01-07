@@ -299,6 +299,8 @@ export function ArchitectureSection() {
                     variant="primary"
                     icon={ChevronRight}
                     onClick={(e) => smoothScrollTo(e, 'contact')}
+                    trackingLabel="Custom Architecture"
+                    trackingLocation="Architecture"
                 >
                     {t('cta.customArch')}
                 </CTAButton>

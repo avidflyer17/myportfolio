@@ -280,6 +280,8 @@ export function HeroSection() {
                                         onClick={(e) => smoothScrollTo(e, 'contact')}
                                         pulse
                                         className="flex-1"
+                                        trackingLabel="Start Project"
+                                        trackingLocation="Hero"
                                     >
                                         {t('cta.startProject')}
                                     </CTAButton>
@@ -289,6 +291,8 @@ export function HeroSection() {
                                         icon={Terminal}
                                         onClick={(e) => smoothScrollTo(e, 'projects')}
                                         className="flex-1"
+                                        trackingLabel="View Portfolio"
+                                        trackingLocation="Hero"
                                     >
                                         {t('cta.viewPortfolio')}
                                     </CTAButton>

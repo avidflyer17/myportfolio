@@ -21,6 +21,7 @@ const VisitorMap = dynamic(() => import('@/components/ui/visitor-map').then(mod 
 
 export function FooterSection() {
     const t = useTranslations('footer.globalPresence');
+    const tFooter = useTranslations('footer');
 
     return (
         <footer className="w-full py-10 bg-black/90 border-t border-neon-cyan/20 relative overflow-hidden">
@@ -43,11 +44,11 @@ export function FooterSection() {
                         <div className="flex gap-4 text-sm font-mono text-neon-cyan opacity-80">
                             <div className="flex items-center gap-2">
                                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                {t('systemNormal')}
+                                <span className="uppercase">{t('systemNormal')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <span className="w-2 h-2 bg-neon-pink rounded-full animate-pulse"></span>
-                                {t('encryptionActive')}
+                                <span className="uppercase">{t('encryptionActive')}</span>
                             </div>
                         </div>
 
@@ -56,8 +57,10 @@ export function FooterSection() {
                                 variant="primary"
                                 icon={Mail}
                                 onClick={(e) => smoothScrollTo(e, 'contact')}
+                                trackingLabel="Contact Me"
+                                trackingLocation="Footer"
                             >
-                                {t('cta.contact')}
+                                {tFooter('cta.contact')}
                             </CTAButton>
                         </div>
                     </div>

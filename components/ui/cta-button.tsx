@@ -1,14 +1,17 @@
 "use client";
 
-import { ButtonHTMLAttributes } from "react";
+import { ComponentProps } from "react";
 import { LucideIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import { analytics } from "@/lib/analytics";
 
-interface CTAButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface CTAButtonProps extends ComponentProps<typeof motion.button> {
     variant?: "primary" | "secondary";
     icon?: LucideIcon;
     children: React.ReactNode;
     pulse?: boolean;
+    trackingLabel?: string;
+    trackingLocation?: string;
 }
 
 export function CTAButton({
@@ -17,9 +20,22 @@ export function CTAButton({
     children,
     pulse = false,
     className = "",
+    trackingLabel,
+    trackingLocation,
+    onClick,
     ...props
 }: CTAButtonProps) {
     const baseStyles = "px-8 py-4 font-bold rounded-lg transition-all duration-300 relative overflow-hidden group";
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        // Track event if props are provided
+        if (trackingLabel && trackingLocation) {
+            analytics.trackCTAClick(trackingLabel, trackingLocation);
+        }
+
+        // Call original handler
+        onClick?.(e);
+    };
 
     const variants = {
         primary: `
@@ -42,6 +58,7 @@ export function CTAButton({
             whileHover={{ scale: variant === "primary" ? 1.05 : 1.02 }}
             whileTap={{ scale: 0.98 }}
             className={`${baseStyles} ${variants[variant]} ${className}`}
+            onClick={handleClick}
             {...props}
         >
             {/* Shimmer effect */}

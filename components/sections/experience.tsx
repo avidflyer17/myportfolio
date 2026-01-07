@@ -167,7 +167,10 @@ export function ExperienceSection() {
                     <CTAButton
                         variant="primary"
                         icon={Briefcase}
+                        pulse={true}
                         onClick={(e) => smoothScrollTo(e, 'contact')}
+                        trackingLabel="Collaborate"
+                        trackingLocation="Experience"
                     >
                         {t('cta.collaborate')}
                     </CTAButton>

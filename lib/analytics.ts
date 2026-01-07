@@ -75,4 +75,18 @@ export const analytics = {
 
     clickBlogTag: (tag: string) =>
         trackEvent('Click Blog Tag', { tag }),
+
+    // Phase 3: Enhanced Tracking
+    trackCTAClick: (label: string, location: string) =>
+        trackEvent('CTA Click', { label, location }),
+
+    trackFormInteraction: (field: string, value: string) =>
+        trackEvent('Form Interaction', { field, value }),
+
+    trackFormSubmit: (success: boolean, type?: string, budget?: string) =>
+        trackEvent('Contact Form Submit', {
+            success: success ? 'yes' : 'no',
+            projectType: type || 'N/A',
+            budget: budget || 'N/A'
+        }),
 };
