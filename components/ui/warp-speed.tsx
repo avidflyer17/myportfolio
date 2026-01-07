@@ -1,9 +1,10 @@
-"use client";
-
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-export function WarpSpeed({ active }: { active: boolean }) {
+
+
+export function WarpSpeed({ active, className }: { active: boolean; className?: string }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -105,7 +106,7 @@ export function WarpSpeed({ active }: { active: boolean }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] pointer-events-none mix-blend-screen"
+            className={cn("fixed inset-0 z-[60] pointer-events-none mix-blend-screen", className)}
         />
     );
 }

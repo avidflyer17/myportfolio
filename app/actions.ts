@@ -195,19 +195,38 @@ export async function sendContactEmail(formData: FormData) {
         return { success: false, error: "Too many requests. Please try again later." };
     }
 
+    // Helper to clean optional fields (empty string -> undefined)
+    const getOptionalString = (key: string) => {
+        const val = formData.get(key);
+        if (!val || val === '') return undefined;
+        return val.toString();
+    };
+
     const rawData = {
         name: formData.get('name'),
         email: formData.get('email'),
-        company: formData.get('company') || '',
-        projectType: formData.get('projectType') || '',
-        budget: formData.get('budget') || '',
-        timeline: formData.get('timeline') || '',
+        company: getOptionalString('company'),
+        projectType: getOptionalString('projectType'),
+        budget: getOptionalString('budget'),
+        timeline: getOptionalString('timeline'),
         message: formData.get('message')
     };
 
     const result = ContactSchema.safeParse(rawData);
+
     if (!result.success) {
-        return { success: false, error: "Invalid data provided." };
+        // Log deep error for dev
+        console.error("Validation Failed:", JSON.stringify(result.error.format(), null, 2));
+
+        // Return readable error string
+        const errorDetails = result.error.issues
+            .map(issue => {
+                const field = issue.path.join('.');
+                return `${field}: ${issue.message}`;
+            })
+            .join(' | ');
+
+        return { success: false, error: `Validation: ${errorDetails}` };
     }
 
     const { name, email, message } = result.data;

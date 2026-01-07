@@ -27,6 +27,8 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+import { GlitchOverlay } from "@/components/ui/glitch-overlay";
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -40,6 +42,7 @@ export default async function RootLayout({
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} antialiased bg-black text-white overflow-x-hidden`}
       >
+        <GlitchOverlay />
         <NextIntlClientProvider messages={messages}>
           <NeuralInterfaceProvider>
             {/* Scanline Effect Overlay */}
