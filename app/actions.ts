@@ -189,6 +189,37 @@ const generateVisitorAckHTML = (name: string, isAI?: boolean) => {
 
 // --- EXPORTED ACTIONS ---
 
+// --- CONFIG: Label Mappings ---
+// --- CONFIG: Label Mappings ---
+const PROJECT_TYPES: Record<string, string> = {
+    'cloud': 'Cloud Architecture',
+    'fullstack': 'Fullstack Dev',
+    'security': 'Cybersecurity',
+    'iot': 'IoT / Embedded',
+    'consulting': 'Tech Consulting',
+    'other': 'Other',
+    'AI_INTERFACE': '🧠 AI Interface'
+};
+
+const BUDGETS: Record<string, string> = {
+    'small': '< 5k €',
+    'medium': '5k - 15k €',
+    'large': '15k - 50k €',
+    'xlarge': '50k+ €',
+    'enterprise': 'Enterprise Quote',
+    'discuss': 'To Discuss'
+};
+
+const TIMELINES: Record<string, string> = {
+    'urgent': 'Urgent (< 1mo)',
+    'short': 'Short (1-3mo)',
+    'medium': 'Medium (3-6mo)',
+    'long': 'Long (6mo+)',
+    'flexible': 'Flexible'
+};
+
+
+
 export async function sendContactEmail(formData: FormData) {
     const limiter = await checkRateLimit();
     if (!limiter.allowed) {
@@ -240,6 +271,14 @@ export async function sendContactEmail(formData: FormData) {
             },
         });
 
+        // Prepare formatted data for email
+        const emailData = {
+            ...result.data,
+            projectType: result.data.projectType ? (PROJECT_TYPES[result.data.projectType] || result.data.projectType) : undefined,
+            budget: result.data.budget ? (BUDGETS[result.data.budget] || result.data.budget) : undefined,
+            timeline: result.data.timeline ? (TIMELINES[result.data.timeline] || result.data.timeline) : undefined,
+        };
+
         // 1. Owner's Email
         await transporter.sendMail({
             from: process.env.GMAIL_USER,
@@ -247,7 +286,7 @@ export async function sendContactEmail(formData: FormData) {
             replyTo: email,
             subject: `[PORTFOLIO] 📡 New Signal from ${name}`,
             text: `SIGNAL DETECTED\nFROM: ${name}\nEMAIL: ${email}\nMESSAGE: ${message}`,
-            html: generateContactEmailHTML(result.data),
+            html: generateContactEmailHTML(emailData),
         });
 
         // 2. Visitor's ACK
@@ -299,6 +338,15 @@ export async function sendContactEmailJSON(data: any) {
             },
         });
 
+        // Prepare formatted data for email
+        const emailData = {
+            ...result.data,
+            projectType: result.data.projectType ? (PROJECT_TYPES[result.data.projectType] || result.data.projectType) : undefined,
+            budget: result.data.budget ? (BUDGETS[result.data.budget] || result.data.budget) : undefined,
+            timeline: result.data.timeline ? (TIMELINES[result.data.timeline] || result.data.timeline) : undefined,
+            isAI: true
+        };
+
         // 1. Owner's Email (with isAI: true for Cyan theme)
         await transporter.sendMail({
             from: process.env.GMAIL_USER,
@@ -306,7 +354,7 @@ export async function sendContactEmailJSON(data: any) {
             replyTo: email,
             subject: `[AI PROTOCOL] 📡 New Signal from ${name}`,
             text: `AI INTERFACE UPLINK\nFROM: ${name}\nEMAIL: ${email}\nMESSAGE: ${message}`,
-            html: generateContactEmailHTML({ ...result.data, isAI: true }),
+            html: generateContactEmailHTML(emailData),
         });
 
         // 2. Visitor's ACK (with isAI: true for Cyan theme)
