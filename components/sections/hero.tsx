@@ -8,10 +8,12 @@ import { motion } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
 
 import * as THREE from "three";
-import { Cpu, Zap, Terminal, Code2 } from "lucide-react";
+import { Cpu, Zap, Terminal, Code2, ArrowRight } from "lucide-react";
 import { GlitchText } from "@/components/ui/glitch-text";
 import { TypewriterText } from "@/components/ui/typewriter-text";
 import { CardTilt } from "@/components/ui/card-tilt";
+import { CTAButton } from "@/components/ui/cta-button";
+import { smoothScrollTo } from "@/lib/smooth-scroll";
 
 function FloatingLogo() {
     // Load all 6 face textures (optimized WebP format)
@@ -271,30 +273,25 @@ export function HeroSection() {
                                     </div>
                                 </div>
 
-                                <div className="flex gap-4 mt-10">
-                                    <motion.button
-                                        aria-label={t('buttons.initializeAriaLabel')}
-                                        onClick={() => document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' })}
-                                        className="relative flex-1 py-4 bg-neon-cyan text-black font-bold tracking-widest uppercase rounded overflow-hidden flex items-center justify-center gap-2 group/btn"
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
+                                <div className="flex flex-col sm:flex-row gap-4 mt-10">
+                                    <CTAButton
+                                        variant="primary"
+                                        icon={ArrowRight}
+                                        onClick={(e) => smoothScrollTo(e, 'contact')}
+                                        pulse
+                                        className="flex-1"
                                     >
-                                        <motion.div
-                                            className="absolute inset-0 bg-white"
-                                            initial={{ x: '-100%' }}
-                                            whileHover={{ x: '100%' }}
-                                            transition={{ duration: 0.6 }}
-                                        />
-                                        <Zap className="w-4 h-4 relative z-10" />
-                                        <span className="relative z-10">{t('buttons.initialize')}</span>
-                                    </motion.button>
-                                    <button
-                                        aria-label={t('buttons.logsAriaLabel')}
-                                        onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
-                                        className="flex-1 py-4 bg-white/5 border border-white/10 text-white hover:border-neon-pink hover:text-neon-pink transition-all font-bold tracking-widest uppercase rounded backdrop-blur-md hover:bg-white/10"
+                                        {t('cta.startProject')}
+                                    </CTAButton>
+
+                                    <CTAButton
+                                        variant="secondary"
+                                        icon={Terminal}
+                                        onClick={(e) => smoothScrollTo(e, 'projects')}
+                                        className="flex-1"
                                     >
-                                        {t('buttons.logs')}
-                                    </button>
+                                        {t('cta.viewPortfolio')}
+                                    </CTAButton>
                                 </div>
 
                                 {/* Corner Accents */}

@@ -7,6 +7,8 @@ import { extractDataFromPDF, ExtractedData } from "@/lib/data-extractor";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { Activity, Briefcase, Calendar, Hash, Terminal } from "lucide-react";
+import { CTAButton } from "@/components/ui/cta-button";
+import { smoothScrollTo } from "@/lib/smooth-scroll";
 
 export function ExperienceSection() {
     const t = useTranslations('experience');
@@ -152,7 +154,24 @@ export function ExperienceSection() {
                             </div>
                         </motion.div>
                     ))}
+
                 </div>
+
+                {/* Call to Action */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="mt-20 flex justify-center"
+                >
+                    <CTAButton
+                        variant="primary"
+                        icon={Briefcase}
+                        onClick={(e) => smoothScrollTo(e, 'contact')}
+                    >
+                        {t('cta.collaborate')}
+                    </CTAButton>
+                </motion.div>
             </div>
         </section>
     );

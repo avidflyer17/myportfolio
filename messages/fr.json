@@ -18,6 +18,10 @@
             "logs": "Logs",
             "logsAriaLabel": "Voir l'historique de carrière"
         },
+        "cta": {
+            "startProject": "Démarrer un Projet",
+            "viewPortfolio": "Voir Portfolio"
+        },
         "systemMetrics": {
             "title": "SYSTEM_METRICS",
             "nextjs": "NEXT.JS_KERNEL",
@@ -41,6 +45,9 @@
         "initiatives": "INITIATIVES",
         "accessLevel": "NIVEAU_ACCÈS: TOP_SECRET // PERSONNEL_AUTORISÉ_UNIQUEMENT",
         "architectureView": "Vue Architecture",
+        "cta": {
+            "discussProject": "Discuter de Votre Projet"
+        },
         "items": {
             "k8s": {
                 "title": "K8s_ORCHESTRATOR",
@@ -104,7 +111,10 @@
         "activeRepos": "12 REPOS ACTIFS",
         "systemData": "SYSTEM_DATA",
         "dataExtraction": "DATA_EXTRACTION",
-        "downloadInitiate": ">> INITIALISATION DU TÉLÉCHARGEMENT..."
+        "downloadInitiate": ">> INITIALISATION DU TÉLÉCHARGEMENT...",
+        "cta": {
+            "customArch": "Architecture sur Mesure"
+        }
     },
     "experience": {
         "title": "PARCOURS_PROFESSIONNEL",
@@ -142,6 +152,9 @@
                 "period": "2017 - 2018",
                 "description": "Dépannage d'infrastructure, création de visuels, référencement SEO et optimisation de sites web. Formation utilisateurs."
             }
+        },
+        "cta": {
+            "collaborate": "Collaborons Ensemble"
         }
     },
     "contact": {
@@ -152,12 +165,43 @@
             "namePlaceholder": "Votre nom complet",
             "email": "Email",
             "emailPlaceholder": "votre@email.com",
+            "company": "Entreprise",
+            "companyPlaceholder": "Nom de votre entreprise (optionnel)",
+            "projectType": "Type de Projet",
+            "projectTypePlaceholder": "Sélectionnez un type...",
+            "budget": "Budget Estimé",
+            "budgetPlaceholder": "Sélectionnez une fourchette...",
+            "timeline": "Timeline Souhaitée",
+            "timelinePlaceholder": "Sélectionnez une période...",
             "message": "Message",
             "messagePlaceholder": "Décrivez votre projet ou votre demande...",
             "submit": "Transmettre",
             "sending": "Transmission...",
             "byteCounter": "octets",
             "maxBytes": "max"
+        },
+        "projectTypes": {
+            "cloud": "Architecture Cloud & Infrastructure",
+            "fullstack": "Développement Full-stack",
+            "security": "Cybersécurité & Audit",
+            "iot": "Home Automation / IoT",
+            "consulting": "Consulting & Formation",
+            "other": "Autre"
+        },
+        "budgets": {
+            "small": "< 5K €",
+            "medium": "5K - 15K €",
+            "large": "15K - 50K €",
+            "xlarge": "50K - 100K €",
+            "enterprise": "> 100K €",
+            "discuss": "À discuter"
+        },
+        "timelines": {
+            "urgent": "Urgent (< 1 mois)",
+            "short": "Court terme (1-3 mois)",
+            "medium": "Moyen terme (3-6 mois)",
+            "long": "Long terme (> 6 mois)",
+            "flexible": "Flexible"
         },
         "success": "Message transmis avec succès !",
         "error": "Erreur lors de l'envoi. Veuillez réessayer.",
@@ -180,6 +224,9 @@
             "systemNormal": "SYSTÈME NORMAL",
             "encryptionActive": "CHIFFREMENT ACTIF",
             "copyright": "Tous les systèmes opérationnels."
+        },
+        "cta": {
+            "contact": "Contactez-moi"
         }
     },
     "blog": {

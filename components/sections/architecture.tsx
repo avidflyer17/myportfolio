@@ -3,10 +3,12 @@
 import { useTranslations } from 'next-intl';
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { motion } from "framer-motion";
-import { Server, Database, Shield, Cpu, Cloud, Terminal, Layers, Hash, Github, FileText, ArrowUpRight } from "lucide-react";
+import { Server, Database, Shield, Cpu, Cloud, Terminal, Layers, Hash, Github, FileText, ArrowUpRight, ChevronRight } from "lucide-react";
 import { Canvas } from "@react-three/fiber";
 import { CityMap } from "@/components/canvas/city-map";
 import { OrbitControls } from "@react-three/drei";
+import { CTAButton } from "@/components/ui/cta-button";
+import { smoothScrollTo } from "@/lib/smooth-scroll";
 
 export function ArchitectureSection() {
     const t = useTranslations('architecture');
@@ -285,6 +287,22 @@ export function ArchitectureSection() {
                     </div>
                 </div>
             </div>
+
+            {/* Call to Action */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="mt-12 flex justify-center"
+            >
+                <CTAButton
+                    variant="primary"
+                    icon={ChevronRight}
+                    onClick={(e) => smoothScrollTo(e, 'contact')}
+                >
+                    {t('cta.customArch')}
+                </CTAButton>
+            </motion.div>
         </section>
     );
 }

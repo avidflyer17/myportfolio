@@ -3,7 +3,10 @@
 import { useTranslations } from 'next-intl';
 import { motion } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
-import { Lock, Server, Database, Cloud, Shield, Wifi } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { CTAButton } from "@/components/ui/cta-button";
+import { smoothScrollTo } from "@/lib/smooth-scroll";
+import { Lock, Server, Database, Cloud, Shield, Wifi, MessageSquare } from "lucide-react";
 
 const PROJECTS = [
     {
@@ -154,6 +157,21 @@ export function ProjectsSection() {
                     </motion.div>
                 ))}
             </div>
+            {/* Call to Action */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="mt-20 flex justify-center"
+            >
+                <CTAButton
+                    variant="primary"
+                    icon={MessageSquare}
+                    onClick={(e) => smoothScrollTo(e, 'contact')}
+                >
+                    {t('cta.discussProject')}
+                </CTAButton>
+            </motion.div>
         </section>
     );
 }

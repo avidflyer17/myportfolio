@@ -1,9 +1,10 @@
 "use client";
 
-
+import { useTranslations } from 'next-intl';
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
+import { CyberSelect } from "@/components/ui/cyber-select";
 import { Send, Shield, Wifi, CheckCircle2 } from "lucide-react";
 import { sendContactEmail } from "@/app/actions";
 
@@ -117,6 +118,12 @@ function WarpSpeed({ active }: { active: boolean }) {
 }
 
 export function ContactSection() {
+    const t = useTranslations('contact');
+    const tForm = useTranslations('contact.form');
+    const tProjectTypes = useTranslations('contact.projectTypes');
+    const tBudgets = useTranslations('contact.budgets');
+    const tTimelines = useTranslations('contact.timelines');
+
     const [formState, setFormState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
     const [byteCount, setByteCount] = useState(0);
 
@@ -265,37 +272,91 @@ export function ContactSection() {
                                 >
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
-                                            <label htmlFor="contact-name" className="text-xs font-mono text-neon-cyan/80 uppercase tracking-wider">Identity_String</label>
+                                            <label htmlFor="contact-name" className="text-xs font-mono text-neon-cyan/80 uppercase tracking-wider">{tForm('name')}</label>
                                             <input
                                                 id="contact-name"
                                                 name="name"
                                                 required
                                                 type="text"
-                                                placeholder="John Doe"
+                                                placeholder={tForm('namePlaceholder')}
                                                 className="w-full bg-black/40 border border-white/10 rounded p-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-neon-cyan/50 focus:bg-neon-cyan/5 transition-all font-mono"
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label htmlFor="contact-email" className="text-xs font-mono text-neon-cyan/80 uppercase tracking-wider">Comm_Frequency</label>
+                                            <label htmlFor="contact-email" className="text-xs font-mono text-neon-cyan/80 uppercase tracking-wider">{tForm('email')}</label>
                                             <input
                                                 id="contact-email"
                                                 name="email"
                                                 required
                                                 type="email"
-                                                placeholder="name@corp.com"
+                                                placeholder={tForm('emailPlaceholder')}
                                                 className="w-full bg-black/40 border border-white/10 rounded p-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-neon-cyan/50 focus:bg-neon-cyan/5 transition-all font-mono"
                                             />
                                         </div>
                                     </div>
 
+                                    {/* Company field */}
                                     <div className="space-y-2">
-                                        <label htmlFor="contact-message" className="text-xs font-mono text-neon-cyan/80 uppercase tracking-wider">Payload_Data</label>
+                                        <label htmlFor="contact-company" className="text-xs font-mono text-neon-cyan/80 uppercase tracking-wider">{tForm('company')}</label>
+                                        <input
+                                            id="contact-company"
+                                            name="company"
+                                            type="text"
+                                            placeholder={tForm('companyPlaceholder')}
+                                            className="w-full bg-black/40 border border-white/10 rounded p-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-neon-cyan/50 focus:bg-neon-cyan/5 transition-all font-mono"
+                                        />
+                                    </div>
+
+                                    {/* Project Type, Budget, Timeline - 3 columns */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                        <CyberSelect
+                                            name="projectType"
+                                            label={tForm('projectType')}
+                                            placeholder={tForm('projectTypePlaceholder')}
+                                            options={[
+                                                { value: 'cloud', label: tProjectTypes('cloud') },
+                                                { value: 'fullstack', label: tProjectTypes('fullstack') },
+                                                { value: 'security', label: tProjectTypes('security') },
+                                                { value: 'iot', label: tProjectTypes('iot') },
+                                                { value: 'consulting', label: tProjectTypes('consulting') },
+                                                { value: 'other', label: tProjectTypes('other') }
+                                            ]}
+                                        />
+                                        <CyberSelect
+                                            name="budget"
+                                            label={tForm('budget')}
+                                            placeholder={tForm('budgetPlaceholder')}
+                                            options={[
+                                                { value: 'small', label: tBudgets('small') },
+                                                { value: 'medium', label: tBudgets('medium') },
+                                                { value: 'large', label: tBudgets('large') },
+                                                { value: 'xlarge', label: tBudgets('xlarge') },
+                                                { value: 'enterprise', label: tBudgets('enterprise') },
+                                                { value: 'discuss', label: tBudgets('discuss') }
+                                            ]}
+                                        />
+                                        <CyberSelect
+                                            name="timeline"
+                                            label={tForm('timeline')}
+                                            placeholder={tForm('timelinePlaceholder')}
+                                            options={[
+                                                { value: 'urgent', label: tTimelines('urgent') },
+                                                { value: 'short', label: tTimelines('short') },
+                                                { value: 'medium', label: tTimelines('medium') },
+                                                { value: 'long', label: tTimelines('long') },
+                                                { value: 'flexible', label: tTimelines('flexible') }
+                                            ]}
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label htmlFor="contact-message" className="text-xs font-mono text-neon-cyan/80 uppercase tracking-wider">{tForm('message')}</label>
                                         <textarea
                                             id="contact-message"
                                             name="message"
                                             required
                                             rows={5}
-                                            placeholder="> Initialize message sequence..."
+                                            placeholder={tForm('messagePlaceholder')}
                                             className="w-full bg-black/40 border border-white/10 rounded p-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-neon-cyan/50 focus:bg-neon-cyan/5 transition-all font-mono resize-none"
                                         />
                                     </div>
@@ -303,8 +364,8 @@ export function ContactSection() {
                                     <button
                                         disabled={formState === 'sending'}
                                         className={`w-full group relative overflow-hidden font-bold py-4 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${formState === 'error'
-                                                ? 'bg-red-500 text-white hover:bg-red-600'
-                                                : 'bg-white text-black hover:bg-neon-cyan'
+                                            ? 'bg-red-500 text-white hover:bg-red-600'
+                                            : 'bg-white text-black hover:bg-neon-cyan'
                                             }`}
                                     >
                                         <div className="flex items-center justify-center gap-2 relative z-10">

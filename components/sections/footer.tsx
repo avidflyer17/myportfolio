@@ -2,8 +2,10 @@
 
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { Github, Linkedin } from 'lucide-react';
+import { Github, Linkedin, Mail } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
+import { CTAButton } from "@/components/ui/cta-button";
+import { smoothScrollTo } from "@/lib/smooth-scroll";
 
 const VisitorMap = dynamic(() => import('@/components/ui/visitor-map').then(mod => mod.VisitorMap), {
     ssr: false,
@@ -47,6 +49,16 @@ export function FooterSection() {
                                 <span className="w-2 h-2 bg-neon-pink rounded-full animate-pulse"></span>
                                 {t('encryptionActive')}
                             </div>
+                        </div>
+
+                        <div className="pt-4">
+                            <CTAButton
+                                variant="primary"
+                                icon={Mail}
+                                onClick={(e) => smoothScrollTo(e, 'contact')}
+                            >
+                                {t('cta.contact')}
+                            </CTAButton>
                         </div>
                     </div>
 
