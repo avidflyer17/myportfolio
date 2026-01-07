@@ -155,7 +155,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
         {
             id: 'init-1',
             role: 'assistant',
-            content: "Bonjour. Je suis l'Architecte Neuronal de ce portfolio."
+            content: "Bonjour. Je suis l'Architecte Neuronal. Je peux répondre à vos questions sur l'architecture de ce site, le profil de Dams Wallace, ou initier le [Protocole de Contact](#contact)."
         }
     ]);
     const [input, setInput] = useState('');
@@ -371,7 +371,28 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                             <span className="text-[10px] opacity-50 mb-1 font-bold tracking-wider">
                                                 {m.role === 'user' ? visitorId : 'NEURAL_ARCHITECT_V2.0'}
                                             </span>
-                                            <p className="whitespace-pre-wrap leading-relaxed">{m.content}</p>
+                                            <div className="whitespace-pre-wrap leading-relaxed">
+                                                {m.content.split(/(\[[^\]]+\]\(#[^)]+\))/g).map((part, i) => {
+                                                    const match = part.match(/\[([^\]]+)\]\(#([^)]+)\)/);
+                                                    if (match) {
+                                                        const [_, text, id] = match;
+                                                        return (
+                                                            <button
+                                                                key={i}
+                                                                onClick={() => {
+                                                                    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                                                    onClose();
+                                                                }}
+                                                                className="text-neon-cyan hover:underline hover:text-white font-bold cursor-pointer inline-flex items-center gap-1"
+                                                            >
+                                                                {text}
+                                                                <span className="text-[10px] opacity-70">↗</span>
+                                                            </button>
+                                                        );
+                                                    }
+                                                    return part;
+                                                })}
+                                            </div>
                                         </motion.div>
                                     ))}
 
