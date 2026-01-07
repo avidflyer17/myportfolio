@@ -10,7 +10,7 @@
 
 **Portfolio immersif d'Architecte Solutions & Développeur Fullstack**
 
-[🌐 Demo Live](https://portfolio.damswallace.fr) • [📧 Contact](mailto:contact@damswallace.fr)
+[🌐 Demo Live](https://portfolio.damswallace.fr) • [📧 Contact](mailto:damswallace@gmail.com)
 
 </div>
 
@@ -437,7 +437,7 @@ Ce projet est sous licence **MIT**. Voir le fichier [LICENSE](LICENSE) pour plus
 
 - 🌐 Portfolio : [portfolio.damswallace.fr](https://portfolio.damswallace.fr)
 - 💼 LinkedIn : [Damien Schonbakler](https://linkedin.com/in/damien-schonbakler)
-- 📧 Email : contact@damswallace.fr
+- 📧 Email : dams.wallace@gmail.com
 - 🐙 GitHub : [@avidflyer17](https://github.com/avidflyer17)
 
 ---
