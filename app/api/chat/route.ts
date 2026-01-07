@@ -96,7 +96,7 @@ export async function POST(req: Request) {
     const systemPrompt = locale === 'en' ? SYSTEM_PROMPTS.en : SYSTEM_PROMPTS.fr;
 
     const result = await streamText({
-      model: google('gemini-1.5-pro'),
+      model: google('gemini-3-pro-preview'),
       messages: messages,
       system: systemPrompt,
     });
