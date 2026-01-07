@@ -110,7 +110,7 @@ export function CVModal({ isOpen, onClose }: CVModalProps) {
                                             <div className="absolute inset-0 overflow-hidden">
                                                 <iframe
                                                     src="/cv-schonbakler-damien.pdf#toolbar=0&navpanes=0&view=FitH"
-                                                    className="w-full h-[calc(100%+60px)] -mt-[50px] border-none block"
+                                                    className="w-full h-full border-none block"
                                                     title="CV Preview"
                                                 />
                                             </div>

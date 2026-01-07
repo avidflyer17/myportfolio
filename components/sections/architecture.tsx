@@ -70,7 +70,7 @@ export function ArchitectureSection() {
                 </div>
 
                 {/* Main Widescreen Layout */}
-                <div className="relative h-[800px] md:h-[700px] w-full max-w-[95%] mx-auto grid grid-cols-1 md:grid-cols-[350px_1fr_350px] gap-8">
+                <div className="relative h-auto md:h-[700px] w-full max-w-[95%] mx-auto grid grid-cols-1 md:grid-cols-[350px_1fr_350px] gap-8">
 
                     {/* DATA FLOW OVERLAY */}
                     <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 hidden md:block">
