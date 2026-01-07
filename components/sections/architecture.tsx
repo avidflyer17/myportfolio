@@ -9,9 +9,12 @@ import { CityMap } from "@/components/canvas/city-map";
 import { OrbitControls } from "@react-three/drei";
 import { CTAButton } from "@/components/ui/cta-button";
 import { smoothScrollTo } from "@/lib/smooth-scroll";
+import { useState } from "react";
+import { CVModal } from "@/components/features/cv-modal";
 
 export function ArchitectureSection() {
     const t = useTranslations('architecture');
+    const [isCVOpen, setIsCVOpen] = useState(false);
 
     return (
         <section id="architecture" className="py-24 relative overflow-hidden w-full min-h-screen flex flex-col justify-center">
@@ -249,11 +252,9 @@ export function ArchitectureSection() {
                             </a>
 
                             {/* DATA SELECTION CARD */}
-                            <a
-                                href="/cv-schonbakler-damien.pdf"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-white/5 border border-white/10 p-4 relative group overflow-hidden transition-all hover:border-neon-pink/50"
+                            <div
+                                onClick={() => setIsCVOpen(true)}
+                                className="bg-white/5 border border-white/10 p-4 relative group overflow-hidden transition-all hover:border-neon-pink/50 cursor-pointer"
                             >
                                 {/* Scanline Effect */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-neon-pink/10 to-transparent opacity-0 group-hover:opacity-100 transform translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-out" />
@@ -282,7 +283,7 @@ export function ArchitectureSection() {
                                         {t('downloadInitiate')}
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -305,6 +306,8 @@ export function ArchitectureSection() {
                     {t('cta.customArch')}
                 </CTAButton>
             </motion.div>
-        </section>
+
+            <CVModal isOpen={isCVOpen} onClose={() => setIsCVOpen(false)} />
+        </section >
     );
 }

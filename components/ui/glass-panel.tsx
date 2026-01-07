@@ -35,7 +35,7 @@ export function GlassPanel({
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
 
             {/* Content */}
-            <div className="relative z-10">
+            <div className="relative z-10 w-full h-full">
                 {children}
             </div>
         </motion.div>
