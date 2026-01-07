@@ -4,6 +4,7 @@ import { ArchitectureSection } from "@/components/sections/architecture";
 import { ContactSection } from "@/components/sections/contact";
 import { ProjectsSection } from "@/components/sections/projects";
 import { FooterSection } from "@/components/sections/footer";
+import { BlogSection } from "@/components/sections/blog";
 import { StarBackground } from "@/components/ui/star-background";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <div className="relative z-10">
         <HeroSection />
         <ProjectsSection />
+        <BlogSection />
         <ArchitectureSection />
         <ExperienceSection />
         <ContactSection />

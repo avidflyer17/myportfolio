@@ -245,6 +245,14 @@
         "noArticles": "Aucun article pour le moment. Revenez bientôt!",
         "tags": "Tags"
     },
+    "blogSection": {
+        "badge": "KNOWLEDGE_BASE",
+        "title": "ARTICLES_TECHNIQUES",
+        "subtitle": "Partage d'expérience et veille technologique",
+        "readMore": "LIRE_L'ARTICLE",
+        "viewAll": "Voir tous les articles",
+        "loading": "CHARGEMENT_ARTICLES..."
+    },
     "neuralInterface": {
         "title": "NEURAL_ARCHITECT_v2.0",
         "systemInit": "> SYSTEM_INIT...",

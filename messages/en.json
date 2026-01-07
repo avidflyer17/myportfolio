@@ -245,6 +245,14 @@
         "noArticles": "No articles yet. Check back soon!",
         "tags": "Tags"
     },
+    "blogSection": {
+        "badge": "KNOWLEDGE_BASE",
+        "title": "TECHNICAL_ARTICLES",
+        "subtitle": "Experience sharing and technology insights",
+        "readMore": "READ_ARTICLE",
+        "viewAll": "View all articles",
+        "loading": "LOADING_ARTICLES..."
+    },
     "neuralInterface": {
         "title": "NEURAL_ARCHITECT_v2.0",
         "systemInit": "> SYSTEM_INIT...",
