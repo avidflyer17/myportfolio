@@ -302,6 +302,7 @@ export function ArchitectureSection() {
                     onClick={(e) => smoothScrollTo(e, 'contact')}
                     trackingLabel="Custom Architecture"
                     trackingLocation="Architecture"
+                    className="!px-6 !py-3 !text-sm md:!text-base md:!px-8 md:!py-4 whitespace-nowrap"
                 >
                     {t('cta.customArch')}
                 </CTAButton>

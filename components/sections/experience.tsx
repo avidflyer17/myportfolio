@@ -60,7 +60,7 @@ export function ExperienceSection() {
                 </motion.div>
 
                 <motion.h2
-                    className="text-4xl md:text-6xl font-bold text-center mt-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-neon-pink to-white tracking-[0.2em] uppercase"
+                    className="text-2xl md:text-6xl font-bold text-center mt-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-neon-pink to-white tracking-widest md:tracking-[0.2em] uppercase"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}

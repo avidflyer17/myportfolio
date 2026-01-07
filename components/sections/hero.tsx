@@ -127,8 +127,8 @@ function ResponsiveGroup({ children }: { children: React.ReactNode }) {
 
     return (
         <group
-            scale={isMobile ? 0.4 : 1}
-            position={isMobile ? [0, 0.5, 0] : [0, 0, 0]}
+            scale={isMobile ? 0.35 : 1}
+            position={isMobile ? [0, 1.5, -2] : [0, 0, 0]}
         >
             {children}
         </group>
