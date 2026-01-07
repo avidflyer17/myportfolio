@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { GlassPanel } from "@/components/ui/glass-panel";
 
 import * as THREE from "three";
-import { Cpu, Zap, Terminal, Code2, ArrowRight } from "lucide-react";
+import { Terminal, Code2, ArrowRight } from "lucide-react";
 import { GlitchText } from "@/components/ui/glitch-text";
 import { TypewriterText } from "@/components/ui/typewriter-text";
 import { CardTilt } from "@/components/ui/card-tilt";
