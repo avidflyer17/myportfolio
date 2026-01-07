@@ -117,61 +117,65 @@ export function FloatingAIOrb() {
     }, [isOpen]);
 
     return (
-        <div
-            className={`fixed bottom-6 right-6 md:bottom-10 md:right-10 z-50 w-32 h-32 md:w-56 md:h-56 transition-all duration-500 ${isOpen ? 'opacity-0 scale-0 pointer-events-none' : 'opacity-100 scale-100'
-                }`}
-        >
-            {/* Minimalist Tooltip */}
-            <AnimatePresence>
-                {!isOpen && !isHovered && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ delay: 3 }}
-                        onAnimationComplete={() => {
-                            setTimeout(() => {
-                                const el = document.getElementById('orb-tooltip');
-                                if (el) el.style.opacity = '0';
-                            }, 10000);
-                        }}
-                        id="orb-tooltip"
-                        className="absolute bottom-[75%] right-8 mb-4 pointer-events-none transition-opacity duration-1000"
-                    >
-                        <div className="bg-black/90 border border-neon-cyan/40 p-2 font-mono rounded shadow-[0_0_20px_rgba(0,243,255,0.2)]">
-                            <div className="flex items-center gap-2 mb-1 border-b border-neon-cyan/20 pb-1">
-                                <div className="w-1.5 h-1.5 bg-neon-cyan rounded-full animate-pulse" />
-                                <span className="text-[9px] text-neon-cyan uppercase tracking-tighter">System_Active</span>
-                            </div>
-                            <div className="text-white text-[11px] font-bold">
-                                {t('orbTooltip')}
-                            </div>
-                            <div className="text-[9px] text-neon-cyan/60 mt-0.5">
-                                {'>'} {t('orbStatus')}
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+        <>
+            {/* MOBILE: 2D High-Contrast Button */}
+            <div className={`pt-safe fixed bottom-4 right-4 z-50 md:hidden transition-all duration-300 ${isOpen ? 'opacity-0 translate-y-10 pointer-events-none' : 'opacity-100 translate-y-0'}`}>
+                <button
+                    onClick={() => {
+                        setIsHovered(false);
+                        open();
+                    }}
+                    className="relative group flex items-center justify-center w-14 h-14 bg-black/90 border border-neon-cyan rounded-full shadow-[0_0_15px_rgba(0,243,255,0.3)] overflow-hidden active:scale-95 transition-transform"
+                >
+                    {/* Pulsing Background */}
+                    <div className="absolute inset-0 bg-neon-cyan/10 animate-pulse group-hover:bg-neon-cyan/20 transition-colors" />
 
-            <div
-                className="w-full h-full cursor-pointer relative flex items-center justify-center translate-x-4 translate-y-4 md:translate-x-12 md:translate-y-12"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                onClick={() => {
-                    setIsHovered(false);
-                    open();
-                }}
-            >
-                {/* Glow Backdrop */}
-                <div className={`absolute inset-16 rounded-full blur-3xl transition-all duration-1000 ${isHovered ? 'bg-neon-cyan/20' : 'bg-neon-pink/10'}`} />
+                    {/* Orbiting Dots Container */}
+                    <div className="absolute inset-0 animate-spin [animation-duration:3s]">
+                        {/* Cyan Dot - Orbit 1 */}
+                        <div className="absolute top-1 left-1/2 w-1.5 h-1.5 bg-neon-cyan rounded-full shadow-[0_0_5px_#00f3ff]" />
+                    </div>
+                    <div className="absolute inset-0 animate-spin [animation-duration:2s] reverse">
+                        {/* Magenta Dot - Orbit 2 (Counter-rotating) */}
+                        <div className="absolute bottom-1 left-1/2 w-1.5 h-1.5 bg-neon-pink rounded-full shadow-[0_0_5px_#ff00ff]" />
+                    </div>
 
-                <Canvas camera={{ position: [0, 0, 5], fov: 45 }} gl={{ alpha: true }}>
-                    <ambientLight intensity={0.5} />
-                    <pointLight position={[5, 5, 5]} intensity={3} color={isHovered ? "#00f3ff" : "#ff00ff"} />
-                    <CyberOrb isHovered={isHovered} onClick={open} />
-                </Canvas>
+                    {/* Ring Animation (Subtle) */}
+                    <div className="absolute inset-0 border border-transparent border-t-neon-cyan/30 rounded-full animate-spin [animation-duration:4s]" />
+
+                    {/* Icon (Larger) */}
+                    <div className="relative z-10">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-neon-cyan drop-shadow-[0_0_5px_rgba(0,243,255,0.8)]">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.6 15L9 18l-1 1h8l-1-1-.6-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                </button>
             </div>
-        </div>
+
+            {/* DESKTOP: 3D Floating Orb */}
+            <div
+                className={`hidden md:block fixed bottom-10 right-10 z-50 w-56 h-56 transition-all duration-500 ${isOpen ? 'opacity-0 scale-0 pointer-events-none' : 'opacity-100 scale-100'
+                    }`}
+            >
+                <div
+                    className="w-full h-full cursor-pointer relative flex items-center justify-center translate-x-12 translate-y-12"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    onClick={() => {
+                        setIsHovered(false);
+                        open();
+                    }}
+                >
+                    {/* Glow Backdrop */}
+                    <div className={`absolute inset-16 rounded-full blur-3xl transition-all duration-1000 ${isHovered ? 'bg-neon-cyan/20' : 'bg-neon-pink/10'}`} />
+
+                    <Canvas camera={{ position: [0, 0, 5], fov: 45 }} gl={{ alpha: true }}>
+                        <ambientLight intensity={0.5} />
+                        <pointLight position={[5, 5, 5]} intensity={3} color={isHovered ? "#00f3ff" : "#ff00ff"} />
+                        <CyberOrb isHovered={isHovered} onClick={open} />
+                    </Canvas>
+                </div>
+            </div>
+        </>
     );
 }

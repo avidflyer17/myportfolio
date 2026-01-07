@@ -61,9 +61,6 @@ export function ProjectsSection() {
     return (
         <section id="projects" className="py-32 relative overflow-hidden container mx-auto px-4">
 
-            {/* Background Decor */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1/2 h-full bg-neon-cyan/5 blur-3xl rounded-full pointer-events-none" />
-
             <div className="flex flex-col items-start mb-16 relative z-10 border-l-4 border-neon-pink pl-6">
                 <motion.h2
                     className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter"
@@ -80,7 +77,7 @@ export function ProjectsSection() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10 items-start">
                 {PROJECTS.map((project, index) => (
                     <motion.div
                         key={project.id}
@@ -88,10 +85,11 @@ export function ProjectsSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.2 }}
+                        className="h-full"
                     >
                         <GlassPanel
                             intensity="low"
-                            className="h-full flex flex-col group relative overflow-hidden border border-white/10 hover:border-neon-cyan/30 transition-all duration-700 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] hover:-translate-y-1"
+                            className="min-h-full flex flex-col group relative overflow-hidden border border-white/10 hover:border-neon-cyan/30 transition-all duration-700 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]"
                         >
 
                             {/* Animated Glow Effect - Full Coverage */}
@@ -103,7 +101,7 @@ export function ProjectsSection() {
                             </div>
 
                             {/* Content Wrapper with Padding */}
-                            <div className="relative z-10 p-8 flex flex-col h-full">
+                            <div className="relative z-10 p-6 md:p-8 flex flex-col flex-1">
                                 {/* Header */}
                                 <div className="flex justify-between items-start mb-6">
                                     <div className="p-3 bg-white/5 rounded border border-white/10 group-hover:border-neon-cyan/60 group-hover:bg-neon-cyan/10 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all duration-500 group-hover:rotate-[5deg]">

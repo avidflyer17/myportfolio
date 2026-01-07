@@ -143,7 +143,7 @@ export function HeroSection() {
     const [dpr, setDpr] = useState(1.5); // Default to reasonable quality
 
     return (
-        <section className="relative min-h-screen md:h-screen w-full flex flex-col items-center justify-center overflow-x-hidden md:overflow-hidden bg-transparent py-24 md:py-0">
+        <section className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-x-hidden md:overflow-hidden bg-transparent py-24 md:py-16 lg:py-24">
 
             {/* 3D Background */}
             <div className="absolute inset-0 z-0 fixed md:absolute">
@@ -184,7 +184,7 @@ export function HeroSection() {
             </div>
 
             {/* Content Overlay */}
-            <div className="relative z-10 container mx-auto px-4 pointer-events-none h-full flex flex-col justify-center gap-16 md:gap-24">
+            <div className="relative z-10 container mx-auto px-4 pointer-events-none w-full flex flex-col justify-center gap-12 md:gap-16 lg:gap-20">
 
                 {/* 1. FLOATING TITLE (No Box) */}
                 <div className="flex flex-col items-center text-center pointer-events-auto">
@@ -230,17 +230,18 @@ export function HeroSection() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl mx-auto pointer-events-auto">
 
                     {/* LEFT WIDGET: ACTION CENTER */}
-                    <CardTilt className="w-full h-full">
+                    <CardTilt className="w-full">
                         <motion.div
                             whileHover={{
                                 y: -4,
                                 boxShadow: '0 0 30px rgba(0,243,255,0.3), 0 20px 40px rgba(0,0,0,0.3)'
                             }}
                             transition={{ duration: 0.3 }}
+                            className="h-full"
                         >
                             <GlassPanel
                                 intensity="low"
-                                className="bg-black/80 backdrop-blur-xl border border-white/10 hover:border-neon-cyan/50 transition-all duration-500 p-8 group h-full relative overflow-hidden"
+                                className="bg-black/80 backdrop-blur-xl border border-white/10 hover:border-neon-cyan/50 transition-all duration-500 p-6 md:p-8 group min-h-full relative overflow-hidden flex flex-col"
                                 initial={{ opacity: 0, x: -50 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.6 }}
@@ -252,7 +253,7 @@ export function HeroSection() {
                                     transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                                 />
 
-                                <div>
+                                <div className="flex-1">
                                     <div className="flex justify-between items-start mb-4">
                                         <h3 className="text-sm font-mono text-neon-cyan flex items-center gap-2">
                                             <Code2 className="w-4 h-4" />
@@ -281,7 +282,7 @@ export function HeroSection() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col sm:flex-row gap-4 mt-10">
+                                <div className="flex flex-col sm:flex-row gap-4 mt-8">
                                     <CTAButton
                                         variant="primary"
                                         icon={ArrowRight}
@@ -314,17 +315,18 @@ export function HeroSection() {
                     </CardTilt>
 
                     {/* RIGHT WIDGET: SYSTEM STATUS */}
-                    <CardTilt className="w-full h-full">
+                    <CardTilt className="w-full">
                         <motion.div
                             whileHover={{
                                 y: -4,
                                 boxShadow: '0 0 30px rgba(255,0,255,0.3), 0 20px 40px rgba(0,0,0,0.3)'
                             }}
                             transition={{ duration: 0.3 }}
+                            className="h-full"
                         >
                             <GlassPanel
                                 intensity="low"
-                                className="bg-black/80 backdrop-blur-xl border border-white/10 hover:border-neon-pink/50 transition-all duration-500 p-8 flex flex-col justify-between gap-6 h-full relative overflow-hidden"
+                                className="bg-black/80 backdrop-blur-xl border border-white/10 hover:border-neon-pink/50 transition-all duration-500 p-6 md:p-8 flex flex-col gap-4 min-h-full relative overflow-hidden"
                                 initial={{ opacity: 0, x: 50 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.8 }}
@@ -341,55 +343,102 @@ export function HeroSection() {
                                     {t('systemMetrics.title')}
                                 </h3>
 
-                                <div className="space-y-3 font-mono text-xs">
-                                    <div className="flex items-center justify-between text-slate-300 hover:text-white transition-colors">
-                                        <span className="flex items-center gap-2">
-                                            <div className="w-1.5 h-1.5 bg-neon-cyan rounded-full shadow-[0_0_6px_#00f3ff]" />
-                                            {t('systemMetrics.nextjs')}
-                                        </span>
-                                        <span className="text-neon-cyan">{t('systemMetrics.loaded')}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between text-slate-300 hover:text-white transition-colors">
-                                        <span className="flex items-center gap-2">
-                                            <div className="w-1.5 h-1.5 bg-neon-cyan rounded-full shadow-[0_0_6px_#00f3ff]" />
-                                            {t('systemMetrics.react')}
-                                        </span>
-                                        <span className="text-neon-cyan">{t('systemMetrics.loaded')}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between text-slate-300">
-                                        <span className="flex items-center gap-2">
-                                            <div className="w-1.5 h-1.5 bg-neon-pink rounded-full animate-pulse shadow-[0_0_8px_#ff00ff]" />
-                                            {t('systemMetrics.ai')}
-                                        </span>
-                                        <span className="text-neon-pink">{t('systemMetrics.gemini')}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between text-slate-300 hover:text-white transition-colors">
-                                        <span className="flex items-center gap-2">
-                                            <div className="w-1.5 h-1.5 bg-blue-500 rounded-full shadow-[0_0_6px_#3b82f6]" />
-                                            {t('systemMetrics.typescript')}
-                                        </span>
-                                        <span className="text-blue-500">{t('systemMetrics.strict')}</span>
-                                    </div>
-                                    <div className="mt-4 pt-4 border-t border-white/5 flex justify-between items-center text-slate-400">
-                                        <span>{t('systemMetrics.availability')}</span>
-                                        <span className="bg-green-500/20 text-green-400 px-2 py-0.5 rounded text-[10px] border border-green-500/30 shadow-[0_0_10px_rgba(34,197,94,0.3)]">{t('systemMetrics.openForWork')}</span>
+                                {/* Tech Stack - Visual Badges */}
+                                <div className="space-y-4">
+                                    <div className="flex flex-wrap gap-2">
+                                        {/* Next.js */}
+                                        <div className="group relative bg-gradient-to-r from-slate-900 to-black border border-white/20 hover:border-white/40 px-3 py-2 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                                            <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_8px_#fff]" />
+                                            <span className="text-xs font-mono text-white">Next.js</span>
+                                        </div>
+
+                                        {/* React */}
+                                        <div className="group relative bg-gradient-to-r from-cyan-950 to-cyan-900/50 border border-cyan-500/30 hover:border-cyan-500/60 px-3 py-2 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                                            <div className="w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_8px_#22d3ee]" />
+                                            <span className="text-xs font-mono text-cyan-300">React</span>
+                                        </div>
+
+                                        {/* TypeScript */}
+                                        <div className="group relative bg-gradient-to-r from-blue-950 to-blue-900/50 border border-blue-500/30 hover:border-blue-500/60 px-3 py-2 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                                            <div className="w-2 h-2 bg-blue-400 rounded-full shadow-[0_0_8px_#3b82f6]" />
+                                            <span className="text-xs font-mono text-blue-300">TypeScript</span>
+                                        </div>
+
+                                        {/* Tailwind */}
+                                        <div className="group relative bg-gradient-to-r from-sky-950 to-sky-900/50 border border-sky-500/30 hover:border-sky-500/60 px-3 py-2 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                                            <div className="w-2 h-2 bg-sky-400 rounded-full shadow-[0_0_8px_#0ea5e9]" />
+                                            <span className="text-xs font-mono text-sky-300">Tailwind</span>
+                                        </div>
+
+                                        {/* Three.js */}
+                                        <div className="group relative bg-gradient-to-r from-emerald-950 to-emerald-900/50 border border-emerald-500/30 hover:border-emerald-500/60 px-3 py-2 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                                            <div className="w-2 h-2 bg-emerald-400 rounded-full shadow-[0_0_8px_#10b981]" />
+                                            <span className="text-xs font-mono text-emerald-300">Three.js</span>
+                                        </div>
+
+                                        {/* Docker */}
+                                        <div className="group relative bg-gradient-to-r from-blue-950 to-blue-800/50 border border-blue-400/30 hover:border-blue-400/60 px-3 py-2 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                                            <div className="w-2 h-2 bg-blue-400 rounded-full shadow-[0_0_8px_#60a5fa]" />
+                                            <span className="text-xs font-mono text-blue-300">Docker</span>
+                                        </div>
+
+                                        {/* PostgreSQL */}
+                                        <div className="group relative bg-gradient-to-r from-indigo-950 to-indigo-900/50 border border-indigo-500/30 hover:border-indigo-500/60 px-3 py-2 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                                            <div className="w-2 h-2 bg-indigo-400 rounded-full shadow-[0_0_8px_#6366f1]" />
+                                            <span className="text-xs font-mono text-indigo-300">PostgreSQL</span>
+                                        </div>
+
+                                        {/* AI - Gemini */}
+                                        <div className="group relative bg-gradient-to-r from-pink-950 to-purple-900/50 border border-neon-pink/40 hover:border-neon-pink/70 px-3 py-2 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                                            <div className="w-2 h-2 bg-neon-pink rounded-full animate-pulse shadow-[0_0_10px_#ff00ff]" />
+                                            <span className="text-xs font-mono text-neon-pink">Gemini AI</span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4 mt-2">
-                                    <div className="bg-white/5 border border-white/10 p-3 rounded flex items-center gap-3 hover:bg-white/10 hover:border-green-500/30 transition-all">
-                                        <div className="relative">
-                                            <div className="w-2 h-2 bg-green-500 rounded-full animate-ping absolute inset-0" />
-                                            <div className="w-2 h-2 bg-green-500 rounded-full relative shadow-[0_0_10px_#22c55e]" />
+                                {/* Performance Metrics */}
+                                <div className="mt-4 pt-4 border-t border-white/10">
+                                    <div className="text-[10px] font-mono text-neon-pink mb-3 tracking-wider">{t('systemMetrics.performance')}</div>
+                                    <div className="grid grid-cols-2 gap-3 text-xs font-mono">
+                                        <div className="bg-green-500/10 border border-green-500/30 px-3 py-2.5 rounded-lg flex items-center justify-center gap-2 hover:bg-green-500/20 transition-all">
+                                            <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <span className="text-green-400 text-[11px] font-semibold">{t('systemMetrics.uptime')}</span>
                                         </div>
-                                        <div className="text-xs font-mono text-slate-300">{t('systemMetrics.experience')}</div>
+                                        <div className="bg-cyan-500/10 border border-cyan-500/30 px-3 py-2.5 rounded-lg flex items-center justify-center gap-2 hover:bg-cyan-500/20 transition-all">
+                                            <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                            </svg>
+                                            <span className="text-cyan-400 text-[11px] font-semibold">{t('systemMetrics.responseTime')}</span>
+                                        </div>
                                     </div>
-                                    <div className="bg-white/5 border border-white/10 p-3 rounded flex items-center gap-3 hover:bg-white/10 hover:border-cyan-400/30 transition-all">
-                                        <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
-                                        <div className="text-xs font-mono text-slate-300">{t('systemMetrics.location')}</div>
+                                </div>
+
+                                {/* Availability Status */}
+                                <div className="mt-4 pt-4 border-t border-white/10">
+                                    <div className="flex items-center justify-between mb-3">
+                                        <div className="text-[10px] font-mono text-neon-pink tracking-wider">{t('systemMetrics.availability')}</div>
+                                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 border border-green-500/30 hover:bg-green-500/20 transition-all">
+                                            <div className="relative">
+                                                <div className="w-2 h-2 bg-green-500 rounded-full animate-ping absolute inset-0" />
+                                                <div className="w-2 h-2 bg-green-500 rounded-full relative shadow-[0_0_10px_#22c55e]" />
+                                            </div>
+                                            <span className="text-[10px] font-mono text-green-400 tracking-wider font-semibold">{t('systemMetrics.openForWork')}</span>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div className="bg-gradient-to-r from-green-950 to-green-900/50 border border-green-500/30 hover:border-green-500/60 px-3 py-2.5 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                                            <div className="w-2 h-2 bg-green-400 rounded-full shadow-[0_0_8px_#22c55e]" />
+                                            <div className="text-xs font-mono text-green-300">{t('systemMetrics.experience')}</div>
+                                        </div>
+                                        <div className="bg-gradient-to-r from-cyan-950 to-cyan-900/50 border border-cyan-500/30 hover:border-cyan-500/60 px-3 py-2.5 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                                            <svg className="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            </svg>
+                                            <div className="text-xs font-mono text-cyan-300">{t('systemMetrics.location')}</div>
+                                        </div>
                                     </div>
                                 </div>
 
