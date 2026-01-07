@@ -241,6 +241,19 @@
         "noArticles": "No articles yet. Check back soon!",
         "tags": "Tags"
     },
+    "neuralInterface": {
+        "title": "NEURAL_ARCHITECT_v2.0",
+        "systemInit": "> SYSTEM_INIT...",
+        "loadingWeights": "> LOADING_NEURAL_WEIGHTS... [OK]",
+        "waitingInput": "> WAITING_FOR_INPUT_",
+        "inputPlaceholder": "Enter your command...",
+        "initializing": "INITIALIZING...",
+        "visitor": "VISITOR",
+        "initialMessage": "Hello. I am the Neural Architect. I can answer your questions about this site's architecture, Dams Wallace's profile, or initiate the [Contact Protocol](#contact).",
+        "error": "COMMUNICATION_ERROR",
+        "accessRefused": "ACCESS DENIED: Data not relevant to current operational context. Request outside Security Protocol perimeter.",
+        "contactProtocol": "INITIATE CONTACT PROTOCOL: Please use the communication terminal [Contact Section](#contact)."
+    },
     "common": {
         "loading": "Loading...",
         "error": "Error",

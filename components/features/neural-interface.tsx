@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Terminal, Cpu } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 interface NeuralInterfaceProps {
@@ -83,33 +84,7 @@ function ProcessingHologram() {
     );
 }
 
-// Composant pour les scan lines CRT
-function CRTScanLines() {
-    return (
-        <>
-            {/* Scan lines */}
-            <div className="absolute inset-0 pointer-events-none opacity-10">
-                <div
-                    className="w-full h-full bg-repeat"
-                    style={{
-                        backgroundImage: 'linear-gradient(to bottom, transparent 50%, rgba(0, 243, 255, 0.1) 50%)',
-                        backgroundSize: '100% 4px',
-                        animation: 'scan 8s linear infinite'
-                    }}
-                />
-            </div>
 
-            {/* Noise overlay */}
-            <div
-                className="absolute inset-0 pointer-events-none opacity-5"
-                style={{
-                    backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' /%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\' /%3E%3C/svg%3E")',
-                    animation: 'noise 0.2s infinite'
-                }}
-            />
-        </>
-    );
-}
 
 // Composant pour les particules d'énergie
 function EnergyParticles({ active }: { active: boolean }) {
@@ -151,11 +126,14 @@ function EnergyParticles({ active }: { active: boolean }) {
 }
 
 export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
+    const t = useTranslations('neuralInterface');
+    const locale = useLocale();
+
     const [messages, setMessages] = useState<Message[]>([
         {
             id: 'init-1',
             role: 'assistant',
-            content: "Bonjour. Je suis l'Architecte Neuronal. Je peux répondre à vos questions sur l'architecture de ce site, le profil de Dams Wallace, ou initier le [Protocole de Contact](#contact)."
+            content: t('initialMessage')
         }
     ]);
     const [input, setInput] = useState('');
@@ -219,7 +197,8 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    messages: [...messages, userMessage]
+                    messages: [...messages, userMessage],
+                    locale: locale
                 })
             });
 
@@ -277,9 +256,11 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                     transition={{ duration: 0.8 }}
                     className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
                     style={{ perspective: "1000px" }}
+                    onClick={onClose}
                 >
                     <motion.div
                         key="neural-modal"
+                        onClick={(e) => e.stopPropagation()}
                         className={cn(
                             "w-full max-w-2xl h-[600px] flex flex-col bg-black/90 rounded-lg overflow-hidden font-mono relative",
                             "border-2 transition-all duration-300",
@@ -308,8 +289,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                             boxShadow: { duration: 2, repeat: isLoading ? Infinity : 0, ease: "easeInOut" }
                         }}
                     >
-                        {/* CRT Effects */}
-                        <CRTScanLines />
+
 
                         {/* Energy Particles */}
                         <EnergyParticles active={isLoading} />
@@ -338,7 +318,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                     }}
                                 >
                                     <Terminal size={12} />
-                                    NEURAL_ARCHITECT_v2.0
+                                    {t('title')}
                                 </motion.span>
                             </div>
                             <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
@@ -349,9 +329,9 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                         <div className="flex-1 overflow-y-auto p-4 space-y-4 relative custom-scrollbar">
                             {isBooting ? (
                                 <div className="space-y-1 text-xs text-green-500/80 font-mono">
-                                    <p>&gt; SYSTEM_INIT...</p>
-                                    <p>&gt; LOADING_NEURAL_WEIGHTS... [OK]</p>
-                                    <p className="animate-pulse">&gt; WAITING_FOR_INPUT_</p>
+                                    <p>{t('systemInit')}</p>
+                                    <p>{t('loadingWeights')}</p>
+                                    <p className="animate-pulse">{t('waitingInput')}</p>
                                 </div>
                             ) : (
                                 <>
@@ -369,7 +349,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                             )}
                                         >
                                             <span className="text-[10px] opacity-50 mb-1 font-bold tracking-wider">
-                                                {m.role === 'user' ? visitorId : 'NEURAL_ARCHITECT_V2.0'}
+                                                {m.role === 'user' ? visitorId : t('title')}
                                             </span>
                                             <div className="whitespace-pre-wrap leading-relaxed">
                                                 {m.content.split(/(\[[^\]]+\]\(#[^)]+\))/g).map((part, i) => {
@@ -404,7 +384,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                             animate={{ opacity: 1 }}
                                             className="self-center text-red-500 text-[10px] animate-pulse p-2 border border-red-500/30 bg-red-500/5 rounded"
                                         >
-                                            COMMUNICATION_ERROR: {error}
+                                            {t('error')}: {error}
                                         </motion.div>
                                     )}
                                 </>
@@ -419,7 +399,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
                                     className="w-full bg-black/50 border border-white/10 rounded px-8 py-3 text-white focus:outline-none focus:border-neon-cyan/50 font-mono text-base md:text-sm placeholder:text-slate-600 focus:shadow-[0_0_15px_rgba(0,243,255,0.1)] transition-all"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
-                                    placeholder={isBooting ? "INITIALIZING..." : "Entrez votre commande..."}
+                                    placeholder={isBooting ? t('initializing') : t('inputPlaceholder')}
                                     disabled={isBooting}
                                     autoFocus
                                 />
@@ -432,23 +412,7 @@ export function NeuralInterface({ isOpen, onClose }: NeuralInterfaceProps) {
 
                     {/* Keyframes CSS inline */}
                     <style jsx global>{`
-                        @keyframes scan {
-                            0% { transform: translateY(0); }
-                            100% { transform: translateY(4px); }
-                        }
-                        
-                        @keyframes noise {
-                            0%, 100% { transform: translate(0, 0); }
-                            10% { transform: translate(-5%, -5%); }
-                            20% { transform: translate(-10%, 5%); }
-                            30% { transform: translate(5%, -10%); }
-                            40% { transform: translate(-5%, 15%); }
-                            50% { transform: translate(-10%, 5%); }
-                            60% { transform: translate(15%, 0); }
-                            70% { transform: translate(0, 10%); }
-                            80% { transform: translate(-15%, 0); }
-                            90% { transform: translate(10%, 5%); }
-                        }
+
 
                         /* Custom Cyberpunk Scrollbar */
                         .custom-scrollbar::-webkit-scrollbar {
