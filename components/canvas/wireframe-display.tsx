@@ -233,7 +233,7 @@ function SceneContent({ variant }: { variant: WireframeVariant }) {
     };
 
     return (
-        <group ref={groupRef} scale={0.8}>
+        <group ref={groupRef} scale={1.3}>
             <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
                 {renderShape()}
             </Float>
@@ -248,10 +248,10 @@ interface WireframeDisplayProps {
 
 export function WireframeDisplay({ variant = 'default', className = "" }: WireframeDisplayProps) {
     return (
-        <div className={`w-full h-[300px] ${className}`}>
+        <div className={`w-full h-[350px] ${className}`}>
             <Canvas
                 resize={{ scroll: false }}
-                camera={{ position: [0, 0, 12], fov: 45 }}
+                camera={{ position: [0, 0, 9], fov: 45 }}
                 gl={{ alpha: true, antialias: true }}
             >
                 <ambientLight intensity={0.5} />
