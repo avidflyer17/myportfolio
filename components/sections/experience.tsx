@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useTranslations } from 'next-intl';
@@ -9,6 +8,7 @@ import { GlassPanel } from "@/components/ui/glass-panel";
 import { Activity, Briefcase, Calendar, Hash, Terminal } from "lucide-react";
 import { CTAButton } from "@/components/ui/cta-button";
 import { smoothScrollTo } from "@/lib/smooth-scroll";
+import { WireframeDisplay } from "@/components/canvas/wireframe-display";
 
 export function ExperienceSection() {
     const t = useTranslations('experience');
@@ -29,6 +29,15 @@ export function ExperienceSection() {
         }
         loadData();
     }, []);
+
+    const getVariant = (job: ExtractedData['experience'][0]) => {
+        // Simple logic to map job -> visual variants
+        if (job.tech.some(t => t.includes('Architecture'))) return 'architecture';
+        if (job.tech.some(t => t.includes('MES') || t.includes('Product'))) return 'product';
+        if (job.tech.some(t => t.includes('Négociation') || t.includes('Cisco'))) return 'business';
+        if (job.tech.some(t => t.includes('SEO') || t.includes('Design'))) return 'startup';
+        return 'default';
+    };
 
     if (loading) {
         return (
@@ -91,8 +100,10 @@ export function ExperienceSection() {
                             transition={{ duration: 0.7, type: "spring", bounce: 0.4 }}
                             className={`flex flex-col md:flex-row ${index % 2 === 0 ? 'md:flex-row-reverse' : ''} gap-8 md:gap-0 items-center relative pl-12 md:pl-0`}
                         >
-                            {/* Empty space for alignment */}
-                            <div className="flex-1 w-full" />
+                            {/* 3D Visuals (Empty space before) */}
+                            <div className="flex-1 w-full hidden md:flex justify-center items-center">
+                                <WireframeDisplay variant={getVariant(job)} />
+                            </div>
 
                             {/* Connection Node */}
                             <div className="absolute left-4 md:left-1/2 -translate-x-1/2 top-8 md:top-1/2 md:-translate-y-1/2 w-8 h-8 z-20 flex items-center justify-center">
