@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
+import { Link } from '@/i18n/routing';
 import { CTAButton } from "@/components/ui/cta-button";
 import { smoothScrollTo } from "@/lib/smooth-scroll";
 
@@ -79,10 +80,14 @@ export function FooterSection() {
                     <LanguageSwitcher />
 
                     <div className="flex gap-6 text-gray-500 text-sm">
-                        <a href="/blog" className="flex items-center gap-2 hover:text-neon-pink transition-colors group">
+                        <Link href="/blog" className="flex items-center gap-2 hover:text-neon-pink transition-colors group">
                             <span className="text-neon-pink group-hover:drop-shadow-[0_0_5px_rgba(255,0,128,0.8)] transition-all">▸</span>
                             <span>BLOG</span>
-                        </a>
+                        </Link>
+                        <Link href="/game" className="flex items-center gap-2 hover:text-neon-pink transition-colors group">
+                            <span className="text-neon-pink group-hover:drop-shadow-[0_0_5px_rgba(255,0,128,0.8)] transition-all">▸</span>
+                            <span>GAME</span>
+                        </Link>
                         <a href="https://github.com/avidflyer17" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-neon-cyan transition-colors group">
                             <Github className="w-4 h-4 group-hover:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)] transition-all" />
                             <span>GITHUB</span>
