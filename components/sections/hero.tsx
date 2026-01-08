@@ -98,12 +98,12 @@ function ArchitecturalCore() {
             {/* Neural Web: Connecting lines (Wireframe Sphere) */}
             <mesh scale={2.8} rotation-x={Math.PI / 4}>
                 <icosahedronGeometry args={[1, 2]} />
-                <meshBasicMaterial color="#ff00ff" wireframe transparent opacity={0.05} />
+                <meshBasicMaterial color="#ff00ff" wireframe transparent opacity={0.2} />
             </mesh>
 
             <mesh scale={2.2} rotation-y={-Math.PI / 4}>
                 <icosahedronGeometry args={[1, 1]} />
-                <meshBasicMaterial color="#00f3ff" wireframe transparent opacity={0.05} />
+                <meshBasicMaterial color="#00f3ff" wireframe transparent opacity={0.2} />
             </mesh>
         </group>
     );
