@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 }
 
-export async function BlogPostPage({ params }: Props) {
+export default async function BlogPostPage({ params }: Props) {
     const { slug, locale } = await params;
     const post = getPostBySlug(slug, locale);
 
