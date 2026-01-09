@@ -1,0 +1,70 @@
+---
+title: "Getting Started with Kubernetes: A Practical Guide"
+description: "Guide pratique pour déployer et gérer vos premières applications sur Kubernetes, de l'installation locale au déploiement en production."
+date: "2026-01-05"
+tags: ["Kubernetes", "DevOps", "Cloud", "Docker"]
+author: "Damien Schonbakler"
+---
+
+Kubernetes est devenu l'orchestrateur de conteneurs de référence pour déployer et gérer des applications cloud-native. Dans ce guide, je partage mon expérience pratique avec Kubernetes.
+
+## Pourquoi Kubernetes?
+
+Après avoir travaillé avec Docker Swarm et d'autres solutions, Kubernetes s'est imposé pour plusieurs raisons :
+
+- **Scalabilité automatique** : HPA (Horizontal Pod Autoscaler)
+- **Self-healing** : Redémarrage automatique des pods défaillants
+- **Rolling updates** : Déploiements sans downtime
+- **Écosystème riche** : Helm, Istio, Prometheus, etc.
+
+## Installation Locale
+
+Pour du développement local, plusieurs options existent :
+
+### Minikube (Recommandé pour débuter)
+
+Minikube est l'outil le plus simple pour commencer avec Kubernetes. Il crée un cluster mono-node sur votre machine locale.
+
+### K3s (Léger et production-ready)
+
+K3s est une distribution Kubernetes légère, parfaite pour IoT, edge computing, ou développement local avec peu de ressources.
+
+## Premier Déploiement
+
+Pour déployer une application sur Kubernetes, vous avez besoin d'un Deployment (qui gère les pods) et d'un Service (qui expose l'application).
+
+## Best Practices
+
+### 1. Resource Limits
+
+Toujours définir des limites de ressources pour vos conteneurs. Cela évite qu'un pod consomme toutes les ressources du nœud.
+
+### 2. Readiness & Liveness Probes
+
+Les probes permettent à Kubernetes de vérifier la santé de vos applications et de redémarrer automatiquement les pods défaillants.
+
+### 3. ConfigMaps & Secrets
+
+Séparez toujours la configuration du code. Utilisez ConfigMaps pour les données non-sensibles et Secrets pour les mots de passe et clés API.
+
+## Monitoring avec Prometheus
+
+Prometheus est l'outil standard pour monitorer Kubernetes. Il peut être installé facilement via Helm.
+
+## Cas d'Usage Réels
+
+Dans mon expérience chez Airbus, j'ai utilisé Kubernetes pour :
+
+- **Microservices MES** : Orchestration de 15+ services
+- **CI/CD Pipeline** : GitLab Runner sur K8s
+- **Data Processing** : Jobs batch pour analytics
+
+Kubernetes a permis une scalabilité horizontale automatique et une haute disponibilité.
+
+## Conclusion
+
+Kubernetes a une courbe d'apprentissage, mais les bénéfices en termes de scalabilité et fiabilité en valent la peine. Commencez petit avec Minikube, puis progressez vers des clusters managés comme GKE, EKS ou AKS.
+
+**Ressources supplémentaires** :
+- Documentation officielle Kubernetes
+- Tutoriels interactifs KillerCoda
