@@ -12,9 +12,10 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-export default async function BlogPage() {
+export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
     const t = await getTranslations('blog');
-    const posts = getAllPosts();
+    const posts = getAllPosts(locale);
 
     return (
         <main className="min-h-screen bg-black text-white py-20 px-4">

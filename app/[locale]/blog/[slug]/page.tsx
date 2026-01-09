@@ -6,7 +6,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import { Metadata } from 'next';
 
 interface Props {
-    params: Promise<{ slug: string }>;
+    params: Promise<{ slug: string; locale: string }>;
 }
 
 export async function generateStaticParams() {
@@ -15,8 +15,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const { slug } = await params;
-    const post = getPostBySlug(slug);
+    const { slug, locale } = await params;
+    const post = getPostBySlug(slug, locale);
 
     if (!post) {
         return {
@@ -38,9 +38,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 }
 
-export default async function BlogPostPage({ params }: Props) {
-    const { slug } = await params;
-    const post = getPostBySlug(slug);
+export async function BlogPostPage({ params }: Props) {
+    const { slug, locale } = await params;
+    const post = getPostBySlug(slug, locale);
 
     if (!post) {
         notFound();

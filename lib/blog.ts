@@ -22,24 +22,33 @@ export type BlogPostMetadata = Omit<BlogPost, 'content'>;
 /**
  * Get all blog post slugs
  */
-export function getAllPostSlugs(): string[] {
+export function getAllPostSlugs(locale: string = 'en'): string[] {
     if (!fs.existsSync(CONTENT_DIR)) {
         fs.mkdirSync(CONTENT_DIR, { recursive: true });
         return [];
     }
 
     const files = fs.readdirSync(CONTENT_DIR);
+    const suffix = `.${locale}.mdx`;
+
     return files
-        .filter((file) => file.endsWith('.mdx'))
-        .map((file) => file.replace(/\.mdx$/, ''));
+        .filter((file) => file.endsWith(suffix))
+        .map((file) => file.replace(suffix, ''));
 }
 
 /**
  * Get blog post by slug with full content
  */
-export function getPostBySlug(slug: string): BlogPost | null {
+export function getPostBySlug(slug: string, locale: string = 'en'): BlogPost | null {
     try {
-        const fullPath = path.join(CONTENT_DIR, `${slug}.mdx`);
+        const fullPath = path.join(CONTENT_DIR, `${slug}.${locale}.mdx`);
+
+        // Return null if file doesn't exist (instead of crashing on readFileSync)
+        if (!fs.existsSync(fullPath)) {
+            console.warn(`Blog post not found: ${slug} (${locale})`);
+            return null;
+        }
+
         const fileContents = fs.readFileSync(fullPath, 'utf8');
         const { data, content } = matter(fileContents);
 
@@ -65,11 +74,11 @@ export function getPostBySlug(slug: string): BlogPost | null {
 /**
  * Get all blog posts metadata (without content) sorted by date
  */
-export function getAllPosts(): BlogPostMetadata[] {
-    const slugs = getAllPostSlugs();
+export function getAllPosts(locale: string = 'en'): BlogPostMetadata[] {
+    const slugs = getAllPostSlugs(locale);
     const posts = slugs
         .map((slug) => {
-            const post = getPostBySlug(slug);
+            const post = getPostBySlug(slug, locale);
             if (!post) return null;
 
             // Exclude content for listing - implicitly excluded by function return type handling
@@ -88,18 +97,18 @@ export function getAllPosts(): BlogPostMetadata[] {
 /**
  * Get posts by tag
  */
-export function getPostsByTag(tag: string): BlogPostMetadata[] {
-    const allPosts = getAllPosts();
+export function getPostsByTag(tag: string, locale: string = 'en'): BlogPostMetadata[] {
+    const allPosts = getAllPosts(locale);
     return allPosts.filter((post) =>
         post.tags.map(t => t.toLowerCase()).includes(tag.toLowerCase())
     );
 }
 
 /**
- * Get all unique tags from all posts
+ * Get all unique tags from all posts (defaults to EN for general tags)
  */
-export function getAllTags(): string[] {
-    const allPosts = getAllPosts();
+export function getAllTags(locale: string = 'en'): string[] {
+    const allPosts = getAllPosts(locale);
     const tags = new Set<string>();
 
     allPosts.forEach((post) => {

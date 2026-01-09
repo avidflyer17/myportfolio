@@ -1,0 +1,84 @@
+---
+title: "Construire un Portfolio Cyberpunk : Next.js 16, Three.js & CI/CD"
+description: "Plongée technique dans l'architecture de ce portfolio immersif. Des React Server Components au rendu 3D, en passant par le déploiement automatisé."
+date: "2026-01-09"
+tags: ["Next.js", "Three.js", "DevOps", "Docker", "TypeScript"]
+coverImage: "/images/blog/meta-portfolio-cover.jpg"
+author: "Damien Schonbakler"
+---
+
+# Construire un Portfolio Cyberpunk
+
+Dans un océan de portfolios de développeurs minimalistes en noir et blanc, je voulais construire quelque chose de **vivant**. Un espace numérique qui ne se contente pas de lister mes compétences, mais qui les démontre de manière interactive. Voici l'histoire de la conception de ce portfolio cyberpunk utilisant les dernières technologies web.
+
+## 1. La Stack Principale
+
+Au cœur du projet se trouve **Next.js 16**. L'architecture "App Router" fournit la colonne vertébrale, permettant un fractionnement efficace du code grâce aux React Server Components.
+
+```typescript
+// app/layout.tsx
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="fr" className="dark">
+        <body className={cn(inter.className, "bg-black text-white antialiased")}>
+            <Providers>{children}</Providers>
+        </body>
+    </html>
+  );
+}
+```
+
+Pour le style, j'ai adopté **Tailwind CSS v4**. La puissance des classes utilitaires est cachée derrière un système de design robuste défini dans `globals.css`, avec des variables CSS pour cette palette signature Néon Cyan/Rose.
+
+## 2. 3D Immersive avec React Three Fiber
+
+La star du spectacle est l'**Orbe IA flottant**. Ce n'est pas une vidéo, mais un objet 3D temps réel rendu dans le navigateur.
+
+J'ai utilisé `@react-three/fiber`, qui réconcilie les éléments Three.js dans le DOM virtuel de React. Cela permet à l'Orbe de réagir aux changements d'état (comme le survol ou la parole) exactement comme le ferait une `<div>`.
+
+```tsx
+<Canvas>
+    <ambientLight intensity={0.5} />
+    <pointLight position={[10, 10, 10]} />
+    <Sphere args={[1, 32, 32]}>
+        <meshStandardMaterial
+            color="#00f3ff"
+            wireframe={true}
+            emissive="#00f3ff"
+            emissiveIntensity={2}
+        />
+    </Sphere>
+</Canvas>
+```
+
+## 3. DevOps : Déploiement derrière un VPN
+
+Déployer une app moderne est souvent facile avec Vercel. Mais je voulais héberger celle-ci sur mon propre VPS pour contrôler les données et les coûts. Le défi ? Mon serveur est derrière un VPN et n'a pas d'IP SSH publique ouverte au monde.
+
+### Le Pattern "Watchtower"
+
+Au lieu de pousser le code vers le serveur, c'est le serveur qui le tire.
+
+1.  **CI (GitHub Actions)** : À chaque release, nous construisons une image Docker et la poussons sur le GitHub Container Registry (GHCR).
+2.  **Serveur** : Un conteneur nommé **Watchtower** tourne à côté de mon app. Il vérifie les nouvelles images toutes les 5 minutes.
+3.  **Auto-Update** : Quand une nouvelle image est trouvée, Watchtower redémarre gracieusement le conteneur du portfolio avec la nouvelle version.
+
+```yaml
+# docker-compose.prod.yml
+services:
+  portfolio:
+    image: ghcr.io/avidflyer17/myportfolio:latest
+    restart: always
+  
+  watchtower:
+    image: containrrr/watchtower
+    command: --interval 300
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+```
+
+## Conclusion
+
+Ce portfolio est un terrain de jeu. Il prouve que nous pouvons construire des interfaces à la fois performantes (Score Lighthouse 95+) et visuellement riches.
+
+Le code source complet est privé pour l'instant, mais je pourrais open-sourcer des composants du système de design à l'avenir. Restez à l'écoute !
