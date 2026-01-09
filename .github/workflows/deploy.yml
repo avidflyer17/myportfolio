@@ -42,26 +42,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Deploy to VPS using SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT || 22 }}
-          script: |
-            # Pull the new image
-            docker pull ghcr.io/${{ github.repository }}:latest
-            
-            # Stop and remove the old container
-            docker stop portfolio || true
-            docker rm portfolio || true
-            
-            # Run the new container
-            docker run -d \
-              --name portfolio \
-              --restart unless-stopped \
-              -p 3000:3000 \
-              -e GMAIL_USER="${{ secrets.GMAIL_USER }}" \
-              -e GMAIL_APP_PASSWORD="${{ secrets.GMAIL_APP_PASSWORD }}" \
-              ghcr.io/${{ github.repository }}:latest
+
