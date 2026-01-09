@@ -10,7 +10,9 @@
 
 **Portfolio immersif d'Architecte Solutions & Développeur Fullstack**
 
-[🌐 Demo Live](https://portfolio.damswallace.fr) • [📧 Contact](mailto:damswallace@gmail.com)
+[🌐 Demo Live](https://portfolio.damswallace.fr) • [📧 Contact](mailto:damswallace@gmail.com) • [📚 Documentation](docs/ARCHITECTURE.md)
+
+![CI Status](https://github.com/avidflyer17/myportfolio/actions/workflows/ci.yml/badge.svg?branch=master)
 
 </div>
 
@@ -85,6 +87,14 @@ Portfolio moderne avec une esthétique **cyberpunk néo-industrielle**, conçu p
 - **Métadonnées riches** : Temps de lecture, tags, dates
 - **RSS Feed** : Flux XML pour les lecteurs
 - **SEO Optimisé** : Open Graph, Twitter Cards, sitemap
+
+---
+
+### ⚙️ DevOps & CI/CD
+
+- **Pipeline Automatisée** : GitHub Actions (Lint + Build à chaque push).
+- **Qualité Code** : ESLint strict & TypeScript Check.
+- **Déploiement** : Support Docker & Vercel prêt à l'emploi.
 
 ---
 
