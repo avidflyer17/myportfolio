@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { motion, AnimatePresence } from "framer-motion";
+
 import { useNeuralInterface } from "@/components/features/neural-interface";
 import { useTranslations } from 'next-intl';
 import * as THREE from 'three';
@@ -107,7 +107,7 @@ function CyberOrb({ isHovered, onClick }: { isHovered: boolean; onClick: () => v
 export function FloatingAIOrb() {
     const [isHovered, setIsHovered] = useState(false);
     const { isOpen, open } = useNeuralInterface();
-    const t = useTranslations('neuralInterface');
+
 
     // Reset hover state when the chat opens/closes to prevent it being stuck in a highlight state
     // Derived state to force un-hover when chat is open

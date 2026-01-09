@@ -7,7 +7,7 @@ import { BlogPostMetadata } from '@/lib/blog';
 import { useEffect, useState } from 'react';
 
 export function BlogSection() {
-    const t = useTranslations('blog');
+
     const tHome = useTranslations('blogSection');
     const [posts, setPosts] = useState<BlogPostMetadata[]>([]);
     const [loading, setLoading] = useState(true);
