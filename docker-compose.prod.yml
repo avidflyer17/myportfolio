@@ -1,0 +1,33 @@
+services:
+  portfolio:
+    container_name: portfolio
+    # 👇 On utilise l'image construite par GitHub Actions au lieu de build localement
+    image: ghcr.io/avidflyer17/site-vitrine:latest
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    restart: always
+    expose:
+      - "3000"
+    environment:
+      - GMAIL_USER=${GMAIL_USER}
+      - GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
+      - GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.portfolio.rule: Host(`portfolio.damswallace.fr`)
+      traefik.http.routers.portfolio.entryPoints: websecure
+      traefik.http.services.portfolio.loadbalancer.server.port: 3000
+      traefik.http.routers.portfolio.middlewares: middleware-secured-chain@file
+    networks:
+      br-dams:
+        ipv4_address: 172.18.0.120
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  br-dams:
+    external: true
