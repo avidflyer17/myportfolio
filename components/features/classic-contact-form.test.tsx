@@ -15,7 +15,7 @@ vi.mock('@/app/actions', () => ({
 
 // Mock complex UI components to simplify testing
 vi.mock('@/components/ui/glass-panel', () => ({
-    GlassPanel: ({ children, className }: any) => <div className={className}>{children}</div>
+    GlassPanel: ({ children, className }: { children: React.ReactNode, className?: string }) => <div className={className}>{children}</div>
 }))
 vi.mock('@/components/features/contact-submission-overlay', () => ({
     ContactSubmissionOverlay: () => <div data-testid="overlay" />
