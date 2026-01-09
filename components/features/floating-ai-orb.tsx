@@ -6,7 +6,6 @@ import { Float } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
 import { useNeuralInterface } from "@/components/features/neural-interface";
-import { useTranslations } from 'next-intl';
 import * as THREE from 'three';
 
 
