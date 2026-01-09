@@ -122,8 +122,8 @@ export function ClassicContactForm() {
                         {/* NAME INPUT */}
                         <div className="space-y-2 group">
                             <div className="flex justify-between items-baseline">
-                                <label className={labelClasses}>01 // IDENTITY</label>
-                                {fieldErrors.name && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">//! REQUIRED</span>}
+                                <label className={labelClasses}>{"01 // IDENTITY"}</label>
+                                {fieldErrors.name && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">{"//! REQUIRED"}</span>}
                             </div>
                             <div className={cn(
                                 "relative h-12 bg-black/40 border transition-all duration-300 rounded-lg overflow-hidden group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]",
@@ -147,8 +147,8 @@ export function ClassicContactForm() {
                         {/* EMAIL INPUT */}
                         <div className="space-y-2 group">
                             <div className="flex justify-between items-baseline">
-                                <label className={labelClasses}>02 // FREQUENCY (EMAIL)</label>
-                                {fieldErrors.email && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">//! REQUIRED</span>}
+                                <label className={labelClasses}>{"02 // FREQUENCY (EMAIL)"}</label>
+                                {fieldErrors.email && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">{"//! REQUIRED"}</span>}
                             </div>
                             <div className={cn(
                                 "relative h-12 bg-black/40 border transition-all duration-300 rounded-lg overflow-hidden group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]",
@@ -172,7 +172,7 @@ export function ClassicContactForm() {
 
                     {/* COMPANY INPUT */}
                     <div className="space-y-2 group">
-                        <label className={labelClasses}>03 // AFFILIATION (OPTIONAL)</label>
+                        <label className={labelClasses}>{"03 // AFFILIATION (OPTIONAL)"}</label>
                         <div className="relative h-12 bg-black/40 border border-white/10 transition-all duration-300 rounded-lg overflow-hidden group-focus-within:border-neon-cyan/50 group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]">
                             <div className="absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center border-r border-white/5 bg-white/5 group-focus-within:bg-neon-cyan/10 group-focus-within:border-neon-cyan/30 transition-colors">
                                 <Building className="w-5 h-5 text-slate-500 group-focus-within:text-neon-cyan transition-colors" />
@@ -234,8 +234,8 @@ export function ClassicContactForm() {
                     {/* MESSAGE INPUT */}
                     <div className="space-y-2 group">
                         <div className="flex justify-between items-baseline">
-                            <label className={labelClasses}>07 // PAYLOAD (MESSAGE)</label>
-                            {fieldErrors.message && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">//! REQUIRED</span>}
+                            <label className={labelClasses}>{"07 // PAYLOAD (MESSAGE)"}</label>
+                            {fieldErrors.message && <span className="text-red-500 text-[10px] font-mono tracking-widest animate-pulse">{"//! REQUIRED"}</span>}
                         </div>
                         <div className={cn(
                             "relative bg-black/40 border transition-all duration-300 rounded-lg overflow-hidden group-focus-within:shadow-[0_0_20px_rgba(0,243,255,0.2)]",

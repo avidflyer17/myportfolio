@@ -16,6 +16,7 @@ const GAME_BOUNDS = { x: 14, y: 8 };
 // --- Types ---
 type Position = [number, number, number];
 type GameState = "MENU" | "PLAYING" | "GAME_OVER";
+interface Entity { id: string; position: Position }
 
 // --- Components ---
 
@@ -81,12 +82,12 @@ export function GameScene() {
     const [gameState, setGameState] = useState<GameState>("MENU");
     const [score, setScore] = useState(0);
     const [explosions, setExplosions] = useState<{ id: string, position: Position }[]>([]);
-    const [renderEntities, setRenderEntities] = useState({ asteroids: [], lasers: [], shipPos: [0, 0, 0] as Position });
+    const [renderEntities, setRenderEntities] = useState<{ asteroids: Entity[], lasers: Entity[], shipPos: Position }>({ asteroids: [], lasers: [], shipPos: [0, 0, 0] });
 
     // Game State Ref for Logic Loop
     const gameStateRef = useRef({
-        asteroids: [] as { id: string, position: Position }[],
-        lasers: [] as { id: string, position: Position }[],
+        asteroids: [] as Entity[],
+        lasers: [] as Entity[],
         shipPos: [0, 0, 0] as Position,
         score: 0,
         lastSpawn: 0,
@@ -201,8 +202,8 @@ export function GameScene() {
 
             // 6. Sync to Render State
             setRenderEntities({
-                asteroids: [...ref.asteroids] as any,
-                lasers: [...ref.lasers] as any,
+                asteroids: [...ref.asteroids],
+                lasers: [...ref.lasers],
                 shipPos: ref.shipPos
             });
         });
@@ -289,14 +290,14 @@ export function GameScene() {
                     <>
                         <Ship position={renderEntities.shipPos} />
 
-                        {renderEntities.lasers.map((laser: any) => (
+                        {renderEntities.lasers.map((laser) => (
                             <mesh key={laser.id} position={laser.position} rotation={[Math.PI / 2, 0, 0]}>
                                 <cylinderGeometry args={[0.08, 0.08, 1.5]} />
                                 <meshBasicMaterial color="#00ff00" toneMapped={false} />
                             </mesh>
                         ))}
 
-                        {renderEntities.asteroids.map((asteroid: any) => (
+                        {renderEntities.asteroids.map((asteroid) => (
                             <mesh key={asteroid.id} position={asteroid.position}>
                                 <dodecahedronGeometry args={[0.8, 0]} />
                                 <meshStandardMaterial color="#ff00ff" wireframe />

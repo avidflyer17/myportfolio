@@ -110,11 +110,8 @@ export function FloatingAIOrb() {
     const t = useTranslations('neuralInterface');
 
     // Reset hover state when the chat opens/closes to prevent it being stuck in a highlight state
-    useEffect(() => {
-        if (isOpen) {
-            setIsHovered(false);
-        }
-    }, [isOpen]);
+    // Derived state to force un-hover when chat is open
+    const effectiveIsHovered = isOpen ? false : isHovered;
 
     return (
         <>
@@ -167,12 +164,12 @@ export function FloatingAIOrb() {
                     }}
                 >
                     {/* Glow Backdrop */}
-                    <div className={`absolute inset-16 rounded-full blur-3xl transition-all duration-1000 ${isHovered ? 'bg-neon-cyan/20' : 'bg-neon-pink/10'}`} />
+                    <div className={`absolute inset-16 rounded-full blur-3xl transition-all duration-1000 ${effectiveIsHovered ? 'bg-neon-cyan/20' : 'bg-neon-pink/10'}`} />
 
                     <Canvas camera={{ position: [0, 0, 5], fov: 45 }} gl={{ alpha: true }}>
                         <ambientLight intensity={0.5} />
-                        <pointLight position={[5, 5, 5]} intensity={3} color={isHovered ? "#00f3ff" : "#ff00ff"} />
-                        <CyberOrb isHovered={isHovered} onClick={open} />
+                        <pointLight position={[5, 5, 5]} intensity={3} color={effectiveIsHovered ? "#00f3ff" : "#ff00ff"} />
+                        <CyberOrb isHovered={effectiveIsHovered} onClick={open} />
                     </Canvas>
                 </div>
             </div>
