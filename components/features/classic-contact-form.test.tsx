@@ -49,7 +49,7 @@ describe('ClassicContactForm', () => {
 
     it('submits form when all required fields are filled', async () => {
         // Mock success response
-        vi.mocked(sendContactEmail).mockResolvedValue({ success: true, data: 'Sent' })
+        vi.mocked(sendContactEmail).mockResolvedValue({ success: true })
 
         render(<ClassicContactForm />)
 
